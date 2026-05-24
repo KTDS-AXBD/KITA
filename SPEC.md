@@ -41,8 +41,8 @@
 ### Sprint 2 — M2 배포 (1~2일) + What-If
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F007 | Cloudflare Pages/Workers 배포 + localhost 오프라인 백업 | KITA-REQ-007 | P0 | S2 | 🔄 |
-| F008 | QA 체크리스트(브라우저/해상도/네트워크) + 공개 URL 접근제어 + 배포 후 헬스체크 | KITA-REQ-008 | P0 | S2 | 🔄 |
+| F007 | Cloudflare 배포 ✅ (https://kita.ktds-axbd.workers.dev, Workers Static Assets) + localhost 백업(`serve:offline`) | KITA-REQ-007 | P0 | S2 | ✅ |
+| F008 | QA 체크리스트·헬스체크 ✅ (스크립트·문서·라이브 스모크) / 공개 URL 접근제어·오프라인 테스트는 Master 수동 잔여 | KITA-REQ-008 | P0 | S2 | 🔄 |
 | F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) — **별도 미니스프린트 분리** (P1, provider=CF Workers AI 결정) | KITA-REQ-009 | P1 | S2→별도 | 📋 |
 
 ### Sprint 3 — M3 시연 준비 (2~3일)
@@ -75,4 +75,7 @@
 
 ---
 
-*PRD `docs/req/prd-final.md` 기반. **Sprint 1 ✅ 완료** (Plan·Design·구현·merge): [Plan](docs/01-plan/features/sprint-1-m1-migration.plan.md) · [Design](docs/02-design/features/sprint-1-m1-migration.design.md) · [Report](docs/05-act/sprint-1-report.md). 다음: **Sprint 2 (M2 배포)** — F007 CF Pages + F008 접근제어 + F009 What-If 실 LLM.*
+*PRD `docs/req/prd-final.md` 기반.*
+*- **Sprint 1 ✅** (M1 빌드 이송): [Plan](docs/01-plan/features/sprint-1-m1-migration.plan.md) · [Design](docs/02-design/features/sprint-1-m1-migration.design.md) · [Report](docs/05-act/sprint-1-report.md)*
+*- **Sprint 2 🔄** (M2 배포): [Plan](docs/01-plan/features/sprint-2-m2-deploy.plan.md) · [Design](docs/02-design/features/sprint-2-m2-deploy.design.md). F007 ✅ 배포(https://kita.ktds-axbd.workers.dev, 라이브 스모크 통과) / F008 잔여: 접근제어·오프라인·QA(Master 수동, [deploy-guide](docs/deploy-guide.md)·[qa-checklist](docs/qa-checklist.md))*
+*- 다음: F008 마감 → **F009 미니스프린트**(What-If 실 LLM, CF Workers AI) → Sprint 3(M3 시연준비)*
