@@ -44,28 +44,30 @@ export function AboutOntologyPage(): JSX.Element {
       <table className="article-table">
         <thead>
           <tr>
-            <th style={{ width: 110 }}>Sprint</th>
+            <th style={{ width: 130 }}>데이터 단계</th>
             <th>데이터 상태</th>
             <th style={{ width: 200 }}>시연 가능성</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Sprint 0~1</td>
-            <td>100% Mock (JSON fixtures)</td>
-            <td>내부 시연만</td>
-          </tr>
-          <tr>
-            <td>Sprint 2</td>
-            <td>GIVC 퓨샷 SQL을 변환한 정적 데이터 일부 + Mock</td>
-            <td>내부·시니어 시연</td>
-          </tr>
-          <tr>
-            <td>Sprint 3</td>
-            <td>GIVC 일부 테이블 → 정적 export → 사이트 임베드</td>
+            <td>
+              <strong>단계 0 · 현재 데모</strong>
+            </td>
+            <td>100% Mock (JSON fixtures, ⭐△※ 표기)</td>
             <td>
               <strong>Prototype 리뷰 시연</strong>
             </td>
+          </tr>
+          <tr>
+            <td>단계 1</td>
+            <td>GIVC 퓨샷 SQL을 변환한 정적 데이터 일부 + Mock</td>
+            <td>심화 시연</td>
+          </tr>
+          <tr>
+            <td>단계 2</td>
+            <td>GIVC 일부 테이블 → 정적 export → 사이트 임베드</td>
+            <td>실데이터 검증 시연</td>
           </tr>
           <tr>
             <td>본 사업화 v1</td>

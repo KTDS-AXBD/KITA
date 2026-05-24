@@ -11,15 +11,20 @@ KT DS Enterprise사업본부 AX컨설팅팀 / 서민원 책임
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:5173 (Vite dev server)
-pnpm build        # tsc --noEmit + vite build → dist/
-pnpm preview      # http://localhost:4173 (production preview)
-pnpm typecheck    # tsc --noEmit (turbo cache 우회 검증용)
+pnpm dev            # http://localhost:5173 (Vite dev server)
+pnpm build          # tsc --noEmit + vite build → dist/
+pnpm preview        # http://localhost:4173 (= serve:offline, 오프라인 백업)
+pnpm typecheck      # tsc(app, DOM) + tsc(worker, WebWorker) 양쪽
 pnpm lint
-pnpm test         # vitest (S4 스코어링 9 케이스)
+pnpm test           # vitest (S4 스코어링 9 케이스)
+
+# 배포 (F007/F009 — Cloudflare Workers)
+cp wrangler.jsonc.example wrangler.jsonc   # 최초 1회, name을 비추측 값으로
+pnpm deploy:dryrun  # 번들 검증 (CF 인증 불필요)
+pnpm deploy:cf      # 빌드 + wrangler deploy  (⚠️ pnpm deploy 아님 — 내장명령 충돌)
 ```
 
-> 요구: Node ≥ 18.18, pnpm 9.x.
+> 요구: Node ≥ 18.18, pnpm 9.x. 배포/장애 대응은 [`docs/deploy-guide.md`](./docs/deploy-guide.md), 시연은 [`docs/demo-script.md`](./docs/demo-script.md)·[`docs/operations-manual.md`](./docs/operations-manual.md).
 
 ## 폴더 구조 (Sprint 1)
 
@@ -45,15 +50,25 @@ src/
 │  ├─ graph-layout/         # F006 좌표 JSON 스냅샷 + mergeLayout()
 │  └─ repository/           # Rnd / Toluene Repository (Mock 구현)
 ├─ types/                   # Provenance, Candidate, GraphNode, Tweaks 등 (React 비의존)
+├─ worker/                  # F009 Hono Worker — /api/chat (CF Workers AI) + ASSETS fallthrough
 └─ styles/                  # AXIS CSS (그대로 이송)
 
 config/
-└─ hint-boosts.json         # F006 boost 계수 외부화
+├─ hint-boosts.json         # F006 boost 계수 외부화
+└─ whatif.ts                # F009 LLM 모델·시스템 프롬프트 (도메인 튜닝 지점)
+
+wrangler.jsonc.example      # 배포 설정 템플릿 (실제 wrangler.jsonc는 gitignore — URL 비노출)
+tsconfig.worker.json        # Worker 전용 (WebWorker 타입)
 
 docs/
-├─ 01-plan/features/sprint-1-m1-migration.plan.md
-├─ 02-design/features/sprint-1-m1-migration.design.md
-└─ 03-do/sprint-1-regression-checklist.md
+├─ demo-script.md           # F011 시연 스크립트
+├─ operations-manual.md     # F011 운영 매뉴얼
+├─ deploy-guide.md          # 배포/롤백/만료 (S2)
+├─ qa-checklist.md          # QA 런북 (S2)
+├─ 01-plan/features/        # sprint-1/2/3 · f009 plan
+├─ 02-design/features/      # sprint-1/2 · f009 design
+├─ 03-do/sprint-1-regression-checklist.md
+└─ 05-act/sprint-1-report.md
 ```
 
 ## 핵심 결정 (PRD §6, Plan §6)
@@ -67,6 +82,7 @@ docs/
 - **Tweaks host-protocol 제거** — postMessage → localStorage + Zustand persist
 - **What-If markdown** — React 노드 빌더 (raw HTML 주입 금지, XSS 원천 차단)
 - **hash router** — `#/` 경로 (CF 정적 배포 호환, SPA fallback 불필요)
+- **What-If 하이브리드 LLM (F009)** — 토글 OFF=정적 Mock(기본), ON=Hono Worker `/api/chat` → CF Workers AI(`llama-3.1-8b-fp8`). **KV rate-limit 세션 3회**(in-memory는 분산 Worker 미작동 → KV 필수). 같은 Worker가 정적 자산도 서빙(ASSETS fallthrough)
 
 ## 데이터 출처 표기 (필수)
 
@@ -78,10 +94,16 @@ docs/
 
 모든 표·차트·그래프 노드는 `source` 필드 필수. 누락 시 `tsc --noEmit` 에러.
 
-## 다음 Sprint
+## 진행 상태
 
-- **S2 (M2)**: F007 Cloudflare Pages 배포 / F008 접근제어 / F009 What-If 실 LLM (CF Workers AI, `/api/chat`, 세션 3회 rate limit)
-- **S3 (M3)**: F010 About 본격 / F011 GIVC 정적 export 일부 임베드 / F012 시연 준비 (스크립트·녹화·EN 옵션)
+| 마일스톤 | 상태 |
+|---|---|
+| **M1 빌드 이송** (S1, F001~F006) | ✅ Vite+TS SPA merged |
+| **M2 배포** (S2, F007~F008) | ✅ CF Workers 배포 + 접근제어·QA (데모시점 운영은 `qa-checklist.md` 런북) |
+| **What-If LLM** (F009) | ✅ Hono `/api/chat` + CF Workers AI + KV rate-limit |
+| **M3 시연 준비** (S3, F010~F012) | F010 About ✅ · F011 시연스크립트/매뉴얼 ✅ (백업 영상 녹화·리허설=수동) · F012 Tweaks ✅, 다국어 EN 보류(P2) |
+
+> 시연 직전 런북: [`docs/qa-checklist.md`](./docs/qa-checklist.md) + [`docs/demo-script.md`](./docs/demo-script.md). 시연 후 `pnpm exec wrangler delete`로 URL 만료.
 
 ## 보안
 
