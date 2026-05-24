@@ -9,17 +9,20 @@ import { WHATIF_MODEL, WHATIF_MAX_TOKENS, WHATIF_SYSTEM_PROMPT } from '../../con
 interface Env {
   AI: Ai;
   ASSETS: Fetcher;
+  RATE_LIMIT_KV: KVNamespace;
 }
 
 const app = new Hono<{ Bindings: Env }>();
 
-// /api/* 만 rate-limit — 세션당 3회 (X-Session-Id 헤더 기준). KV 없으면 in-memory fallback.
+// /api/* 만 rate-limit — 세션당 3회 (X-Session-Id 헤더 기준).
+// KV 바인딩 필수: 분산 Worker에서 in-memory 카운터는 인스턴스 간 공유 안 됨(429 미작동) → KV로 일관 카운트.
 app.use(
   '/api/*',
   createRateLimitMiddleware({
     limit: 3,
     windowSec: 3600,
     keyFn: (c) => c.req.header('X-Session-Id') ?? 'anon',
+    kvBinding: 'RATE_LIMIT_KV',
   }),
 );
 

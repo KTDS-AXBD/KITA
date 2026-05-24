@@ -13,6 +13,11 @@
   // F009: What-If 실 LLM Worker (/api/chat). 정적 전용이면 main/ai 제거 가능.
   "main": "src/worker/index.ts",
   "ai": { "binding": "AI" },
+  // rate-limit 분산 일관 카운터 (in-memory는 분산 Worker에서 미작동).
+  // 생성: wrangler kv namespace create RATE_LIMIT_KV → id를 아래에 기입
+  "kv_namespaces": [
+    { "binding": "RATE_LIMIT_KV", "id": "REPLACE_WITH_KV_ID" }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
