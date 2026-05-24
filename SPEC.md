@@ -43,7 +43,7 @@
 |---|------|-----|------|--------|------|
 | F007 | Cloudflare 배포 ✅ (Workers Static Assets, 비추측 URL — `wrangler.jsonc` 로컬전용) + localhost 백업(`serve:offline`) | KITA-REQ-007 | P0 | S2 | ✅ |
 | F008 | 접근제어 ✅(비추측 경로+config 로컬화) + 헬스체크·QA 문서·라이브 스모크·sourcemap차단·favicon ✅ / 오프라인 테스트·QA 브라우저·시연후 만료는 Master 잔여 | KITA-REQ-008 | P0 | S2 | 🔄 |
-| F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) — **별도 미니스프린트 분리** (P1, provider=CF Workers AI 결정) | KITA-REQ-009 | P1 | S2→별도 | 📋 |
+| F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) — **별도 미니스프린트 🔄** (provider=CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`, Hono+rate-limit 세션3회) | KITA-REQ-009 | P1 | 별도 | 🔄 |
 
 ### Sprint 3 — M3 시연 준비 (2~3일)
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
