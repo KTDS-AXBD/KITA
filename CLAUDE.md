@@ -6,10 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KITA** — KT DS AX컨설팅팀의 **Prototype 리뷰용 인터랙티브 데모 사이트** PoC. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 화면으로 보여주고, 시연 중 고객(산자부/산업부 의사결정자)이 자발적으로 추가 데이터를 꺼내게 유도하는 게 목적.
 
-**현재 상태: 기획 확정 → Sprint 1 착수 직전.** 아직 git 레포 아니고 프로덕션 소스 코드 없음. 다음 3개가 핵심 자산:
-- **SPEC.md** (프로젝트 루트) — **SSOT**. F001~F012, Sprint 1~3 실행 계획.
-- **`docs/req/prd-final.md`** — 착수 준비 완료 PRD (ax:req-interview 산출).
-- **`docs/spec/claude design/`** — **동작하는 디자인 프로토타입** (빌드 없는 CDN React+Babel). 프로덕션 이송의 원본.
+**현재 상태: Sprint 1 ✅ + F007 배포 ✅ + F009 ✅ 완료.** Vite+TS+Zustand SPA가 Cloudflare에 배포돼 라이브 구동 중(비추측 URL, `wrangler.jsonc` 로컬전용). What-If 실 LLM 토글(CF Workers AI) 가동. 남은 것: F008 수동 마감(오프라인·QA·만료) + Sprint 3(M3 시연준비). 핵심 자산:
+- **SPEC.md** (루트) — **SSOT**. F-item 상태·Sprint 진행. 작업 기준.
+- **프로덕션 소스** (`src/`, `config/`, `wrangler.jsonc.example`) — Vite+TS SPA + Hono Worker(`/api/chat`).
+- **`docs/req/prd-final.md`** — PRD (로컬 전용). **`docs/spec/claude design/`** — 원본 프로토타입(이송 참조).
+- **PDCA 문서**: `docs/01-plan/`·`docs/02-design/`·`docs/05-act/` (Sprint별 Plan/Design/Report).
 
 ## 작업 전 읽을 순서
 
@@ -44,9 +45,11 @@ harness-kit이 제공하는 것 (이 PoC에서 쓰는 부분만): Hono 미들웨
 
 ## 명령어
 
-**프로토타입 실행** (현재 유일하게 동작하는 것): `docs/spec/claude design/KITA PoC.html`을 브라우저로 열면 됨 (빌드 불필요, CDN React+Babel).
+**프로덕션 (Vite+TS SPA)**: `pnpm dev`(개발) / `pnpm build`(빌드, tsc+vite) / `pnpm preview`(=`serve:offline`, localhost 백업) / `pnpm typecheck`(app+worker) / `pnpm lint` / `pnpm test`(vitest).
 
-**프로덕션 빌드 도구는 Sprint 1(F001)에서 셋업 예정** — Vite 도입 후 `pnpm dev`/`pnpm build`/`pnpm preview` 스크립트가 생김. 아직 없음.
+**배포 (F007/F009)**: `pnpm deploy:cf`(빌드+wrangler deploy) / `pnpm deploy:dryrun`(번들 검증). ⚠️ `pnpm deploy`는 pnpm 내장명령과 충돌 → 반드시 `deploy:cf`. `wrangler.jsonc`는 gitignore(비추측 URL 비노출) — 없으면 `cp wrangler.jsonc.example wrangler.jsonc` 후 name을 비추측 값으로. 배포 가이드 `docs/deploy-guide.md`.
+
+**원본 프로토타입**: `docs/spec/claude design/KITA PoC.html` (CDN React+Babel, 빌드 불필요 — 이송 참조용).
 
 ## 데모 구조 (SPEC F-item 매핑)
 
