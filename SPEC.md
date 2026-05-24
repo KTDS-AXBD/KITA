@@ -41,9 +41,9 @@
 ### Sprint 2 — M2 배포 (1~2일) + What-If
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F007 | Cloudflare Pages/Workers 배포 + localhost 오프라인 백업 | KITA-REQ-007 | P0 | S2 | 📋 |
-| F008 | QA 체크리스트(브라우저/해상도/네트워크) + 공개 URL 접근제어 + 배포 후 헬스체크 | KITA-REQ-008 | P0 | S2 | 📋 |
-| F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) | KITA-REQ-009 | P1 | S2 | 📋 |
+| F007 | Cloudflare Pages/Workers 배포 + localhost 오프라인 백업 | KITA-REQ-007 | P0 | S2 | 🔄 |
+| F008 | QA 체크리스트(브라우저/해상도/네트워크) + 공개 URL 접근제어 + 배포 후 헬스체크 | KITA-REQ-008 | P0 | S2 | 🔄 |
+| F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) — **별도 미니스프린트 분리** (P1, provider=CF Workers AI 결정) | KITA-REQ-009 | P1 | S2→별도 | 📋 |
 
 ### Sprint 3 — M3 시연 준비 (2~3일)
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
