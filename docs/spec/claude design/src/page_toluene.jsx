@@ -212,10 +212,10 @@ const S6Page = ({ tweaks }) => {
             </div>
           </Card>
 
-          <Callout kind="info" title="발언 포인트 (시연 멘트 C3)">
-            "현재는 톨루엔 단일 노드 중심이지만, <strong>전후방 데이터</strong>를 결합하면
-            산자부가 가장 묻는 <strong>'영향 분석'</strong>까지 자동화됩니다.
-            코데이터 측에 전후방 테이블이 어디까지 있는지 함께 확인해보면 좋을 것 같습니다."
+          <Callout kind="info" title="기능 설명">
+            현재는 톨루엔 단일 노드 중심이지만, <strong>전후방 데이터</strong>를 결합하면
+            <strong>'영향 분석'</strong>까지 자동화됩니다.
+            전후방 데이터셋 범위에 따라 분석 깊이가 확장됩니다.
           </Callout>
 
           <ProvenanceLegend />
@@ -234,10 +234,10 @@ const S6Page = ({ tweaks }) => {
             sub="단일 화면 통합이 시연 핵심. 토글 시 확장 path 시뮬레이션."
           />
 
-          <Card title="멘트 카드 (C3·C4)" sub="시연 스크립트">
+          <Card title="데이터 확장 예시" sub="뉴스 매칭">
             <div style={{ fontSize: 12, color: 'var(--axis-text-secondary)', lineHeight: 1.6 }}>
-              "뉴스 매칭이 산업 단위에서 <strong style={{ color: 'var(--axis-text-primary)' }}>품목 단위</strong>로 내려오면 — 예를 들어
-              <strong style={{ color: 'var(--axis-text-primary)' }}> '나프타'와 '경질 라프타'를 구분</strong>하는 의미 통일 — 위험 알림이 한 단계 더 깊어집니다."
+              뉴스 매칭이 산업 단위에서 <strong style={{ color: 'var(--axis-text-primary)' }}>품목 단위</strong>로 내려오면 — 예를 들어
+              <strong style={{ color: 'var(--axis-text-primary)' }}> '나프타'와 '경질 라프타'를 구분</strong>하는 의미 통일 — 위험 알림이 한 단계 더 깊어집니다.
             </div>
           </Card>
         </aside>

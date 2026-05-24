@@ -151,19 +151,19 @@ const LandingPage = () => {
       </section>
 
       <section style={{ marginTop: 56 }}>
-        <h2 style={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--axis-text-tertiary)', margin: '0 0 14px' }}>시연 흐름 (25~35분)</h2>
+        <h2 style={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--axis-text-tertiary)', margin: '0 0 14px' }}>화면 구성 흐름</h2>
         <div style={{ background: 'var(--axis-paper)', border: '1px solid var(--axis-border-default)', borderRadius: 'var(--axis-style-radius-card)', overflow: 'hidden' }}>
           <table className="dtable">
             <thead>
-              <tr><th style={{ width: 90 }}>단계</th><th style={{ width: 80 }}>시간</th><th>화면</th><th>발언 포인트</th></tr>
+              <tr><th style={{ width: 90 }}>구간</th><th>화면</th><th>설명</th></tr>
             </thead>
             <tbody>
-              <tr><td><Badge kind="default">Intro</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>2분</td><td>Landing</td><td>오늘 보여드릴 것: "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가" 데모</td></tr>
-              <tr><td><Badge kind="info">Main</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>12분</td><td>S4 R&D</td><td>Q1 → Q2 → Q3 순서로. 가중치 슬라이더 조작이 하이라이트</td></tr>
-              <tr><td><Badge kind="warning">Hint</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>3분</td><td>S4 우측</td><td>"산기평 공고 데이터가 있으면 추천 정확도가 65→88%까지 가능합니다"</td></tr>
-              <tr><td><Badge kind="info">Sub</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>7분</td><td>S6 톨루엔</td><td>복잡한 추천 없이 한 화면 통합만으로 페인 해결</td></tr>
-              <tr><td><Badge kind="warning">Hint</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>3분</td><td>S6 우측</td><td>"전후방 데이터가 있으면 후방 영향 분석이 활성화됩니다"</td></tr>
-              <tr><td><Badge kind="default">Q&A</Badge></td><td style={{ fontFamily: 'var(--axis-font-mono)', color: 'var(--axis-text-secondary)' }}>8~10분</td><td>자유</td><td>데이터·일정·본 사업화</td></tr>
+              <tr><td><Badge kind="default">Intro</Badge></td><td>Landing</td><td>GIVC 위 온톨로지 레이어 개요</td></tr>
+              <tr><td><Badge kind="info">Main</Badge></td><td>S4 R&D</td><td>R&D 적합 기업 추천 — 가중치 슬라이더 실시간 재계산</td></tr>
+              <tr><td><Badge kind="warning">Hint</Badge></td><td>S4 우측</td><td>산기평 공고 데이터 연동 시 추천 정확도 65→88% 향상</td></tr>
+              <tr><td><Badge kind="info">Sub</Badge></td><td>S6 톨루엔</td><td>단일 품목 한 화면 통합 가시화</td></tr>
+              <tr><td><Badge kind="warning">Hint</Badge></td><td>S6 우측</td><td>전후방 데이터 연동 시 후방 영향 분석 활성화</td></tr>
+              <tr><td><Badge kind="default">정리</Badge></td><td>About</td><td>데이터 출처·확장 방향</td></tr>
             </tbody>
           </table>
         </div>

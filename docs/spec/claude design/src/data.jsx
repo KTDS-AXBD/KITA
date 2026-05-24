@@ -206,7 +206,7 @@ const S6_WORDS = [
   { w: '용제 회수', s: 12, t: 'dim' }, { w: '운임 상승', s: 12, t: 'neg' }
 ];
 
-// -------- Data Expansion Hints (시연 멘트 카탈로그) --------
+// -------- Data Expansion Hints (데이터 확장 항목) --------
 // 각 카드는 active=true 시 결과에 가상 boost를 적용
 const HINTS_S4 = [
   { id: 'h_rndcall', title: '산기평 공고 실데이터', delta: '65% → 88%',
@@ -225,7 +225,7 @@ const HINTS_S4 = [
 
 const HINTS_S6 = [
   { id: 'h_supply', title: '전후방 매핑', delta: '후방 영향 분석 활성화',
-    detail: 'GIVC 코데이터 측 전후방 테이블 결합 시 톨루엔→TDI→자동차 시트까지 N단계 영향 자동 분석.',
+    detail: '전후방 데이터셋 결합 시 톨루엔→TDI→자동차 시트까지 N단계 영향 자동 분석.',
     boost: {} },
   { id: 'h_breakdown', title: '품목 세분화 데이터', delta: '나프타 ↔ 톨루엔 구분',
     detail: '품목 코드 의미 통일 — "나프타", "경질 라프타", "톨루엔"의 의미 단위 매핑.',

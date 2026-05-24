@@ -62,7 +62,7 @@ const AboutOntologyPage = () => (
     <ul>
       <li><strong>+ 산기평 공고 실데이터</strong> — 매칭 정확도 65% → 88%</li>
       <li><strong>+ 특허청 API (특허 출원 트렌드)</strong> — 신뢰도 가중치 ±15%p</li>
-      <li><strong>+ 코데이터 전후방 매핑</strong> — 후방 영향 분석 자동화</li>
+      <li><strong>+ 전후방 매핑 데이터</strong> — 후방 영향 분석 자동화</li>
       <li><strong>+ 인력 이동·재직 데이터</strong> — 기업 R&D 지속성 신호</li>
       <li><strong>+ 실시간 뉴스 (품목 단위)</strong> — 위험 알림 한 단계 깊이</li>
     </ul>
@@ -89,7 +89,7 @@ const AboutDataPage = () => {
     { ns: '  └ salesGrowth',        type: '⭐ 실', use: '매출 성장률', usage: 'S4 가중치 [매출]' },
     { ns: '특허청 API',              type: '※ 가상', use: '특허 출원수 (가상값)', usage: 'S4 가중치 [특허]' },
     { ns: '산기평 공고 API',         type: '※ 가상', use: 'R&D 공고 텍스트', usage: 'S4 매칭 정확도 (Hint h_rndcall 활성화 시 +23%p)' },
-    { ns: '코데이터 전후방',         type: '※ 가상', use: '품목별 전후방 1단계 매핑', usage: 'S6 전후방 노드 (Hint h_supply)' },
+    { ns: '전후방 매핑',            type: '※ 가상', use: '품목별 전후방 1단계 매핑', usage: 'S6 전후방 노드 (Hint h_supply)' },
     { ns: '실시간 뉴스',             type: '※ 가상', use: '품목 단위 매칭 뉴스', usage: 'S6 워드클라우드, 위험 알림' },
     { ns: '인력 이동',               type: '※ 가상', use: '핵심 연구인력 이동·재직', usage: 'S4 Hint h_movement' }
   ];

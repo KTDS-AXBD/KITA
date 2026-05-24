@@ -260,9 +260,9 @@ const S4Page = ({ tweaks }) => {
           {/* Q3 — What-If */}
           <WhatIfChat prompts={KitaData.WHATIF_PROMPTS} />
 
-          <Callout kind="info" title="발언 포인트 (시연 멘트)">
-            "지금 보시는 Top 5는 GIVC 위 온톨로지 레이어가 자동 추천한 결과입니다.
-            가중치를 한 번 바꿔보겠습니다 — <strong>특허 가중치를 0.30 → 0.15</strong>로 내리면 결과가 어떻게 바뀌는지 보세요."
+          <Callout kind="info" title="기능 설명">
+            Top 5는 GIVC 위 온톨로지 레이어가 자동 추천한 결과입니다.
+            특허 가중치를 <strong>0.30 → 0.15</strong>로 조정하면 순위가 실시간으로 재계산됩니다.
           </Callout>
 
           <ProvenanceLegend />
@@ -281,11 +281,10 @@ const S4Page = ({ tweaks }) => {
             sub="토글 시 결과 화면이 시뮬레이션됩니다."
           />
 
-          <Card title="멘트 카드 (C1)" sub="시연 스크립트">
+          <Card title="데이터 확장 예시" sub="산기평 공고">
             <div style={{ fontSize: 12, color: 'var(--axis-text-secondary)', lineHeight: 1.6 }}>
-              "지금은 가상의 R&D 공고 3건으로 시연 중이지만, <strong style={{ color: 'var(--axis-text-primary)' }}>산기평 공고 실데이터</strong>가 있다면
-              매칭 정확도를 <strong style={{ color: 'var(--axis-text-primary)' }}>65→88%</strong>까지 끌어올릴 수 있습니다.
-              혹시 산기평 API 또는 공고 이력 데이터 접근이 가능하실까요?"
+              현재는 가상의 R&D 공고 3건 기반입니다. <strong style={{ color: 'var(--axis-text-primary)' }}>산기평 공고 실데이터</strong>를 연동하면
+              매칭 정확도를 <strong style={{ color: 'var(--axis-text-primary)' }}>65→88%</strong>까지 향상할 수 있습니다.
             </div>
           </Card>
         </aside>
