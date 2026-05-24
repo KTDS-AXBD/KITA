@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KITA** — KT DS AX컨설팅팀의 **Prototype 리뷰용 인터랙티브 데모 사이트** PoC. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 화면으로 보여주고, 시연 중 고객(산자부/산업부 의사결정자)이 자발적으로 추가 데이터를 꺼내게 유도하는 게 목적.
 
-**현재 상태: Sprint 1 ✅ + F007 배포 ✅ + F009 ✅ 완료.** Vite+TS+Zustand SPA가 Cloudflare에 배포돼 라이브 구동 중(비추측 URL, `wrangler.jsonc` 로컬전용). What-If 실 LLM 토글(CF Workers AI) 가동. 남은 것: F008 수동 마감(오프라인·QA·만료) + Sprint 3(M3 시연준비). 핵심 자산:
+**현재 상태: 🎉 F001~F012 전부 ✅ — 시연 가능 프로덕션 PoC 달성.** Vite+TS+Zustand SPA가 Cloudflare에 배포돼 라이브 구동(비추측 URL, `wrangler.jsonc` 로컬전용) + What-If 실 LLM 토글(CF Workers AI, KV rate-limit) + 시연 스크립트·운영 매뉴얼 완비. 남은 건 **서민원 수동 런북**(백업 영상·리허설·실노트북 QA·시연 후 `wrangler delete` 만료) + 외부 시연일(고객 PM 재지정, 외부 게이트). 핵심 자산:
 - **SPEC.md** (루트) — **SSOT**. F-item 상태·Sprint 진행. 작업 기준.
 - **프로덕션 소스** (`src/`, `config/`, `wrangler.jsonc.example`) — Vite+TS SPA + Hono Worker(`/api/chat`).
 - **`docs/req/prd-final.md`** — PRD (로컬 전용). **`docs/spec/claude design/`** — 원본 프로토타입(이송 참조).
