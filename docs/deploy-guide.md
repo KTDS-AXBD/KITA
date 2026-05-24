@@ -43,7 +43,26 @@ bash scripts/healthcheck.sh https://kita.minu.best
 ## 접근제어 (S3: 공개 모델)
 - **공개 (현재)**: `kita.minu.best`는 누구나 접근. 데이터 100% Mock + 영업 멘트 중립화로 노출 위험 낮음. 영업기밀(고객명·전략)은 git 제외 + 프로토타입 중립화로 코드/화면에 없음.
 - **비추측 URL+시연후 만료 모델은 폐기** — 커스텀 도메인은 기억 쉽고 영구라 obscurity 통제가 무의미.
-- **더 강한 통제가 필요하면 (옵션)**: Zero Trust → Access → Application에 `kita.minu.best` 추가, 이메일 OTP 등 정책. 단 방문자마다 인증 필요 → 즉석 공유는 번거로워짐.
+- **더 강한 통제가 필요하면**: 아래 CF Access 런북 적용 (지정 이메일 + One-time PIN). 단 방문자마다 인증 필요 → 즉석 공유는 번거로워짐.
+
+### CF Access 적용 런북 (옵션 — 지정 이메일 + One-time PIN, 대시보드)
+
+> 외부 IdP 불필요. Cloudflare 내장 One-time PIN(이메일 코드)으로 허용 이메일 검증. 토큰엔 Access 권한이 없어 대시보드 수동.
+
+**0. Zero Trust 최초 활성화 (1회성)**: dash.cloudflare.com → 계정 `AX컨설팅팀` → 좌측 **Zero Trust** (또는 one.dash.cloudflare.com) → 팀 이름 입력(예 `ktds-axbd` → `ktds-axbd.cloudflareaccess.com`) → **Zero Trust Free**(50명, $0, 카드 등록 요구 가능) 확인.
+
+**1. Access 앱 추가**: Zero Trust → **Access → Applications** → **Add an application** → **Self-hosted**.
+- Application name: `KITA Demo` / Session Duration: `24h` (시연 주기에 맞춰)
+- **Public hostname**: subdomain `kita` + domain `minu.best`, **path 비움**(전체 보호, `/api/chat` 포함)
+- Identity providers: `Accept all available identity providers`(One-time PIN 기본 포함) 또는 One-time PIN 선택 → Next
+
+**2. 정책**: Add a policy → name `Allowed viewers`, **Action: Allow** → Include → Selector **Emails** → 허용 이메일 추가(시작: `sinclairseo@gmail.com`, `ktds.axbd@gmail.com` + 고객 참석자) → Next → 기본값 → **Save**.
+
+**3. 검증**: 시크릿 창 https://kita.minu.best → Access 로그인 → 이메일 입력 → 수신 PIN 입력 → 허용 목록이면 진입.
+
+**4. 수정/해제**: Access → Applications → `KITA Demo` → Edit(이메일 추가·삭제). 해제는 application 삭제 → 즉시 공개 복귀.
+
+> ⚠️ 인증/인가 분업: One-time PIN=인증(이메일 소유 확인), Emails 정책=인가(허용 목록). PIN만 켜고 정책을 anyone으로 두면 통제 안 됨. `/api/chat`은 `CF_Authorization` 쿠키가 same-origin fetch에 자동 첨부돼 그대로 동작.
 
 ## 롤백
 ```bash
