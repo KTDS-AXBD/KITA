@@ -1,0 +1,477 @@
+/* ==========================================================================
+   AXIS Design System — Styles Layer
+   Flavors (brand looks) that sit on top of colors_and_type.css tokens.
+
+   Default: [data-style="foundry"]  — Foundry OS look (black/white/yellow)
+   Option:  [data-style="classic"]  — original AXIS look (blue accent)
+
+   Apply on <html> or any container:
+     <html data-style="foundry">   ← default, recommended
+     <html data-style="classic">   ← original AXIS look
+
+   Style owns:
+     • accent color (--axis-accent)
+     • density & corner scale
+     • typography emphasis (letter-spacing, weight)
+     • a set of "presentation-report" primitives (.axis-section, .axis-kpi, …)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Flavor tokens
+   ========================================================================== */
+
+/* Foundry OS — default.
+   Inspired by AI Foundry OS v0.3 (260414) internal deck style. */
+:root,
+[data-style="foundry"] {
+  --axis-accent:           #FACC15;   /* signature yellow */
+  --axis-accent-ink:       #111111;   /* legible on accent */
+  --axis-accent-soft:      rgba(250, 204, 21, 0.10);
+  --axis-accent-border:    rgba(250, 204, 21, 0.45);
+
+  --axis-ink:              #111111;   /* pure near-black */
+  --axis-ink-soft:         #2d2d2d;
+  --axis-mute:             #7a7a7a;
+  --axis-line:             #e5e5e5;
+  --axis-line-soft:        #f0f0f0;
+  --axis-paper:            #ffffff;
+  --axis-paper-soft:       #f8f9fa;
+
+  /* Overrides to semantic tokens so UI kits auto-adopt */
+  --axis-text-brand:       var(--axis-ink);        /* brand = black */
+  --axis-text-primary:     var(--axis-ink);
+  --axis-text-secondary:   #444444;
+  --axis-text-tertiary:    var(--axis-mute);
+  --axis-border-default:   var(--axis-line);
+  --axis-border-focus:     var(--axis-ink);
+  --axis-surface-default:  var(--axis-paper);
+  --axis-surface-secondary: var(--axis-paper-soft);
+  --axis-surface-inverse:  var(--axis-ink);
+  --axis-text-inverse:     var(--axis-paper);
+
+  /* Typography emphasis */
+  --axis-style-heading-weight:    800;
+  --axis-style-display-weight:    900;
+  --axis-style-tracking-tight:   -0.03em;
+  --axis-style-tracking-display: -0.04em;
+
+  /* Radii — slightly larger for the "soft slab" look */
+  --axis-style-radius-card:   16px;
+  --axis-style-radius-tile:   12px;
+  --axis-style-radius-chip:   100px;
+
+  --axis-style-label-color:   var(--axis-mute);
+  --axis-style-label-tracking: 0.08em;
+
+  color-scheme: light;
+}
+
+/* Classic AXIS — original blue-accent product look. */
+[data-style="classic"] {
+  --axis-accent:           #2563EB;   /* blue-600 */
+  --axis-accent-ink:       #FFFFFF;
+  --axis-accent-soft:      rgba(37, 99, 235, 0.08);
+  --axis-accent-border:    rgba(37, 99, 235, 0.35);
+
+  --axis-ink:              #111827;
+  --axis-ink-soft:         #1F2937;
+  --axis-mute:             #6B7280;
+  --axis-line:             #E5E7EB;
+  --axis-line-soft:        #F3F4F6;
+  --axis-paper:            #FFFFFF;
+  --axis-paper-soft:       #F9FAFB;
+
+  --axis-text-brand:       #2563EB;
+  --axis-text-primary:     #111827;
+  --axis-text-secondary:   #4B5563;
+  --axis-text-tertiary:    #6B7280;
+  --axis-border-default:   #E5E7EB;
+  --axis-border-focus:     #3B82F6;
+  --axis-surface-default:  #FFFFFF;
+  --axis-surface-secondary: #F3F4F6;
+  --axis-surface-inverse:  #111827;
+  --axis-text-inverse:     #FFFFFF;
+
+  --axis-style-heading-weight:    700;
+  --axis-style-display-weight:    800;
+  --axis-style-tracking-tight:   -0.02em;
+  --axis-style-tracking-display: -0.03em;
+
+  --axis-style-radius-card:   12px;
+  --axis-style-radius-tile:   10px;
+  --axis-style-radius-chip:   6px;
+
+  --axis-style-label-color:   #9CA3AF;
+  --axis-style-label-tracking: 0.06em;
+}
+
+
+/* ==========================================================================
+   2. Base — body inherits flavor
+   ========================================================================== */
+
+html { scroll-behavior: smooth; }
+body.axis-page {
+  margin: 0;
+  font-family: var(--axis-font-sans);
+  color: var(--axis-text-primary);
+  background: var(--axis-surface-default);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ==========================================================================
+   3. Shared "presentation-report" primitives
+   Foundry OS-inspired, but use flavor tokens so they also read correctly
+   under [data-style="classic"].
+   ========================================================================== */
+
+/* ---- Section header trio (label → title → oneliner) ---- */
+.axis-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--axis-style-label-tracking);
+  color: var(--axis-style-label-color);
+  margin-bottom: 12px;
+}
+.axis-section-title {
+  font-size: 36px;
+  font-weight: var(--axis-style-heading-weight);
+  letter-spacing: var(--axis-style-tracking-tight);
+  line-height: 1.3;
+  margin: 0 0 20px;
+  color: var(--axis-text-primary);
+}
+.axis-section-oneliner {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--axis-text-primary);
+  line-height: 1.7;
+  max-width: 1100px;
+  margin: 0 0 40px;
+  padding: 18px 26px;
+  background: var(--axis-paper-soft);
+  border-left: 3px solid var(--axis-ink);
+  border-radius: 0 8px 8px 0;
+}
+[data-style="classic"] .axis-section-oneliner {
+  border-left-color: var(--axis-accent);
+}
+.axis-subsection-title {
+  font-size: 22px;
+  font-weight: var(--axis-style-heading-weight);
+  margin: 52px 0 18px;
+  color: var(--axis-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ---- Chip / tag ---- */
+.axis-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--axis-style-radius-chip);
+  border: 1px solid var(--axis-border-default);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--axis-text-secondary);
+  background: var(--axis-surface-default);
+}
+.axis-chip.accent {
+  background: var(--axis-accent);
+  border-color: var(--axis-accent);
+  color: var(--axis-accent-ink);
+}
+.axis-chip.dark {
+  background: var(--axis-ink);
+  border-color: var(--axis-ink);
+  color: var(--axis-paper);
+}
+
+/* ---- Dark hero block (studio-block) ---- */
+.axis-dark-block {
+  background: var(--axis-ink);
+  color: var(--axis-paper);
+  border-radius: 20px;
+  padding: 40px 48px;
+  margin: 40px 0;
+}
+.axis-dark-block h3 {
+  font-size: 22px;
+  font-weight: var(--axis-style-heading-weight);
+  margin: 0 0 20px;
+  color: var(--axis-paper);
+  letter-spacing: -0.02em;
+}
+.axis-dark-block .axis-dark-sub {
+  font-size: 13px;
+  color: #999999;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+.axis-dark-block .axis-accent-text {
+  color: var(--axis-accent);
+}
+[data-style="classic"] .axis-dark-block .axis-accent-text {
+  color: #60A5FA;  /* blue-400 reads on black */
+}
+
+/* ---- 3-card "Why / What / How" grid ---- */
+.axis-wwh-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 40px 0;
+}
+.axis-wwh-card {
+  background: var(--axis-surface-default);
+  border: 1px solid var(--axis-border-default);
+  border-radius: var(--axis-style-radius-card);
+  padding: 28px;
+  border-top: 4px solid var(--axis-ink);
+}
+[data-style="classic"] .axis-wwh-card {
+  border-top-color: var(--axis-accent);
+}
+.axis-wwh-card .axis-wwh-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--axis-mute);
+  padding: 4px 10px;
+  background: var(--axis-line-soft);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.axis-wwh-card .axis-wwh-title {
+  font-size: 17px;
+  font-weight: var(--axis-style-heading-weight);
+  color: var(--axis-text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+.axis-wwh-card .axis-wwh-body {
+  font-size: 13px;
+  color: var(--axis-text-secondary);
+  line-height: 1.6;
+}
+
+/* ---- Comparison table ---- */
+.axis-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+.axis-compare-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--axis-paper-soft);
+  border-bottom: 2px solid var(--axis-border-default);
+  color: var(--axis-text-secondary);
+}
+.axis-compare-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--axis-line-soft);
+  color: var(--axis-text-secondary);
+  background: var(--axis-surface-default);
+  vertical-align: top;
+}
+.axis-compare-table td:first-child {
+  font-weight: 600;
+  color: var(--axis-text-primary);
+}
+.axis-compare-table .axis-row-ours {
+  background: var(--axis-paper-soft);
+  font-weight: 600;
+}
+
+/* ---- KPI band (impact-box) ---- */
+.axis-kpi-band {
+  background: var(--axis-ink);
+  color: var(--axis-paper);
+  padding: 28px 36px;
+  border-radius: 14px;
+  margin: 24px 0;
+}
+.axis-kpi-band .axis-kpi-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--axis-accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+[data-style="classic"] .axis-kpi-band .axis-kpi-label {
+  color: #93C5FD;
+}
+.axis-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.axis-kpi {
+  text-align: center;
+  padding: 14px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.axis-kpi .axis-kpi-val {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--axis-accent);
+  margin-bottom: 4px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+[data-style="classic"] .axis-kpi .axis-kpi-val {
+  color: #93C5FD;
+}
+.axis-kpi .axis-kpi-name {
+  font-size: 11px;
+  color: var(--axis-paper);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.axis-kpi .axis-kpi-ctx {
+  font-size: 10px;
+  color: #999999;
+  line-height: 1.4;
+}
+
+/* ---- Qualitative card (dark, accent-left) ---- */
+.axis-qual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+}
+.axis-qual-card {
+  background: var(--axis-ink-soft);
+  color: var(--axis-paper);
+  padding: 22px 24px;
+  border-radius: 12px;
+  border-left: 3px solid var(--axis-accent);
+}
+.axis-qual-card h4 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--axis-accent);
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+.axis-qual-card p {
+  font-size: 13px;
+  color: #d1d5db;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ---- Executive-summary numbered row ---- */
+.axis-exec-list { display: flex; flex-direction: column; gap: 20px; }
+.axis-exec-row  { display: flex; align-items: flex-start; gap: 16px; }
+.axis-exec-num {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  background: var(--axis-ink);
+  color: var(--axis-paper);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+[data-style="classic"] .axis-exec-num {
+  background: var(--axis-accent);
+}
+.axis-exec-body { font-size: 15px; line-height: 1.7; color: var(--axis-text-secondary); }
+.axis-exec-body strong { color: var(--axis-text-primary); font-weight: 700; }
+.axis-exec-sub {
+  margin-top: 10px;
+  padding-left: 12px;
+  list-style: none;
+}
+.axis-exec-sub li {
+  font-size: 13px;
+  color: var(--axis-mute);
+  line-height: 1.7;
+  padding-left: 14px;
+  position: relative;
+}
+.axis-exec-sub li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: #bbb;
+}
+
+/* ---- Highlight asset box ---- */
+.axis-asset-highlight {
+  background: linear-gradient(135deg, #fafaf9 0%, #f0eee9 100%);
+  border: 2px solid var(--axis-ink);
+  border-radius: 16px;
+  padding: 32px 36px;
+  margin: 32px 0;
+}
+[data-style="classic"] .axis-asset-highlight {
+  background: linear-gradient(135deg, #F9FAFB 0%, #E0E7FF 100%);
+  border-color: var(--axis-accent);
+}
+.axis-asset-highlight .axis-asset-tag {
+  display: inline-block;
+  background: var(--axis-ink);
+  color: var(--axis-accent);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+[data-style="classic"] .axis-asset-highlight .axis-asset-tag {
+  background: var(--axis-accent);
+  color: #fff;
+}
+.axis-asset-highlight h3 {
+  font-size: 20px;
+  font-weight: var(--axis-style-heading-weight);
+  color: var(--axis-text-primary);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+.axis-asset-highlight .axis-asset-intro {
+  font-size: 14px;
+  color: var(--axis-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ---- Yellow-accent hero tag ---- */
+.axis-hero-tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--axis-border-default);
+  border-radius: 100px;
+  padding: 6px 16px;
+  color: var(--axis-text-secondary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .axis-section-title { font-size: 28px; }
+  .axis-wwh-grid,
+  .axis-qual-grid { grid-template-columns: 1fr; }
+  .axis-kpi-grid { grid-template-columns: 1fr 1fr; }
+  .axis-dark-block { padding: 28px 24px; }
+}

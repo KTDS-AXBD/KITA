@@ -1,0 +1,7 @@
+{
+  "h_rndcall": { "matchBoost": 1.0, "matchAccuracy": 0.88 },
+  "base":      { "matchBoost": 0.85, "matchAccuracy": 0.65 },
+  "h_patent":  { "patentSign": 1.10 },
+  "h_finance": { "riskSign": 1.05 },
+  "h_movement":{ "signalAdd": 0.03 }
+}
