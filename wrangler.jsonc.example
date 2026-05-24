@@ -1,15 +1,21 @@
 {
   // ── 배포 설정 템플릿 (F007) ──────────────────────────────────────────────
-  // 이 파일을 `wrangler.jsonc`로 복사한 뒤 "name"을 **비추측 값**으로 바꾼다.
-  //   cp wrangler.jsonc.example wrangler.jsonc
-  //   # name 예: kita-demo-$(openssl rand -hex 4)  →  https://<name>.ktds-axbd.workers.dev
-  // 실제 wrangler.jsonc는 .gitignore 처리됨 (public 레포에 URL 노출 방지, F008/PRD §6.4).
+  //   cp wrangler.jsonc.example wrangler.jsonc   (실제 wrangler.jsonc는 .gitignore)
+  //
+  // 공개 진입점 — 둘 중 하나:
+  //   (A) 커스텀 도메인 [운영, S3 채택]: 도메인이 같은 CF 계정의 active zone이면 배포 시 DNS+SSL 자동 생성.
+  //       아래 "workers_dev"/"routes" 주석을 해제하고 pattern을 실제 도메인으로.
+  //   (B) workers.dev [간이]: 그 두 줄을 주석 유지 → https://<name>.<account>.workers.dev
+  //       "name"은 비추측 값 권장: kita-demo-$(openssl rand -hex 4)
   //
   // dist/(Vite 빌드)를 정적 서빙. hash routing이라 SPA fallback은 직접 URL 접근 대비용.
   // F009-later: "main" + Workers AI 바인딩 추가 시 같은 Worker에 /api/chat 공존 가능.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kita-demo-REPLACE_WITH_RANDOM",
   "compatibility_date": "2026-05-01",
+  // (A) 커스텀 도메인 사용 시 주석 해제:
+  // "workers_dev": false,
+  // "routes": [{ "pattern": "REPLACE_WITH_DOMAIN", "custom_domain": true }],
   // F009: What-If 실 LLM Worker (/api/chat). 정적 전용이면 main/ai 제거 가능.
   "main": "src/worker/index.ts",
   "ai": { "binding": "AI" },

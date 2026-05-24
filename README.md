@@ -4,6 +4,8 @@ KT DS Enterprise사업본부 AX컨설팅팀 / 서민원 책임
 
 **Prototype 리뷰용 시연 사이트**. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 한 화면에 보여주는 PoC.
 
+🔗 **라이브: <https://kita.minu.best>** (공개 데모 — 데이터 100% Mock)
+
 > SSOT: [`SPEC.md`](./SPEC.md) — F-item, Sprint 계획, DoD.
 > 가이드: [`CLAUDE.md`](./CLAUDE.md) — 기술 결정·컨벤션·보안.
 
@@ -19,7 +21,7 @@ pnpm lint
 pnpm test           # vitest (S4 스코어링 9 케이스)
 
 # 배포 (F007/F009 — Cloudflare Workers)
-cp wrangler.jsonc.example wrangler.jsonc   # 최초 1회, name을 비추측 값으로
+cp wrangler.jsonc.example wrangler.jsonc   # 최초 1회 (custom_domain·name 설정)
 pnpm deploy:dryrun  # 번들 검증 (CF 인증 불필요)
 pnpm deploy:cf      # 빌드 + wrangler deploy  (⚠️ pnpm deploy 아님 — 내장명령 충돌)
 ```
@@ -103,10 +105,10 @@ docs/
 | **What-If LLM** (F009) | ✅ Hono `/api/chat` + CF Workers AI + KV rate-limit |
 | **M3 시연 준비** (S3, F010~F012) | F010 About ✅ · F011 시연스크립트/매뉴얼 ✅ (백업 영상 녹화·리허설=수동) · F012 Tweaks ✅, 다국어 EN 보류(P2) |
 
-> 시연 직전 런북: [`docs/qa-checklist.md`](./docs/qa-checklist.md) + [`docs/demo-script.md`](./docs/demo-script.md). 시연 후 `pnpm exec wrangler delete`로 URL 만료.
+> 시연 직전 런북: [`docs/qa-checklist.md`](./docs/qa-checklist.md) + [`docs/demo-script.md`](./docs/demo-script.md). 공개 URL: <https://kita.minu.best> (커스텀 도메인, 영구).
 
 ## 보안
 
 - `.dev.vars`는 LLM API 키 5종 보관 — gitignore. 권한 600. **절대 커밋 금지**.
-- 공개 시연 URL은 비공개 공유 + 시연 후 만료 (PRD §6.4).
+- 공개 데모 URL <https://kita.minu.best> — 데이터 100% Mock + 영업멘트 중립화 (공개 영구, 민감 데이터 없음). 폐기 시 `pnpm exec wrangler delete`.
 - `grep -r 'window.parent' src/` → 0건이 host-protocol 제거 검증 기준.

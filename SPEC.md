@@ -14,7 +14,7 @@
 
 - Frontend: Vite + React 18 (SPA)
 - 상태: Zustand / 데이터: Repository 패턴 (Mock → 향후 GIVC 격리)
-- Infra: Cloudflare Pages/Workers (ktds-axbd.workers.dev)
+- Infra: Cloudflare Workers — 공개 커스텀 도메인 `https://kita.minu.best` (S3 전환)
 - 선택 Backend: `@ktds-axbd/harness-kit` Workers (`/api/chat`, rate limit) + Cloudflare Workers AI
 - 데이터: 100% Mock (TS/JSON fixtures, 출처 메타 필드 강제)
 
@@ -41,8 +41,8 @@
 ### Sprint 2 — M2 배포 (1~2일) + What-If
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F007 | Cloudflare 배포 ✅ (Workers Static Assets, 비추측 URL — `wrangler.jsonc` 로컬전용) + localhost 백업(`serve:offline`) | KITA-REQ-007 | P0 | S2 | ✅ |
-| F008 | 접근제어(비추측+config로컬화)·헬스체크·QA문서·다해상도/오프라인 자기완결성 라이브 검증·sourcemap·favicon ✅. 데모시점 운영(실노트북 QA·실오프라인·시연후 만료)은 `docs/qa-checklist.md` 런북 이관 | KITA-REQ-008 | P0 | S2 | ✅ |
+| F007 | Cloudflare 배포 ✅ (Workers Static Assets) — 공개 커스텀 도메인 `https://kita.minu.best`(S3 전환: CF `custom_domain`+`workers_dev:false`) + localhost 백업(`serve:offline`). `wrangler.jsonc` 로컬전용 | KITA-REQ-007 | P0 | S2 | ✅ |
+| F008 | 접근제어(S3: **공개 커스텀 도메인** 전환 — 데이터 100% Mock+영업멘트 중립화로 위험 낮음, 기존 비추측+시연후만료 모델 폐기)·config로컬화·헬스체크·QA문서·다해상도/오프라인 자기완결성 라이브 검증·sourcemap·favicon ✅. 데모시점 운영(실노트북 QA·실오프라인)은 `docs/qa-checklist.md` 런북 이관 | KITA-REQ-008 | P0 | S2 | ✅ |
 | F009 | What-If 하이브리드 LLM ✅ — 토글(OFF=Mock 기본)+Hono Worker `/api/chat`(CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`)+KV rate-limit 세션3회. 라이브 스모크 통과(429·실데이터 응답). 프롬프트 도메인 튜닝은 선택 polish | KITA-REQ-009 | P1 | 별도 | ✅ |
 
 ### Sprint 3 — M3 시연 준비 ✅ (2026-05-24)
@@ -80,4 +80,5 @@
 *- **Sprint 2 ✅** (M2 배포): [Plan](docs/01-plan/features/sprint-2-m2-deploy.plan.md) · [Design](docs/02-design/features/sprint-2-m2-deploy.design.md). F007 배포 + F008 접근제어·QA·헬스체크 완료(라이브 검증). 데모시점 운영은 [qa-checklist](docs/qa-checklist.md)·[deploy-guide](docs/deploy-guide.md) 런북*
 *- **F009 ✅** (What-If 하이브리드 LLM): [Plan](docs/01-plan/features/f009-whatif-llm.plan.md) · [Design](docs/02-design/features/f009-whatif-llm.design.md). Hono `/api/chat`+CF Workers AI+KV rate-limit, 라이브 스모크 통과*
 *- **Sprint 3 ✅** (M3 시연준비): [Plan](docs/01-plan/features/sprint-3-m3-demo-prep.plan.md). F010 About·F011 [시연스크립트](docs/demo-script.md)·[운영매뉴얼](docs/operations-manual.md)·README·F012 Tweaks ✅ (다국어 EN 보류 P2)*
-*- **🎉 F001~F012 전부 완료** — 시연 가능 프로덕션 PoC 달성. **남은 건 서민원 수동 런북**: 백업 영상 녹화 + 리허설 2회 + 실 노트북 QA + 시연 후 `wrangler delete` 만료 ([qa-checklist](docs/qa-checklist.md)·[operations-manual](docs/operations-manual.md))*
+*- **커스텀 도메인 전환** (2026-05-24): 공개 URL을 `https://kita.minu.best`로 전환 (CF `custom_domain`, `workers_dev:false`). F008 접근제어 모델 변경 — 비추측 URL+시연후 만료 → **공개 영구**(데이터 Mock·영업멘트 중립화로 위험 낮음). 배포 절차 [deploy-guide](docs/deploy-guide.md)*
+*- **🎉 F001~F012 전부 완료** — 시연 가능 프로덕션 PoC 달성. **공개 URL: https://kita.minu.best**. **남은 건 서민원 수동 런북**: 백업 영상 녹화 + 리허설 2회 + 실 노트북 QA ([qa-checklist](docs/qa-checklist.md)·[operations-manual](docs/operations-manual.md))*
