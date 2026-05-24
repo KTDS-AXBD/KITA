@@ -43,7 +43,7 @@
 |---|------|-----|------|--------|------|
 | F007 | Cloudflare 배포 ✅ (Workers Static Assets, 비추측 URL — `wrangler.jsonc` 로컬전용) + localhost 백업(`serve:offline`) | KITA-REQ-007 | P0 | S2 | ✅ |
 | F008 | 접근제어 ✅(비추측 경로+config 로컬화) + 헬스체크·QA 문서·라이브 스모크·sourcemap차단·favicon ✅ / 오프라인 테스트·QA 브라우저·시연후 만료는 Master 잔여 | KITA-REQ-008 | P0 | S2 | 🔄 |
-| F009 | What-If 하이브리드 LLM (기본 정적 응답 + CF Workers AI 토글 + 세션당 3회 rate limit) — **별도 미니스프린트 🔄** (provider=CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`, Hono+rate-limit 세션3회) | KITA-REQ-009 | P1 | 별도 | 🔄 |
+| F009 | What-If 하이브리드 LLM ✅ — 토글(OFF=Mock 기본)+Hono Worker `/api/chat`(CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`)+KV rate-limit 세션3회. 라이브 스모크 통과(429·실데이터 응답). 프롬프트 도메인 튜닝은 선택 polish | KITA-REQ-009 | P1 | 별도 | ✅ |
 
 ### Sprint 3 — M3 시연 준비 (2~3일)
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
@@ -78,4 +78,5 @@
 *PRD `docs/req/prd-final.md` 기반.*
 *- **Sprint 1 ✅** (M1 빌드 이송): [Plan](docs/01-plan/features/sprint-1-m1-migration.plan.md) · [Design](docs/02-design/features/sprint-1-m1-migration.design.md) · [Report](docs/05-act/sprint-1-report.md)*
 *- **Sprint 2 🔄** (M2 배포): [Plan](docs/01-plan/features/sprint-2-m2-deploy.plan.md) · [Design](docs/02-design/features/sprint-2-m2-deploy.design.md). F007 ✅ 배포(CF Workers, 비추측 URL — 로컬 `wrangler.jsonc`, 라이브 스모크 통과) / F008 잔여: 오프라인 테스트·QA·시연후 만료(Master, [deploy-guide](docs/deploy-guide.md)·[qa-checklist](docs/qa-checklist.md))*
-*- 다음: F008 마감 → **F009 미니스프린트**(What-If 실 LLM, CF Workers AI) → Sprint 3(M3 시연준비)*
+*- **F009 ✅** (What-If 하이브리드 LLM): [Plan](docs/01-plan/features/f009-whatif-llm.plan.md) · [Design](docs/02-design/features/f009-whatif-llm.design.md). Hono `/api/chat`+CF Workers AI+KV rate-limit, 라이브 스모크 통과*
+*- 다음: F008 잔여 수동 마감(오프라인·QA·만료) → **Sprint 3**(M3 시연준비: F010 About·F011 시연스크립트/영상/매뉴얼·F012 Tweaks/다국어)*
