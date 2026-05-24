@@ -52,7 +52,7 @@ harness-kit이 제공하는 것 (이 PoC에서 쓰는 부분만): Hono 미들웨
 
 - **S4** `/scenario/rnd` (F003): R&D 적합 기업 Top5 + 선정근거 지식그래프 + 가중치 슬라이더 **실시간 재계산**(<50ms, `page_rnd.jsx`에 스코어링 구현됨: 지표 정규화→가중합→Hint boost)
 - **S6** `/scenario/toluene` (F004): 톨루엔 중심 지식그래프 + 무역통계 + 기업표 + 워드클라우드
-- 두 화면 우측 **Data Expansion Hints** (F005): 토글 시 실제 boost 재계산 + 멘트 카드(C1~C5)
+- 두 화면 우측 **Data Expansion Hints** (F005): 토글 시 실제 boost 재계산 + 데이터 확장 예시 카드
 - 지식그래프(F006): 노드 ≤ 50, hover→출처. 좌표는 빌드타임 스냅샷
 
 ## 데이터 출처 표기 규칙 (필수)
