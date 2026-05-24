@@ -16,7 +16,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false, // 공개 배포 소스 노출 차단 (F008). 로컬 디버깅 필요 시 임시 true.
     target: 'es2022',
   },
   test: {
