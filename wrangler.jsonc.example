@@ -10,8 +10,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kita-demo-REPLACE_WITH_RANDOM",
   "compatibility_date": "2026-05-01",
+  // F009: What-If 실 LLM Worker (/api/chat). 정적 전용이면 main/ai 제거 가능.
+  "main": "src/worker/index.ts",
+  "ai": { "binding": "AI" },
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   }
 }

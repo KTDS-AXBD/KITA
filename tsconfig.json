@@ -30,5 +30,5 @@
     "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src", "vite.config.ts"],
-  "exclude": ["node_modules", "dist", "docs/spec/claude design"]
+  "exclude": ["node_modules", "dist", "docs/spec/claude design", "src/worker"]
 }

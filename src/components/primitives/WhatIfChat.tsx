@@ -7,8 +7,8 @@ interface WhatIfChatProps {
 }
 
 /**
- * 정적 prompt 한정 markdown (**bold**, `code`) → React 노드 빌더.
- * dangerouslySetInnerHTML을 피해 XSS 위험을 원천 차단 (Plan §5.5, S2/F009에서도 DOMPurify 불요).
+ * 정적 prompt / LLM 응답 markdown(**bold**, `code`) → React 노드 빌더.
+ * raw HTML 직접 주입을 피해 XSS 위험을 원천 차단 (실 LLM 응답에도 동일 적용).
  */
 function renderMini(text: string): ReactNode[] {
   const out: ReactNode[] = [];
@@ -44,26 +44,68 @@ function renderMini(text: string): ReactNode[] {
   return out;
 }
 
+/** 세션 단위 rate-limit 키 (서버 X-Session-Id). 브라우저 세션 1개 = 3회 한도. */
+function getSessionId(): string {
+  const KEY = 'kita-sid';
+  let sid = sessionStorage.getItem(KEY);
+  if (!sid) {
+    sid = crypto.randomUUID();
+    sessionStorage.setItem(KEY, sid);
+  }
+  return sid;
+}
+
 export function WhatIfChat({ prompts }: WhatIfChatProps): JSX.Element {
   const [query, setQuery] = useState('');
   const [thinking, setThinking] = useState(false);
   const [answer, setAnswer] = useState<string | null>(null);
   const [askedQ, setAskedQ] = useState<string | null>(null);
+  // F009 하이브리드: 기본 OFF=정적 Mock, ON=실 LLM(/api/chat). 오프라인/실패 시 자동 정적 fallback.
+  const [liveMode, setLiveMode] = useState(false);
 
-  const ask = (q: string): void => {
+  const mockAnswer = (q: string): string => {
+    const match =
+      prompts.find((p) => q.includes(p.q.slice(0, 8))) ?? prompts.find((p) => p.q === q);
+    return (
+      match?.a ??
+      '질문을 받았습니다. 정적 응답 모드입니다 — "실 LLM" 토글을 켜면 GIVC 컨텍스트로 실제 응답을 생성합니다. (`/api/chat`)'
+    );
+  };
+
+  const ask = async (q: string): Promise<void> => {
     setQuery(q);
     setAskedQ(q);
     setThinking(true);
     setAnswer(null);
-    window.setTimeout(() => {
-      const match =
-        prompts.find((p) => q.includes(p.q.slice(0, 8))) ?? prompts.find((p) => p.q === q);
-      const ans = match
-        ? match.a
-        : '질문을 받았습니다. 본 시연 환경은 LLM 가짜 응답 모드입니다 — Sprint 2에서 사내 LLM(또는 OpenAI) 연결 후, GIVC 컨텍스트와 함께 실제 응답을 생성합니다. (`/api/chat` 엔드포인트)';
-      setAnswer(ans);
+
+    if (!liveMode) {
+      window.setTimeout(() => {
+        setAnswer(mockAnswer(q));
+        setThinking(false);
+      }, 900);
+      return;
+    }
+
+    // 실 LLM (CF Workers AI via /api/chat)
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+        body: JSON.stringify({ query: q }),
+      });
+      if (res.status === 429) {
+        setAnswer(`세션당 실 LLM 질의 한도(3회)를 초과했어요. 정적 응답으로 보여드릴게요.\n\n${mockAnswer(q)}`);
+      } else if (!res.ok) {
+        throw new Error(String(res.status));
+      } else {
+        const data = (await res.json()) as { answer?: string };
+        setAnswer(data.answer?.trim() ? data.answer : mockAnswer(q));
+      }
+    } catch {
+      setAnswer(`(실 LLM 연결 실패 — 시범 기능) 정적 응답으로 대체합니다.\n\n${mockAnswer(q)}`);
+    } finally {
       setThinking(false);
-    }, 900);
+    }
   };
 
   return (
@@ -71,7 +113,20 @@ export function WhatIfChat({ prompts }: WhatIfChatProps): JSX.Element {
       <div className="whatif-head">
         <Sparkles size={14} />
         <span className="whatif-title">What-If · 자연어 질의</span>
-        <span className="whatif-tag">LLM Mock</span>
+        <button
+          type="button"
+          onClick={() => setLiveMode((v) => !v)}
+          className="whatif-tag"
+          title="실 LLM(CF Workers AI) 시범 기능 — 세션당 3회"
+          style={{
+            cursor: 'pointer',
+            border: 0,
+            background: liveMode ? 'var(--axis-color-blue-600)' : undefined,
+            color: liveMode ? '#fff' : undefined,
+          }}
+        >
+          {liveMode ? '실 LLM ●' : 'LLM Mock ○'}
+        </button>
       </div>
       <div className="whatif-input">
         <input
@@ -80,19 +135,16 @@ export function WhatIfChat({ prompts }: WhatIfChatProps): JSX.Element {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && query.trim()) ask(query);
+            if (e.key === 'Enter' && query.trim()) void ask(query);
           }}
         />
-        <button
-          onClick={() => query.trim() && ask(query)}
-          disabled={!query.trim() || thinking}
-        >
+        <button onClick={() => query.trim() && void ask(query)} disabled={!query.trim() || thinking}>
           <Send size={12} /> 물어보기
         </button>
       </div>
       <div className="whatif-suggested">
         {prompts.map((p, i) => (
-          <button key={i} onClick={() => ask(p.q)}>
+          <button key={i} onClick={() => void ask(p.q)}>
             {p.q}
           </button>
         ))}
@@ -106,7 +158,7 @@ export function WhatIfChat({ prompts }: WhatIfChatProps): JSX.Element {
           )}
           {thinking ? (
             <span className="ans-thinking">
-              분석 중{' '}
+              {liveMode ? '실 LLM 분석 중' : '분석 중'}{' '}
               <span className="dot-pulse">
                 <span></span>
                 <span></span>

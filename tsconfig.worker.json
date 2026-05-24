@@ -1,0 +1,23 @@
+{
+  // F009 Worker 전용 — Workers 런타임 타입(WebWorker, @cloudflare/workers-types).
+  // 앱(tsconfig.json)은 DOM 타입이라 분리. wrangler가 실제 번들은 담당.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "WebWorker"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["@cloudflare/workers-types"],
+    "noEmit": true
+  },
+  "include": ["src/worker", "config/whatif.ts"],
+  "exclude": ["node_modules", "dist"]
+}
