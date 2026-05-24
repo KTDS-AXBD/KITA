@@ -28,15 +28,15 @@
 
 > 상태: 📋 PLANNED / 🔄 IN_PROGRESS / ✅ DONE / ❌ REJECTED. REQ: `KITA-REQ-NNN`.
 
-### Sprint 1 — M1 빌드 이송 (3~5일)
+### Sprint 1 — M1 빌드 이송 (5~7일, M1 착수 재평가 — Plan §6.4)
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F001 | Vite+React 이송 기반 (Zustand 상태관리 + Repository 데이터레이어 스캐폴딩, JSX/AXIS 자산 보존) | KITA-REQ-001 | P0 | S1 | 📋 |
-| F002 | Landing 페이지 이송 (시나리오 선택 카드) | KITA-REQ-002 | P0 | S1 | 📋 |
-| F003 | S4 R&D 추천 (Top5 표/카드·선정근거 지식그래프·유사사례·반대추천·가중치 슬라이더 실시간 재계산) | KITA-REQ-003 | P0 | S1 | 📋 |
-| F004 | S6 톨루엔 가시화 (지식그래프·무역통계 차트·핵심/예비 기업표·뉴스 워드클라우드) | KITA-REQ-004 | P0 | S1 | 📋 |
-| F005 | 데이터 출처 표기 시스템 (⭐/△/※ 메타 필드 강제 + tooltip 출처) | KITA-REQ-005 | P0 | S1 | 📋 |
-| F006 | 지식그래프 좌표 빌드타임 생성 스크립트 + boost 계수 별도 파일 분리 | KITA-REQ-006 | P0 | S1 | 📋 |
+| F001 | Vite+React 이송 기반 (Zustand 상태관리 + Repository 데이터레이어 스캐폴딩, JSX/AXIS 자산 보존) | KITA-REQ-001 | P0 | S1 | 🔄 |
+| F002 | Landing 페이지 이송 (시나리오 선택 카드) | KITA-REQ-002 | P0 | S1 | 🔄 |
+| F003 | S4 R&D 추천 (Top5 표/카드·선정근거 지식그래프·유사사례·반대추천·가중치 슬라이더 실시간 재계산) | KITA-REQ-003 | P0 | S1 | 🔄 |
+| F004 | S6 톨루엔 가시화 (지식그래프·무역통계 차트·핵심/예비 기업표·뉴스 워드클라우드) | KITA-REQ-004 | P0 | S1 | 🔄 |
+| F005 | 데이터 출처 표기 시스템 (⭐/△/※ 메타 필드 강제 + tooltip 출처) | KITA-REQ-005 | P0 | S1 | 🔄 |
+| F006 | 지식그래프 좌표 빌드타임 생성 스크립트 + boost 계수 별도 파일 분리 | KITA-REQ-006 | P0 | S1 | 🔄 |
 
 ### Sprint 2 — M2 배포 (1~2일) + What-If
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
@@ -58,7 +58,7 @@
 
 | Sprint | 마일스톤 | F-items | 공수 | DoD |
 |--------|---------|---------|------|-----|
-| S1 | M1 빌드 이송 | F001~F006 | 3~5일 | Landing+S4+S6 Vite 구동, 인터랙션 회귀 체크리스트 통과, 데이터 표기 100% |
+| S1 | M1 빌드 이송 | F001~F006 | 5~7일 | Landing+S4+S6 Vite 구동, 인터랙션 회귀 체크리스트 33개 통과, 데이터 표기 100%, tsc/lint 0, S4 재계산 <100ms |
 | S2 | M2 배포 | F007~F009 | 1~2일 | CF URL + localhost 백업, QA 체크리스트 통과, What-If 토글 동작 |
 | S3 | M3 시연 준비 | F010~F012 | 2~3일 | 시연 스크립트·백업 영상·운영 매뉴얼 완비, 리허설 2회 |
 
@@ -70,9 +70,9 @@
 | # | 이슈 | 담당 |
 |---|------|------|
 | 1 | 외부 시연 일자 | 영업대표 (고객 PM 재지정, 외부) |
-| R1 | 프로토타입→Vite 이송 공수 재평가 | 서민원 (M1 착수 시 인터랙션 목록화) |
+| R1 | 프로토타입→Vite 이송 공수 ✅ 재평가 완료 (3~5일→5~7일). 33개 인터랙션 목록화 + 난이도 분류 → Plan §4.1/§6.4 | 서민원 (Plan/Design 2026-05-24) |
 | 2~5 | 사내 LLM·GIVC export·NDA·백업 영상 포맷 | PRD §7 |
 
 ---
 
-*PRD `docs/req/prd-final.md` 기반. 다음: `/pdca plan` 으로 Sprint 1 Plan 문서 작성.*
+*PRD `docs/req/prd-final.md` 기반. Sprint 1 PDCA: [Plan](docs/01-plan/features/sprint-1-m1-migration.plan.md) · [Design](docs/02-design/features/sprint-1-m1-migration.design.md) 완료 → 구현 착수(`/ax:sprint 1`).*
