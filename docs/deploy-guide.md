@@ -3,9 +3,17 @@
 > Cloudflare Workers Static Assets 배포. **배포·접근제어·만료는 수동(Master)** — 비가역·대외 작업.
 
 ## 사전 조건
+- **`wrangler.jsonc` 로컬 생성** (gitignore — 비추측 worker 이름이 public 레포에 노출되지 않도록):
+  ```bash
+  cp wrangler.jsonc.example wrangler.jsonc
+  # name을 비추측 값으로: 예) kita-demo-$(openssl rand -hex 4)
+  ```
+  → 공개 URL = `https://<name>.ktds-axbd.workers.dev`
 - Cloudflare 계정 + `wrangler` 인증: `pnpm exec wrangler whoami`
   - 미인증 시: `pnpm exec wrangler login` (브라우저 OAuth) — 세션에서 `! pnpm exec wrangler login`
 - `.dev.vars`의 `ACCOUNT_ID` 참고 (계정 식별)
+
+> ⚠️ **public 레포 주의**: 비추측 이름은 obscurity일 뿐. 강한 통제가 필요하면 **CF Access(Zero Trust)** 적용. 시연 후 **반드시 `pnpm exec wrangler delete`로 만료**.
 
 ## 배포 (수동)
 ```bash

@@ -24,3 +24,7 @@ docs/spec/07_PoC_웹사이트_개발기획서_v1.md
 docs/req/
 docs/spec/claude design/uploads/
 .sprint-context
+
+# 배포 설정 — 비추측 worker 이름이 public 레포에 노출되지 않도록 로컬 전용
+# (재현: wrangler.jsonc.example 복사 → name을 비추측 값으로 변경)
+wrangler.jsonc

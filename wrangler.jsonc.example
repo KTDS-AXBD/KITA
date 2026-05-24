@@ -1,0 +1,17 @@
+{
+  // ── 배포 설정 템플릿 (F007) ──────────────────────────────────────────────
+  // 이 파일을 `wrangler.jsonc`로 복사한 뒤 "name"을 **비추측 값**으로 바꾼다.
+  //   cp wrangler.jsonc.example wrangler.jsonc
+  //   # name 예: kita-demo-$(openssl rand -hex 4)  →  https://<name>.ktds-axbd.workers.dev
+  // 실제 wrangler.jsonc는 .gitignore 처리됨 (public 레포에 URL 노출 방지, F008/PRD §6.4).
+  //
+  // dist/(Vite 빌드)를 정적 서빙. hash routing이라 SPA fallback은 직접 URL 접근 대비용.
+  // F009-later: "main" + Workers AI 바인딩 추가 시 같은 Worker에 /api/chat 공존 가능.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kita-demo-REPLACE_WITH_RANDOM",
+  "compatibility_date": "2026-05-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
