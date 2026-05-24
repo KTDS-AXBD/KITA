@@ -1,0 +1,5 @@
+{
+	"dependencies": {
+		"@ktds-axbd/harness-kit": "^0.12.0"
+	}
+}

@@ -1,0 +1,22 @@
+# secrets — 절대 커밋 금지 (OpenRouter/OpenAI/Gemini/DeepSeek/Anthropic 키)
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+# deps / build
+node_modules/
+dist/
+.vite/
+*.log
+
+# bkit / req-interview 작업 캐시 (산출물 prd-final/SPEC는 커밋)
+.bkit/state/
+
+# WSL 다운로드 메타데이터
+*:Zone.Identifier
+
+# 영업기밀(고객명·전략·멘트) — 로컬 전용, 공개 레포 제외
+docs/spec/07_PoC_웹사이트_개발기획서_v1.md
+docs/req/
+docs/spec/claude design/uploads/
