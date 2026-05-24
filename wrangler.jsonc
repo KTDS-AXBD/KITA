@@ -1,0 +1,12 @@
+{
+  // KITA PoC — Cloudflare Workers Static Assets 배포 (F007)
+  // dist/(Vite 빌드 산출)를 정적 서빙. hash routing이라 SPA fallback은 직접 URL 접근 대비용.
+  // F009-later: "main" + Workers AI 바인딩 추가 시 같은 Worker에 /api/chat 공존 가능.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kita",
+  "compatibility_date": "2026-05-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
