@@ -13,7 +13,7 @@
 pnpm deploy:dryrun        # = pnpm build && wrangler deploy --dry-run
 
 # 2) 실 배포 → 공개 URL 발급
-pnpm deploy               # = pnpm build && wrangler deploy
+pnpm deploy:cf            # = pnpm build && wrangler deploy  (※ 'deploy'는 pnpm 내장명령과 충돌 → deploy:cf)
 #   → https://kita.<account>.workers.dev
 ```
 
