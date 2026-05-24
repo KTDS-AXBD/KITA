@@ -45,12 +45,12 @@
 | F008 | 접근제어(비추측+config로컬화)·헬스체크·QA문서·다해상도/오프라인 자기완결성 라이브 검증·sourcemap·favicon ✅. 데모시점 운영(실노트북 QA·실오프라인·시연후 만료)은 `docs/qa-checklist.md` 런북 이관 | KITA-REQ-008 | P0 | S2 | ✅ |
 | F009 | What-If 하이브리드 LLM ✅ — 토글(OFF=Mock 기본)+Hono Worker `/api/chat`(CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`)+KV rate-limit 세션3회. 라이브 스모크 통과(429·실데이터 응답). 프롬프트 도메인 튜닝은 선택 polish | KITA-REQ-009 | P1 | 별도 | ✅ |
 
-### Sprint 3 — M3 시연 준비 (2~3일)
+### Sprint 3 — M3 시연 준비 ✅ (2026-05-24)
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F010 | About 페이지 (온톨로지 개념 + 데이터 출처/실·가상 구분) | KITA-REQ-010 | P1 | S3 | 📋 |
-| F011 | 시연 스크립트 + 백업 영상 + 운영 매뉴얼 + 핸드오버 문서(README/배포 가이드) | KITA-REQ-011 | P0 | S3 | 📋 |
-| F012 | Tweaks 패널(flavor/theme/layout) + 다국어(EN) 라벨 토글 | KITA-REQ-012 | P2 | S3 | 📋 |
+| F010 | About 페이지 ✅ (Ontology 개념·데이터진화·확장 + Data ⭐△※ 카탈로그 7실/1추정/4가상·가상처리 원칙). S1 이송 + 데이터단계 표 polish | KITA-REQ-010 | P1 | S3 | ✅ |
+| F011 | 시연 스크립트(`demo-script.md`)·운영 매뉴얼(`operations-manual.md`)·README 핸드오버 ✅. 백업 영상 녹화·리허설 2회는 서민원 수동 런북 | KITA-REQ-011 | P0 | S3 | ✅ |
+| F012 | Tweaks 패널 ✅ (flavor/theme/hints위치/top5/lang, S1 완료). 다국어(EN) 전체 i18n은 **보류**(P2, 한국어 시연 — 해외 시연 확정 시) | KITA-REQ-012 | P2 | S3 | ✅ |
 
 ---
 
@@ -79,4 +79,5 @@
 *- **Sprint 1 ✅** (M1 빌드 이송): [Plan](docs/01-plan/features/sprint-1-m1-migration.plan.md) · [Design](docs/02-design/features/sprint-1-m1-migration.design.md) · [Report](docs/05-act/sprint-1-report.md)*
 *- **Sprint 2 ✅** (M2 배포): [Plan](docs/01-plan/features/sprint-2-m2-deploy.plan.md) · [Design](docs/02-design/features/sprint-2-m2-deploy.design.md). F007 배포 + F008 접근제어·QA·헬스체크 완료(라이브 검증). 데모시점 운영은 [qa-checklist](docs/qa-checklist.md)·[deploy-guide](docs/deploy-guide.md) 런북*
 *- **F009 ✅** (What-If 하이브리드 LLM): [Plan](docs/01-plan/features/f009-whatif-llm.plan.md) · [Design](docs/02-design/features/f009-whatif-llm.design.md). Hono `/api/chat`+CF Workers AI+KV rate-limit, 라이브 스모크 통과*
-*- 다음: **Sprint 3**(M3 시연준비: F010 About·F011 시연스크립트/영상/매뉴얼·F012 Tweaks/다국어). 시연 직전: qa-checklist 런북 + 33 회귀 + 시연후 `wrangler delete` 만료*
+*- **Sprint 3 ✅** (M3 시연준비): [Plan](docs/01-plan/features/sprint-3-m3-demo-prep.plan.md). F010 About·F011 [시연스크립트](docs/demo-script.md)·[운영매뉴얼](docs/operations-manual.md)·README·F012 Tweaks ✅ (다국어 EN 보류 P2)*
+*- **🎉 F001~F012 전부 완료** — 시연 가능 프로덕션 PoC 달성. **남은 건 서민원 수동 런북**: 백업 영상 녹화 + 리허설 2회 + 실 노트북 QA + 시연 후 `wrangler delete` 만료 ([qa-checklist](docs/qa-checklist.md)·[operations-manual](docs/operations-manual.md))*
