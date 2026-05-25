@@ -76,15 +76,16 @@
 | F023 | 실데이터 파이프라인 기계산업 적재 ✅ — koami-givc 톨루엔→공작기계 다단계 재적재([게이트](docs/05-act/f023-data-gate-report.md)·[리포트](docs/05-act/f023-report.md)). **재적재**: 관세청 기계 멀티HS(845710 앵커+848210/848340/722840 tier)·DART 상장 기계사 10사(tier 장비/부품/소재)·그래프 18노드 다단계·provenance real=47·Vectorize 18(톨루엔 잔재 삭제). **다단계 그래프**: 소재(특수강)→부품(베어링·감속기)→장비(머시닝센터 anchor), 무역수지 D1 런타임 산출(감속기 수입$497M·특수강$50M=자립화 적자). **DoD**: Repository 스왑 화면 diff 0(스냅샷+어댑터 교체만) + S9 잔존 KPI 하드코딩(게이트 2배 중복값 $972M) 데이터연동 수정(getKpis Mock큐레이션/real산출). typecheck/lint/test 23/build·시각검증 real+Mock 콘솔0·로컬스모크 PASS. ⚠️라이브 배포는 트랙완료 후 별도 | KOAMI-REQ-023 | P1 | S10 | ✅ |
 
 ### ChatGIVC DB 스키마 정렬 — 📋 신규 (2026-05-25, /req-interview)
-> 고객이 제공한 **실 ChatGIVC 운영 DB 스키마**(~60개 테이블 DDL+주석) + NL→SQL 퓨샷에 PoC 데이터 레이어를 정렬. 데모가 고객 실 데이터모델(GVC코드·전후방 가치사슬·SCM 재무지표)을 말하게 하고 본사업화 시 Repository→실 GIVC 연동을 자연 연결로. **제약**: 실 DB 접속정보 0바이트·기업/R&D/코드 DLP 암호화 → **스키마+퓨샷만**(실데이터는 공개+가상 fallback). **착수 게이트=F024(퓨샷 SQL 실행성 M0)**. PRD·실테이블 매핑: `docs/req/chatgivc-align/`(로컬전용, 80/100·Ambiguity 0.11 Ready). 확립 패턴(F015/F023 화면 diff 0) 답습.
+> 고객이 제공한 **실 ChatGIVC 운영 DB 스키마**(~60 `gvc.*` 테이블 DDL+주석) + NL→SQL 퓨샷에 PoC 데이터 레이어를 정렬. 데모가 고객 실 데이터모델(GVC코드·`product_network` 전후방·`scmm` SCM지표)을 말하게 하고 본사업화 시 Repository→실 GIVC 연동을 자연 연결로. **제약**: 실 DB 접속정보 0바이트·기업/R&D/코드 DLP 암호화 → **스키마+퓨샷만**(실데이터는 공개+가상 fallback). **착수 게이트=F024(퓨샷 SQL 실행성 M0)**. PRD·실테이블 매핑: `docs/req/chatgivc-align/`(로컬전용, 80/100·Ambiguity 0.11 Ready). 확립 패턴(F015/F023 화면 diff 0) 답습.
+> **공개 경계 (거버넌스 결정 2026-05-25)**: 실 GIVC **테이블명·컬럼명은 공개 OK**(데모 UI가 의도적으로 노출하는 신뢰 요소 — Landing/About/S4·F027 실 질의 패널). **로컬전용(비공개)=전체 스키마 덤프(`docs/spec/기진회 DB/` 60테이블 DDL)·실데이터·PII·DLP 암호화 자료·실 GVC 제품코드(데모는 virt `GVC-{도메인}-*` 사용)**.
 
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F024 | M0 퓨샷 SQL 실행성 사전 게이트 ✅ **GO** (in-session 실측) — 퓨샷 310개 전수 분류 → 직접실행 계열 SQL 변환·D1 실행 **10/10 PASS**(임계≥5, 6지표패밀리+집계+그래프+RANK윈도우+방언변환, 실 D1 `--local` parity 확인 success:true). **결정적 발견**: 직접실행 가능 25개(전부 재무지표 계열), ~285개는 의존 테이블 스키마 미제공 → **F027 실행:정적 비율 확정**(재무지표·그래프 계열 live / 무역원천 큐레이션). 방언변환 규칙 도출(F025/F027 재사용). 리포트 `docs/req/chatgivc-align/`(로컬). → F025~F027 착수 가능 | KOAMI-REQ-024 | P0 | S11 | ✅ |
-| F025 | 실 GIVC 스키마 미러(D1) + 멀티도메인 적재 ✅ — 핵심 테이블 SQLite 미러(GVC코드 PK·전후방 가치사슬·재무/SCM지표·무역집계·이상징후·조기경보·전략품목) + 기계(virt GVC)+반도체(virt GVC) 적재(공개+가상). migration 0003(`gvc_products`/`gvc_network`/`gvc_metrics` 의미명)·`GvcRepository`·신규 vitest8(총31)·**화면 diff 0**. typecheck/lint/test PASS. [리포트](docs/05-act/sprint-12-f025-report.md) | KOAMI-REQ-025 | P0 | S12 | ✅ |
-| F026 | Repository/어댑터 GVC 재정렬 + 통합 시나리오 — 단순 어댑터→GVC스키마 어댑터 교체(`S6Repository`·`RndRepository`가 GVC코드/전후방/지표를 도메인 타입에 매핑). **화면(features/) diff 0**(불가피 시 임시어댑터 fallback). 멀티도메인 통합 시나리오(공통 소재/장비 노드 교차 비교·자립화 대조) | KOAMI-REQ-026 | P0 | S13 | 📋 |
+| F024 | M0 퓨샷 SQL 실행성 사전 게이트 ✅ **GO** (in-session 실측) — 퓨샷 310개 전수 분류 → `gvc.*` 계열 SQL 변환·D1 실행 **10/10 PASS**(임계≥5, 6지표패밀리+집계+그래프+RANK윈도우+방언변환, 실 D1 `--local` parity 확인 success:true). **결정적 발견**: `gvc.*` only 25개만 직접 실행 가능(전부 `scmm` 재무지표), ~285개는 `mart.*` 의존(DDL 미제공) → **F027 실행:정적 비율 확정**(`scmm`·그래프 계열 live / `mart.*` 무역원천 큐레이션). 방언변환 규칙 도출(F025/F027 재사용). 리포트 `docs/req/chatgivc-align/`(로컬). → F025~F027 착수 가능 | KOAMI-REQ-024 | P0 | S11 | ✅ |
+| F025 | 실 GIVC 스키마 미러(D1) + 멀티도메인 적재 ✅ — 화면 매핑 핵심 테이블 SQLite 미러(GVC코드 PK·`product_network` 전후방·`scmm`/`rnd_ntis` 지표 서브셋·`trade_search_data_country`·`item_trd_rnk`·`hs_anomaly`·`ecosys_riskmng_ewindex`·`product338`) + 기계(virt GVC)+반도체(실리콘웨이퍼, virt GVC) 적재(공개+가상). migration 0003(`gvc_products`/`gvc_network`/`gvc_metrics` 의미명)·`GvcRepository`·신규 vitest8(총31)·**화면 diff 0**. typecheck/lint/test PASS. [리포트](docs/05-act/sprint-12-f025-report.md) | KOAMI-REQ-025 | P0 | S12 | ✅ |
+| F026 | Repository/어댑터 GVC 재정렬 + 통합 시나리오 ✅ — `gvcS6Adapter`(`GvcRepository`→S6 도메인 타입 매핑) + 반도체 **S6 도메인 토글**(`DomainToggle`·`gvcDomainStore`) + 통합뷰(`GvcIntegration` 공통 소재/장비 교차)·`GvcPane`. 기존 S6 렌더 무손상(import 1줄 외 additive). typecheck/lint/test **45**(신규14)·proprietary 0(코드+산문). autopilot STATUS=DONE(CI-부재 가드레일로 S12 false-FAILED 차단) → Master 검토·수동 merge | KOAMI-REQ-026 | P0 | S13 | ✅ |
 | F027 | 실 질의 데모 패널(ChatGIVC Query) — 퓨샷 질문 선택 → 실 SQL 표시 → 결과(M0 통과분 D1 실행 + 나머지 큐레이션 정적, 출처 명시). 실행:정적 비율은 F024 결과 의존 | KOAMI-REQ-027 | P0 | S14 | 📋 |
-| F028 | 본사업화 연동 청사진(blueprint) ✅ 초안(S12 병렬) — (a)화면별 Repository↔실 GIVC 쿼리 매핑표 (b)퓨샷 NL→SQL 역량 카탈로그 (c)실 DB 전환 Migration Plan(schema diff·품질 gap·롤백·무중단) (d)PII/DLP/NDA 거버넌스 게이트 (e)확장성·데이터 품질관리. 문서 산출물(로컬 `docs/req/chatgivc-align/`). S15 정식화 잔여 | KOAMI-REQ-028 | P0 | S15 | 🔄 |
+| F028 | 본사업화 연동 청사진(blueprint) ✅ 초안(S12 병렬) — (a)화면별 Repository↔실 `gvc.*`/`mart.*` 쿼리 매핑표 (b)퓨샷 NL→SQL 역량 카탈로그 (c)실 DB 전환 Migration Plan(schema diff·품질 gap·롤백·무중단) (d)PII/DLP/NDA 거버넌스 게이트 (e)확장성·데이터 품질관리. 문서 산출물(로컬 `docs/req/chatgivc-align/`). S15 정식화 잔여 | KOAMI-REQ-028 | P0 | S15 | 🔄 |
 
 ---
 
@@ -104,7 +105,7 @@
 | S10 ✅ | 기계산업 실데이터 적재 | F023 | 실적 ~1세션 | ✅ 미니게이트 GO(3/3) → 톨루엔→공작기계 다단계 재적재(멀티HS·상장 기계사10사 tier·그래프18노드·real=47·Vectorize18) + Repository 스왑 화면 diff0 + S9 KPI 하드코딩(2배 중복값) 데이터연동 수정. tsc/lint/test23/build·시각검증 real+Mock·로컬스모크 PASS. [게이트](docs/05-act/f023-data-gate-report.md)·[리포트](docs/05-act/f023-report.md) |
 | S11 ✅ | M0 퓨샷 SQL 실행성 게이트 (chatgivc-align) | F024 | 실적 ~in-session | ✅ GO — 퓨샷 310개 분류, gvc.* 계열 10/10 D1 실행 PASS(실 D1 parity 확인), 실행:정적 비율 확정(F027), 방언변환 규칙 도출 → F025~F027 착수 가능 |
 | S12 ✅ | 스키마 미러 + 멀티도메인 적재 | F025 | 실적 ~autopilot | ✅ 핵심 테이블 SQLite 미러(GVC코드 PK·전후방 가치사슬·재무지표) + 기계+반도체 virt 적재 + GvcRepository + 화면 diff0 + typecheck/lint/test31 PASS. (autopilot 구현 후 Master 공개유출 검토·스크럽·수동 merge) |
-| S13 | Repository 정렬 + 통합 시나리오 | F026 | ~1세션 | GVC스키마 어댑터 교체로 화면(features/) diff 0 + 통합 시나리오 렌더(콘솔0·출처유지) | 📋 |
+| S13 ✅ | Repository 정렬 + 통합 시나리오 | F026 | 실적 ~autopilot | ✅ gvcS6Adapter + 반도체 S6 도메인 토글 + 통합뷰. 기존 S6 무손상·test45·proprietary0. STATUS=DONE(가드레일로 false-FAILED 차단)·Master 수동 merge |
 | S14 | 실 질의 데모 패널 | F027 | ~1세션 | 퓨샷 5개+ Q→SQL→결과 동작(D1 실행+큐레이션, 출처 명시) | 📋 |
 | S15 | 본사업화 연동 청사진 | F028 | ~0.5세션 | 매핑표+NL→SQL 카탈로그+Migration Plan+PII/DLP 게이트 문서 완성 | 📋 |
 
