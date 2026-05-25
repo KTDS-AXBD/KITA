@@ -30,7 +30,12 @@
     "ingest:vec": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-vectorize.mjs",
     "ingest:all": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-all.mjs",
     "ingest:snapshot": "node scripts/ingest/build-snapshot.mjs",
-    "smoke:queries": "node scripts/ingest/smoke-queries.mjs --local"
+    "smoke:queries": "node scripts/ingest/smoke-queries.mjs --local",
+    "db:migrate:gvc": "wrangler d1 execute koami-givc-poc --local --file migrations/0003_gvc_mirror.sql",
+    "db:migrate:gvc:remote": "wrangler d1 execute koami-givc-poc --remote --file migrations/0003_gvc_mirror.sql",
+    "ingest:gvc": "node scripts/ingest/gvc-seed.mjs --local",
+    "ingest:gvc:remote": "node scripts/ingest/gvc-seed.mjs",
+    "ingest:gvc:integrity": "node scripts/ingest/gvc-integrity.mjs --local"
   },
   "dependencies": {
     "@ktds-axbd/harness-kit": "^0.12.0",
