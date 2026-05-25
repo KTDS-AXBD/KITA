@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KITA** — KT DS AX컨설팅팀의 **Prototype 리뷰용 인터랙티브 데모 사이트** PoC. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 화면으로 보여주고, 시연 중 고객(산자부/산업부 의사결정자)이 자발적으로 추가 데이터를 꺼내게 유도하는 게 목적.
 
-**현재 상태: 🎉 F001~F012 전부 ✅ — 시연 가능 프로덕션 PoC 달성.** Vite+TS+Zustand SPA가 Cloudflare에 배포돼 라이브 구동(비추측 URL, `wrangler.jsonc` 로컬전용) + What-If 실 LLM 토글(CF Workers AI, KV rate-limit) + 시연 스크립트·운영 매뉴얼 완비. 남은 건 **서민원 수동 런북**(백업 영상·리허설·실노트북 QA·시연 후 `wrangler delete` 만료) + 외부 시연일(고객 PM 재지정, 외부 게이트). 핵심 자산:
+**현재 상태: 🎉 F001~F012 전부 ✅ — 시연 가능 프로덕션 PoC 달성.** Vite+TS+Zustand SPA가 **`https://kita.minu.best`**(CF 커스텀 도메인, **CF Access 게이팅** — 지정 이메일+OTP/Google)에 라이브 구동 + What-If 실 LLM 토글(CF Workers AI, KV rate-limit) + 시연 스크립트·운영 매뉴얼 완비. 남은 건 **서민원 수동 런북**(백업 영상·리허설·실노트북 QA) + 외부 시연일(고객 PM 재지정, 외부 게이트). **신규 트랙: 실데이터 파이프라인 `kita-givc`**(SPEC F013~F017 📋, PRD `docs/req/kita-givc/` 로컬전용) — Mock→실데이터 적재·조회, Phase 1 공개데이터 S6 슬라이스. 핵심 자산:
 - **SPEC.md** (루트) — **SSOT**. F-item 상태·Sprint 진행. 작업 기준.
 - **프로덕션 소스** (`src/`, `config/`, `wrangler.jsonc.example`) — Vite+TS SPA + Hono Worker(`/api/chat`).
 - **`docs/req/prd-final.md`** — PRD (로컬 전용). **`docs/spec/claude design/`** — 원본 프로토타입(이송 참조).
@@ -28,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | 상태 관리 | **Zustand** (가중치·Hint 토글·Tweaks 전역) |
 | 데이터 레이어 | **Repository 패턴** (`Component → Hook → Repository → Mock`) — 향후 GIVC 격리 |
 | 데이터 | **100% Mock** (TS/JSON fixtures, ⭐/△/※ 출처 메타 필드 강제) |
-| 배포 | **Cloudflare Pages/Workers** (ktds-axbd.workers.dev) + localhost 오프라인 백업 |
+| 배포 | **Cloudflare Workers** — 커스텀 도메인 `kita.minu.best`(CF Access 보호, `workers_dev:false`) + localhost 오프라인 백업 |
 | What-If LLM | **하이브리드** — 기본 정적 응답 + 옵션 토글 시 CF Workers AI (`/api/chat`, 세션당 3회 rate limit) |
 | 그래프 좌표 | 빌드타임 force-layout 1회 → JSON 스냅샷 (`scripts/gen-graph-layout.mjs`) |
 | boost 계수 | Mock과 분리, 별도 설정 파일 (`config/hint-boosts.json`) |
@@ -47,7 +47,7 @@ harness-kit이 제공하는 것 (이 PoC에서 쓰는 부분만): Hono 미들웨
 
 **프로덕션 (Vite+TS SPA)**: `pnpm dev`(개발) / `pnpm build`(빌드, tsc+vite) / `pnpm preview`(=`serve:offline`, localhost 백업) / `pnpm typecheck`(app+worker) / `pnpm lint` / `pnpm test`(vitest).
 
-**배포 (F007/F009)**: `pnpm deploy:cf`(빌드+wrangler deploy) / `pnpm deploy:dryrun`(번들 검증). ⚠️ `pnpm deploy`는 pnpm 내장명령과 충돌 → 반드시 `deploy:cf`. `wrangler.jsonc`는 gitignore(비추측 URL 비노출) — 없으면 `cp wrangler.jsonc.example wrangler.jsonc` 후 name을 비추측 값으로. 배포 가이드 `docs/deploy-guide.md`.
+**배포 (F007/F009)**: `pnpm deploy:cf`(빌드+wrangler deploy) / `pnpm deploy:dryrun`(번들 검증). ⚠️ `pnpm deploy`는 pnpm 내장명령과 충돌 → 반드시 `deploy:cf`. `wrangler.jsonc`는 gitignore — 없으면 `cp wrangler.jsonc.example wrangler.jsonc`(custom_domain `kita.minu.best` + `workers_dev:false`). 배포·CF Access 관리 가이드 `docs/deploy-guide.md`.
 
 **원본 프로토타입**: `docs/spec/claude design/KITA PoC.html` (CDN React+Babel, 빌드 불필요 — 이송 참조용).
 
@@ -80,4 +80,4 @@ harness-kit이 제공하는 것 (이 PoC에서 쓰는 부분만): Hono 미들웨
 ## 보안
 
 - **`.dev.vars`** 에 LLM API 키들(OpenRouter/OpenAI/Gemini/DeepSeek/Anthropic)이 있음 — `.gitignore`에 등록됨, **절대 커밋 금지**. 권한 600.
-- 공개 시연 URL은 비공개 공유 + 시연 후 만료 (prd-final §6.4).
+- `kita.minu.best`는 **CF Access 게이팅**(지정 이메일 + OTP/Google). 데이터 100% Mock + 영업멘트 중립화. 접근관리·해제는 `docs/deploy-guide.md`.
