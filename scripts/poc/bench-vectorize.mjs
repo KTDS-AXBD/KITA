@@ -42,7 +42,7 @@ async function embed(texts) {
 }
 
 async function upsert(vectors) {
-  // Vectorize v2 upsert: NDJSON {id, values, metadata}
+  // Vectorize v2 upsert: NDJSON {id, values, metadata}. mutation은 비동기 처리.
   const ndjson = vectors.map((v) => JSON.stringify(v)).join('\n');
   const res = await fetch(`${BASE}/vectorize/v2/indexes/${INDEX}/upsert`, {
     method: 'POST',
@@ -51,7 +51,25 @@ async function upsert(vectors) {
   });
   const j = await res.json();
   if (!j.success) throw new Error('upsert 실패: ' + JSON.stringify(j.errors));
-  return j.result;
+  return j.result; // { mutationId }
+}
+
+async function info() {
+  const res = await fetch(`${BASE}/vectorize/v2/indexes/${INDEX}/info`, { headers: H });
+  const j = await res.json();
+  if (!j.success) throw new Error('info 실패: ' + JSON.stringify(j.errors));
+  return j.result; // { vectorCount, dimensions, processedUpToMutation }
+}
+
+/** upsert mutation이 인덱스에 반영(processedUpToMutation 도달)될 때까지 폴링 */
+async function waitForMutation(mutationId, { timeoutMs = 90000, intervalMs = 3000 } = {}) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const i = await info();
+    if (i.processedUpToMutation === mutationId) return i;
+    await new Promise((r) => setTimeout(r, intervalMs));
+  }
+  throw new Error(`mutation ${mutationId} 반영 타임아웃 (${timeoutMs}ms)`);
 }
 
 async function query(vector) {
@@ -82,9 +100,10 @@ function estimateCost(nDocs, queriesPerMonth) {
 
   console.log(`  · corpus ${corpus.length}건 임베딩…`);
   const cVecs = await embed(corpus.map((d) => d.text));
-  await upsert(corpus.map((d, i) => ({ id: d.doc_id, values: cVecs[i] })));
-  console.log('  · upsert 완료. 인덱스 반영 대기 2s…');
-  await new Promise((r) => setTimeout(r, 2000));
+  const { mutationId } = await upsert(corpus.map((d, i) => ({ id: d.doc_id, values: cVecs[i] })));
+  console.log(`  · upsert 완료 (mutation ${mutationId}). 인덱스 반영 폴링…`);
+  const idx = await waitForMutation(mutationId);
+  console.log(`  · 반영 완료 (vectorCount=${idx.vectorCount})`);
 
   let hit = 0;
   for (const { q, expected } of queries) {

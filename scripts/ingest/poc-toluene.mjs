@@ -55,14 +55,18 @@ async function fetchTrade() {
   if (!KEY) throw new Error('DATA_GO_KR_KEY 미설정 (.dev.vars) — 관세청 OpenAPI serviceKey 필요');
   // 관세청_품목별 국가별 수출입실적 (data ID 15100475)
   // endpoint: apis.data.go.kr/1220000/nitemtrade/getNitemtradeList
-  const url = new URL('https://apis.data.go.kr/1220000/nitemtrade/getNitemtradeList');
-  url.searchParams.set('serviceKey', KEY);
-  url.searchParams.set('hsSgn', HS);
-  url.searchParams.set('strtYymm', process.env.STRT_YYMM ?? '202301');
-  url.searchParams.set('endYymm', process.env.END_YYMM ?? '202412');
-  url.searchParams.set('type', 'json');
+  // ⚠️ data.go.kr Encoding 키(%2B 등 포함)는 raw append 필수 — URLSearchParams는 이중 인코딩(401).
+  //    Decoding(raw) 키를 쓸 경우엔 encodeURIComponent(KEY)로 1회 인코딩.
+  const strt = process.env.STRT_YYMM ?? '202301';
+  const end = process.env.END_YYMM ?? '202412';
+  const url = `https://apis.data.go.kr/1220000/nitemtrade/getNitemtradeList`
+    + `?serviceKey=${KEY}&hsSgn=${HS}&strtYymm=${strt}&endYymm=${end}&type=json`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`관세청 API ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`관세청 API ${res.status} — ${body.slice(0, 120)} `
+      + `(403=활용신청 승인/전파 대기 또는 데이터셋 불일치, 401=키 형식)`);
+  }
   return res.json();
 }
 
