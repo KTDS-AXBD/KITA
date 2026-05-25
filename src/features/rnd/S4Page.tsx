@@ -58,9 +58,9 @@ export function S4Page(): JSX.Element {
         <div className="page-band-inner">
           <div>
             <div className="label">메인 시연 · S4</div>
-            <h1>산기평 R&D 적합 기업 추천</h1>
+            <h1>소부장 자립화 R&D 적합 기업 추천</h1>
             <div className="page-band-sub">
-              산자부가 새 R&D 공고를 띄울 때, GIVC 위 온톨로지 레이어가 적합 기업 Top 5 + 선정 근거 + 반대 추천을 자동 제시합니다.
+              산기평이 소부장 자립화 R&D 공고를 띄울 때, GIVC 위 온톨로지 레이어가 적합 기업 Top 5 + 선정 근거 + 반대 추천을 자동 제시합니다.
               가중치를 바꾸면 결과가 실시간으로 재계산됩니다.
             </div>
           </div>
