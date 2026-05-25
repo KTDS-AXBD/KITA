@@ -17,6 +17,16 @@
   ]
   ```
   → 공개 URL = `https://kita.minu.best`
+- **F016 — kita-givc D1 바인딩** (읽기전용 조회 `/api/givc/*`): `wrangler.jsonc`에 바인딩명 **`DB`** 필수(Worker 코드 `c.env.DB` 참조 — `kita_givc_poc` 등 다른 이름이면 500).
+  ```jsonc
+  "d1_databases": [
+    { "binding": "DB", "database_name": "kita-givc-poc",
+      "database_id": "74b58bed-dee6-4f95-b338-11e304f08fad" }
+  ]
+  ```
+  - 엔드포인트: `GET /api/givc/graph?root=TOL&depth=2` · `/api/givc/trade?hs=290230` · `/api/givc/search?q=<term>` (SELECT-only, rate-limit 미적용).
+  - **로컬 스모크**: `kita.minu.best`가 CF Access 뒤라 `wrangler dev --remote`는 차단(service token 필요) → 로컬은 `"remote": true` 바인딩 + `wrangler dev`(원격 D1 조회) 또는 `db:migrate:local`+`fixture-local.sql`+`build-graph --local`+`ingest-fts --local` 후 `wrangler dev`.
+  - 원격 데이터 적재/검증: `pnpm db:migrate`(0001+0002) → `pnpm ingest:all` → `node scripts/ingest/smoke-queries.mjs`.
 - Cloudflare 계정 + `wrangler` 인증: `pnpm exec wrangler whoami` (계정 `AX컨설팅팀`)
   - 미인증 시: 세션에서 `! pnpm exec wrangler login`
 - **커스텀 도메인 전제**: `minu.best`가 같은 CF 계정의 **active zone**이어야 함 → 배포 시 DNS 레코드+SSL 인증서 자동 생성. (API 토큰은 Workers Routes Edit + Zone DNS Edit 권한 필요.)

@@ -40,3 +40,4 @@ scripts/poc/out/
 scripts/ingest/out/
 scripts/ingest/.cache/
 /s6-real-data.png
+/f016-*.png
