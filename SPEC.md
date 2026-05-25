@@ -52,6 +52,17 @@
 | F011 | 시연 스크립트(`demo-script.md`)·운영 매뉴얼(`operations-manual.md`)·README 핸드오버 ✅. 백업 영상 녹화·리허설 2회는 서민원 수동 런북 | KITA-REQ-011 | P0 | S3 | ✅ |
 | F012 | Tweaks 패널 ✅ (flavor/theme/hints위치/top5/lang, S1 완료). 다국어(EN) 전체 i18n은 **보류**(P2, 한국어 시연 — 해외 시연 확정 시) | KITA-REQ-012 | P2 | S3 | ✅ |
 
+### 실데이터 파이프라인 (kita-givc) — 📋 신규 (PRD: `docs/req/kita-givc/prd-final.md`, 2026-05-25)
+> Mock→실데이터 적재·조회. **Phase 1 = 비PII 공개데이터로 S6 톨루엔 수직 슬라이스**(near-term). GIVC+PII는 Phase 2(외부 게이트). 착수 게이트 = F013 M0 PoC.
+
+| F | 기능 | REQ | 우선 | Sprint | 상태 |
+|---|------|-----|------|--------|------|
+| F013 | M0 PoC 게이트 — 공개데이터 소스·라이선스 확정 + D1 그래프 깊이2 ≤50ms + Vectorize 의미검색 ≥80% + 적재 1라운드 재현 (미달 시 저장소 재선택/범위 축소) | KITA-REQ-013 | P0 | S4 | 📋 |
+| F014 | 적재 파이프라인 + 저장소 스키마 — 공개데이터→정규화·출처메타(⭐△※)·검증→D1/Vectorize/R2 적재, 실패 시 롤백 | KITA-REQ-014 | P0 | S5 | 📋 |
+| F015 | Repository 실데이터 구현체 + 어댑터 계층 — Mock과 동일 인터페이스, 스키마차 흡수(화면 코드 무변경 보장) | KITA-REQ-015 | P0 | S5 | 📋 |
+| F016 | S6 4종 조회 + 검증 — 정형(SQL)·그래프·전문검색(FTS) P0 / 의미검색(RAG) P1 + 회귀(vitest+33인터랙션)·성능 기준 유지 | KITA-REQ-016 | P0 | S6 | 📋 |
+| F017 | Phase 2 확장 — S4 슬라이스 + GIVC·PII 적재(마스킹·접근통제·NDA). 외부 게이트 의존, 보류 | KITA-REQ-017 | P1 | 별도 | 📋 |
+
 ---
 
 ## 6. Execution Plan (Sprint)
@@ -61,9 +72,13 @@
 | S1 ✅ | M1 빌드 이송 | F001~F006 | 실적 ~2.5h (autopilot) | ✅ Vite+TS 구동, tsc/lint 0, vitest 9/9, build 213KB(gz 70KB). 33 회귀 + 성능 실측은 시연 직전 트랙(`docs/03-do/sprint-1-regression-checklist.md`) |
 | S2 | M2 배포 | F007~F009 | 1~2일 | CF URL + localhost 백업, QA 체크리스트 통과, What-If 토글 동작 |
 | S3 | M3 시연 준비 | F010~F012 | 2~3일 | 시연 스크립트·백업 영상·운영 매뉴얼 완비, 리허설 2회 |
+| S4 | M0 PoC 게이트 (kita-givc) | F013 | 1~2일(+버퍼) | 데이터소스 확정 + D1 그래프 ≤50ms·Vectorize ≥80% PoC 통과 |
+| S5 | 적재 + Repository | F014~F015 | 2~3일 | 공개데이터 적재 재현(검증 PASS) + Repository/어댑터 교체로 화면 코드 변경 0 |
+| S6 | S6 조회 + 검증 | F016 | 2~3일 | S6 톨루엔 실데이터 구동 + 정형·그래프·FTS 동작 + 회귀·성능 기준 PASS |
 
 **Critical Path:** F001(이송 기반) → F002~F006 → F007(배포). F009(실 LLM)·F012(P2)는 여유 시.
-**선행:** 없음 (Mock 100%, 외부 의존 0). 외부 시연일만 PM 재지정 의존(§오픈이슈).
+**실데이터 트랙(kita-givc) Critical Path:** F013(M0 PoC 게이트) → F014+F015(적재·Repository) → F016(조회·검증). F017(Phase 2)는 GIVC 접근·PII 규정 확보 의존(외부 게이트).
+**선행:** F001~F012는 외부 의존 0. 실데이터 트랙은 F013 PoC 통과가 F014~F016 선행 게이트.
 
 ## 7. 오픈 이슈 (PRD §7 참조)
 
@@ -72,6 +87,7 @@
 | 1 | 외부 시연 일자 | 영업대표 (고객 PM 재지정, 외부) |
 | R1 | 프로토타입→Vite 이송 공수 ✅ 재평가 완료 (3~5일→5~7일). 33개 인터랙션 목록화 + 난이도 분류 → Plan §4.1/§6.4 | 서민원 (Plan/Design 2026-05-24) |
 | 2~5 | 사내 LLM·GIVC export·NDA·백업 영상 포맷 | PRD §7 |
+| 6~10 | kita-givc: 공개데이터 소스·라이선스 확정, D1 그래프 적정성, Vectorize 비용, Phase2 GIVC·PII 게이트 | PRD kita-givc §7 |
 
 ---
 
@@ -82,3 +98,4 @@
 *- **Sprint 3 ✅** (M3 시연준비): [Plan](docs/01-plan/features/sprint-3-m3-demo-prep.plan.md). F010 About·F011 [시연스크립트](docs/demo-script.md)·[운영매뉴얼](docs/operations-manual.md)·README·F012 Tweaks ✅ (다국어 EN 보류 P2)*
 *- **커스텀 도메인 전환** (2026-05-24): 공개 URL `https://kita.minu.best` (CF `custom_domain`, `workers_dev:false`). **CF Access 게이팅 적용** (2026-05-25): 지정 이메일(sinclairseo@gmail.com·ktds.axbd@gmail.com) + OTP/Google. F008 접근제어 이력: 비추측 URL+시연후 만료 → 공개 → Access 게이팅. 배포·접근제어 [deploy-guide](docs/deploy-guide.md)*
 *- **🎉 F001~F012 전부 완료** — 시연 가능 프로덕션 PoC 달성. **URL: https://kita.minu.best** (CF Access 보호). **남은 건 서민원 수동 런북**: 백업 영상 녹화 + 리허설 2회 + 실 노트북 QA ([qa-checklist](docs/qa-checklist.md)·[operations-manual](docs/operations-manual.md))*
+*- **실데이터 파이프라인 (kita-givc) 📋 신규** (2026-05-25): /ax:req-interview → PRD(스코어 73=구조적 천장·Ambiguity 0.12 Ready). F013~F017 등록 — Phase 1=비PII 공개데이터 S6 슬라이스(F013 M0 PoC 게이트 → F014 적재 + F015 Repository/어댑터 → F016 조회·검증), Phase 2=GIVC+PII(외부 게이트, F017). PRD 영업기밀 로컬전용(`docs/req/kita-givc/`)*
