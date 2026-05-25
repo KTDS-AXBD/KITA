@@ -80,7 +80,7 @@
 
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F024 | M0 퓨샷 SQL 실행성 사전 게이트 — 퓨샷 trade/market/model 대표 SQL 8~10개(유형/난이도 분포·GVC코드 질의 포함, 쉬운쿼리 편향 금지) → D1 실행성 분류(gvc.*전용/mart.*의존/MySQL전용함수) → **최소 5개 SQLite 변환·D1 실행 end-to-end 성공 시 GO**. 미달 시 실 질의 패널 큐레이션 정적 격하. **F025~F027 대규모 착수 선행 게이트** | KOAMI-REQ-024 | P0 | S11 | 📋 |
+| F024 | M0 퓨샷 SQL 실행성 사전 게이트 ✅ **GO** (in-session 실측) — 퓨샷 310개 전수 분류 → gvc.* 계열 SQL 변환·D1 실행 **10/10 PASS**(임계≥5, 6지표패밀리+집계+그래프+RANK윈도우+방언변환, 실 D1 `--local` parity 확인 success:true). **결정적 발견**: gvc.* only 25개만 직접 실행 가능(전부 scmm 재무지표), ~285개는 의존 테이블 스키마 미제공 → **F027 실행:정적 비율 확정**(scmm·그래프 계열 live / 무역원천 큐레이션). 방언변환 규칙 도출(F025/F027 재사용). [리포트](docs/req/chatgivc-align/f024-m0-gate-report.md)(로컬). → F025~F027 착수 가능 | KOAMI-REQ-024 | P0 | S11 | ✅ |
 | F025 | 실 GIVC 스키마 미러(D1) + 멀티도메인 적재 — 화면 매핑 핵심 8~12 테이블 SQLite 미러(GVC코드 PK·`product_network` 전후방·`scmm_his_chart`/`rnd_ntis_rnd_mst` 화면바인딩 서브셋·`trade_search_data_country`·`item_trd_rnk`·`hs_anomaly`·`ecosys_riskmng_ewindex`·`product338`) + 기계(GVC코드 부여 ※virt)+반도체(실리콘웨이퍼 `GVC20101MS001` ⭐real) 적재(공개+가상 fallback). migration 신규·provenance·§5.4 정합성검증 | KOAMI-REQ-025 | P0 | S12 | 📋 |
 | F026 | Repository/어댑터 GVC 재정렬 + 통합 시나리오 — 단순 어댑터→GVC스키마 어댑터 교체(`S6Repository`·`RndRepository`가 GVC코드/전후방/지표를 도메인 타입에 매핑). **화면(features/) diff 0**(불가피 시 임시어댑터 fallback). 멀티도메인 통합 시나리오(공통 소재/장비 노드 교차 비교·자립화 대조) | KOAMI-REQ-026 | P0 | S13 | 📋 |
 | F027 | 실 질의 데모 패널(ChatGIVC Query) — 퓨샷 질문 선택 → 실 SQL 표시 → 결과(M0 통과분 D1 실행 + 나머지 큐레이션 정적, 출처 명시). 실행:정적 비율은 F024 결과 의존 | KOAMI-REQ-027 | P0 | S14 | 📋 |
@@ -102,7 +102,7 @@
 | S8 ✅ | S4 재스킨 + 프레이밍 | F020·F022 | 실적 ~1세션 | ✅ S4 후보풀·프리셋 소부장 교체(화면코드 diff 0)·랜딩/About KOAMI 프레이밍 전환·typecheck/lint/test 23/build PASS. 브라우저 시각회귀 시연직전 트랙 |
 | S9 ✅ | S6 기계산업 재구축 | F021 | 실적 ~1세션 | ✅ 톨루엔→공작기계 다단계 가치사슬(소재→부품→장비) 전면 교체·아키텍처 리네임 Toluene*→S6*·라우트 /scenario/s6·tsc/lint/test 23/build/시각검증 PASS. real 스냅샷은 F023 |
 | S10 ✅ | 기계산업 실데이터 적재 | F023 | 실적 ~1세션 | ✅ 미니게이트 GO(3/3) → 톨루엔→공작기계 다단계 재적재(멀티HS·상장 기계사10사 tier·그래프18노드·real=47·Vectorize18) + Repository 스왑 화면 diff0 + S9 KPI 하드코딩(2배 중복값) 데이터연동 수정. tsc/lint/test23/build·시각검증 real+Mock·로컬스모크 PASS. [게이트](docs/05-act/f023-data-gate-report.md)·[리포트](docs/05-act/f023-report.md) |
-| S11 | M0 퓨샷 SQL 실행성 게이트 (chatgivc-align) | F024 | ~0.5일(+버퍼) | 퓨샷 대표 SQL 8~10개 D1 실행성 분류 + 최소 5개 SQLite 변환·D1 end-to-end 실행 성공(GO) → F025~F027 착수 가능 | 📋 |
+| S11 ✅ | M0 퓨샷 SQL 실행성 게이트 (chatgivc-align) | F024 | 실적 ~in-session | ✅ GO — 퓨샷 310개 분류, gvc.* 계열 10/10 D1 실행 PASS(실 D1 parity 확인), 실행:정적 비율 확정(F027), 방언변환 규칙 도출 → F025~F027 착수 가능 |
 | S12 | 스키마 미러 + 멀티도메인 적재 | F025 | ~1세션 | 핵심 8~12 테이블 SQLite 미러(GVC코드 PK·product_network) + 기계+반도체 적재(공개+가상) + §5.4 정합성검증 PASS | 📋 |
 | S13 | Repository 정렬 + 통합 시나리오 | F026 | ~1세션 | GVC스키마 어댑터 교체로 화면(features/) diff 0 + 통합 시나리오 렌더(콘솔0·출처유지) | 📋 |
 | S14 | 실 질의 데모 패널 | F027 | ~1세션 | 퓨샷 5개+ Q→SQL→결과 동작(D1 실행+큐레이션, 출처 명시) | 📋 |
