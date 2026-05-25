@@ -1,14 +1,18 @@
 import type { Provenance } from './provenance';
 
-export interface TolueneProduct {
+/** S6 가치사슬 anchor (공작기계 머시닝센터 등). 구 TolueneProduct. cas→ksic(기계 표준산업분류). */
+export interface S6Focus {
   name: string;
   hsCode: string;
-  cas: string;
+  ksic: string;
   category: string;
   description: string;
 }
 
-export interface TolueneCompany {
+/** 가치사슬 단계(소재→부품→장비). 표·그래프 tier 구분용. */
+export type ValueChainTier = '소재' | '부품' | '장비';
+
+export interface S6Company {
   id: string;
   name: string;
   biz: string;
@@ -16,6 +20,7 @@ export interface TolueneCompany {
   sales: string;
   coreType: 1 | 2;
   role: string;
+  tier: ValueChainTier;
   source: Provenance;
 }
 
@@ -46,7 +51,7 @@ export interface WordCloudCollection {
   source: Provenance;
 }
 
-export interface TolueneHintCard {
+export interface S6HintCard {
   id: string;
   title: string;
   delta: string;

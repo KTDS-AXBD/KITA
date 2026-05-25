@@ -73,13 +73,13 @@ export function TradeChart({ data }: TradeChartProps): JSX.Element {
       <div style={{ display: 'flex', gap: 16, padding: '6px 4px 10px', fontSize: 11 }}>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span style={{ width: 16, height: 2, background: 'var(--axis-color-blue-500)' }}></span>{' '}
-          수출 (천톤)
+          수출 ($M)
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span
             style={{ width: 16, height: 0, borderTop: '2px dashed var(--axis-color-orange-500)' }}
           ></span>{' '}
-          수입 (천톤)
+          수입 ($M)
         </span>
         <span
           style={{

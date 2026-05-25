@@ -185,10 +185,10 @@ export function LandingPage(): JSX.Element {
           </a>
 
           <a
-            href="#/scenario/toluene"
+            href="#/scenario/s6"
             onClick={(e) => {
               e.preventDefault();
-              navigate('/scenario/toluene');
+              navigate('/scenario/s6');
             }}
             className="scenario-card"
           >

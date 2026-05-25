@@ -1,21 +1,20 @@
 import type {
-  TolueneProduct,
-  TolueneCompany,
+  S6Focus,
+  S6Company,
   TradeSeries,
   WordCloudCollection,
-  TolueneHintCard,
+  S6HintCard,
   KnowledgeGraph,
   PositionedGraph,
 } from '@/types';
 import {
-  S6_PRODUCT,
+  S6_FOCUS,
   S6_TRADE,
   S6_COMPANIES,
   S6_GRAPH,
   S6_WORDCLOUD,
   HINTS_S6,
 } from '@/data/mock';
-import { mergeLayout, S6_LAYOUT } from '@/data/graph-layout';
 import {
   REAL_PRODUCT,
   adaptTradeSeries,
@@ -24,67 +23,69 @@ import {
   layoutGraph,
   FALLBACK_WORDCLOUD,
   FALLBACK_HINTS,
-} from './adapters/tolueneSnapshot';
+} from './adapters/s6Snapshot';
 
-export interface TolueneRepository {
-  getProduct(): TolueneProduct;
+export interface S6Repository {
+  getProduct(): S6Focus;
   getTradeSeries(): TradeSeries;
-  listCompanies(): TolueneCompany[];
+  listCompanies(): S6Company[];
   getWordcloud(): WordCloudCollection;
-  listHints(): TolueneHintCard[];
+  listHints(): S6HintCard[];
   getGraph(): KnowledgeGraph;
   getPositionedGraph(): PositionedGraph;
 }
 
-class MockTolueneRepository implements TolueneRepository {
-  getProduct(): TolueneProduct {
-    return S6_PRODUCT;
+class MockS6Repository implements S6Repository {
+  getProduct(): S6Focus {
+    return S6_FOCUS;
   }
   getTradeSeries(): TradeSeries {
     return S6_TRADE;
   }
-  listCompanies(): TolueneCompany[] {
+  listCompanies(): S6Company[] {
     return S6_COMPANIES;
   }
   getWordcloud(): WordCloudCollection {
     return S6_WORDCLOUD;
   }
-  listHints(): TolueneHintCard[] {
+  listHints(): S6HintCard[] {
     return HINTS_S6;
   }
   getGraph(): KnowledgeGraph {
     return S6_GRAPH;
   }
   getPositionedGraph(): PositionedGraph {
-    return mergeLayout(S6_GRAPH, S6_LAYOUT);
+    // 결정적 방사형 레이아웃 (다단계 가치사슬 그래프 — stale layout JSON 미사용)
+    return layoutGraph(S6_GRAPH);
   }
 }
 
-export const tolueneRepository: TolueneRepository = new MockTolueneRepository();
+export const s6Repository: S6Repository = new MockS6Repository();
 
 // F015 — 실데이터 구현체 (스냅샷 동기 서빙 + 어댑터 gap-fill). index.ts 토글로 선택.
-class SnapshotTolueneRepository implements TolueneRepository {
-  getProduct(): TolueneProduct {
+// ⚠️ F021: real 스냅샷은 아직 톨루엔 — 기계 실데이터 재적재는 F023.
+class SnapshotS6Repository implements S6Repository {
+  getProduct(): S6Focus {
     return REAL_PRODUCT;
   }
   getTradeSeries(): TradeSeries {
     return adaptTradeSeries();
   }
-  listCompanies(): TolueneCompany[] {
+  listCompanies(): S6Company[] {
     return adaptCompanies();
   }
   getWordcloud(): WordCloudCollection {
     return FALLBACK_WORDCLOUD; // 뉴스 P1 미적재 → Mock(※virt)
   }
-  listHints(): TolueneHintCard[] {
+  listHints(): S6HintCard[] {
     return FALLBACK_HINTS; // 시연 카드(※virt)
   }
   getGraph(): KnowledgeGraph {
     return adaptGraph();
   }
   getPositionedGraph(): PositionedGraph {
-    return layoutGraph(adaptGraph()); // 결정적 레이아웃(stale s6.layout.json 미사용)
+    return layoutGraph(adaptGraph()); // 결정적 레이아웃
   }
 }
 
-export const snapshotTolueneRepository: TolueneRepository = new SnapshotTolueneRepository();
+export const snapshotS6Repository: S6Repository = new SnapshotS6Repository();

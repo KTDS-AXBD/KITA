@@ -72,7 +72,7 @@
 | F019 | 전환 스코프 게이트 ✅ GO — **시나리오**: KOAMI 실제 미션(소부장 GIVC·가치사슬)에 정렬, 청중 산업부→KOAMI 소부장담당+회원사. **S6**: 공작기계 중심 다단계 가치사슬(장비←부품, 소부장 자립화 스토리). **데이터 가용성 라이브 실측**: 관세청 4개 HS(845710 머시닝센터 수출$972M·845811 NC선반 $1443M·848210 볼베어링 $755M·848340 기어감속기 수입$994M>수출$648M=자립화과제) 전부 조회 OK·**외부 신청 0**(hsSgn 파라미터). DART corp_code 해소는 F021/F023 이관 | KOAMI-REQ-019 | P0 | S7 | ✅ |
 | F020 | S4 R&D 기계산업 재스킨 ✅ — `domains.ts`(소부장 기계 가치사슬 도메인 6종+프리셋 3종, 헤드라인=감속기 국산화) + `rnd.ts`(후보풀 8사·counter·similar·그래프·hints·what-if 전면 교체) 소부장 가상 SME로. **화면 코드(features/rnd) diff 0** + typecheck/lint/test 23 PASS. ⚠️헤드라인 프리셋 weights 튜닝(서민원)·브라우저 시각회귀=시연직전 트랙 | KOAMI-REQ-020 | P0 | S8 | ✅ |
 | F022 | 랜딩/About 프레이밍 전환 ✅ — 청중(산업부·산자부→KOAMI 소부장·회원사)·시나리오(소부장 자립화 R&D·공작기계 가치사슬)·MiniS6 노드(톨루엔→감속기)·데이터 카탈로그 전환(`LandingPage`·`AboutDataPage`·`AboutOntologyPage`). 표시텍스트 잔존 0(라우트 `/scenario/toluene`만 F021 대상) | KOAMI-REQ-022 | P1 | S8 | ✅ |
-| F021 | S6 시나리오 기계산업 재구축 — 톨루엔→기계품목. 아키텍처 리네임(Toluene→품목)·`types`·mock·그래프 레이아웃·무역통계 (14파일 영향) | KOAMI-REQ-021 | P0 | S9 | 📋 |
+| F021 | S6 시나리오 기계산업 재구축 ✅ — 톨루엔→공작기계 다단계 가치사슬(소재→부품→장비). 아키텍처 리네임 `Toluene*`→`S6*`(types/s6·mock/s6·S6Repository·s6Snapshot·features/s6) + 라우트 `/scenario/s6` + 다단계 그래프(머시닝센터 anchor←부품 베어링/감속기/CNC←소재 특수강) + KPI/무역/기업표 tier. Mock diff 화학잔존0·결정적 layout(stale JSON 미사용). typecheck/lint/test 23·build·브라우저 시각검증(콘솔에러0). ⚠️real 스냅샷=톨루엔 유지(F023) | KOAMI-REQ-021 | P0 | S9 | ✅ |
 | F023 | 실데이터 파이프라인 기계산업 적재 — koami-givc 기계 HS·DART 기계사 재적재(`scripts/ingest/`·migrations·D1·Vectorize). F019 데이터 가용성 통과 의존 | KOAMI-REQ-023 | P1 | S10 | 📋 |
 
 ---
@@ -89,7 +89,7 @@
 | S6 | S6 조회 + 검증 | F016 | 2~3일 | S6 톨루엔 실데이터 구동 + 정형·그래프·FTS 동작 + 회귀·성능 기준 PASS |
 | S7 | 전환 스코프 게이트 | F019 | 1~2일(+버퍼) | S6 품목 확정 + S4 도메인/사례 확정 + 관세청 기계 HS·DART 기계사 가용성 실측 + 프레이밍 방침 → F020~F023 착수 가능 |
 | S8 ✅ | S4 재스킨 + 프레이밍 | F020·F022 | 실적 ~1세션 | ✅ S4 후보풀·프리셋 소부장 교체(화면코드 diff 0)·랜딩/About KOAMI 프레이밍 전환·typecheck/lint/test 23/build PASS. 브라우저 시각회귀 시연직전 트랙 |
-| S9 | S6 기계산업 재구축 | F021 | 2~3일 | 톨루엔→기계품목 전면 교체(아키텍처 리네임·types·mock·그래프·무역통계), Mock 모드 구동·tsc/lint/test PASS |
+| S9 ✅ | S6 기계산업 재구축 | F021 | 실적 ~1세션 | ✅ 톨루엔→공작기계 다단계 가치사슬(소재→부품→장비) 전면 교체·아키텍처 리네임 Toluene*→S6*·라우트 /scenario/s6·tsc/lint/test 23/build/시각검증 PASS. real 스냅샷은 F023 |
 | S10 | 기계산업 실데이터 적재 | F023 | 2~3일 | 관세청 기계 HS·DART 기계사 재적재(검증 PASS) + Repository 교체로 화면 코드 변경 0 |
 
 **Critical Path:** F001(이송 기반) → F002~F006 → F007(배포). F009(실 LLM)·F012(P2)는 여유 시.

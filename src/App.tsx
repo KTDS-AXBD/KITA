@@ -3,7 +3,7 @@ import { useTweaksStore } from '@/store';
 import { useHashRoute, AppHeader } from '@/shell';
 import { LandingPage } from '@/features/landing/LandingPage';
 import { S4Page } from '@/features/rnd/S4Page';
-import { S6Page } from '@/features/toluene/S6Page';
+import { S6Page } from '@/features/s6/S6Page';
 import { AboutOntologyPage, AboutDataPage } from '@/features/about';
 import { TweaksPanel } from '@/components/tweaks/TweaksPanel';
 import { navigate } from '@/shell';
@@ -24,7 +24,7 @@ export default function App(): JSX.Element {
   let page: JSX.Element;
   if (route === '/' || route === '') page = <LandingPage />;
   else if (route === '/scenario/rnd') page = <S4Page key="s4" />;
-  else if (route === '/scenario/toluene') page = <S6Page key="s6" />;
+  else if (route === '/scenario/s6' || route === '/scenario/toluene') page = <S6Page key="s6" />;
   else if (route === '/about/ontology') page = <AboutOntologyPage />;
   else if (route === '/about/data') page = <AboutDataPage />;
   else

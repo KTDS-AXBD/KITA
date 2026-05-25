@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useHintsStore } from '@/store';
-import { tolueneRepository } from '@/data/repository';
+import { s6Repository } from '@/data/repository';
 import {
   Card,
   Badge,
@@ -11,42 +11,43 @@ import {
 } from '@/components/primitives';
 import { DataMark } from '@/components/DataMark';
 import { KGraph } from '@/components/KGraph';
-import { Search, Beaker } from '@/components/icons';
+import { Search, Settings } from '@/components/icons';
 import { TradeChart } from './TradeChart';
 import { WordCloud } from './WordCloud';
 import { AnomalyPanel } from './AnomalyPanel';
 
-const PRODUCT_OPTIONS = ['톨루엔', '벤젠', '자일렌', '에틸렌'];
+const PRODUCT_OPTIONS = ['머시닝센터', 'NC선반', '정밀 감속기', '정밀 베어링'];
+const ACTIVE_OPTION = '머시닝센터';
 
 export function S6Page(): JSX.Element {
   const activeHints = useHintsStore((s) => s.s6);
   const toggleHint = useHintsStore((s) => s.toggleS6);
   const [hoverRowId, setHoverRowId] = useState<string | null>(null);
 
-  const product = tolueneRepository.getProduct();
-  const trade = tolueneRepository.getTradeSeries();
-  const companies = tolueneRepository.listCompanies();
-  const wordcloud = tolueneRepository.getWordcloud();
-  const hints = tolueneRepository.listHints();
-  const graph = tolueneRepository.getPositionedGraph();
+  const product = s6Repository.getProduct();
+  const trade = s6Repository.getTradeSeries();
+  const companies = s6Repository.listCompanies();
+  const wordcloud = s6Repository.getWordcloud();
+  const hints = s6Repository.listHints();
+  const graph = s6Repository.getPositionedGraph();
 
   return (
     <>
       <div className="page-band">
         <div className="page-band-inner">
           <div>
-            <div className="label">서브 시연 · S6 · 안전책</div>
-            <h1>톨루엔 단일 품목 풀 가시화</h1>
+            <div className="label">서브 시연 · S6 · 가치사슬</div>
+            <h1>공작기계 핵심 품목 가치사슬 가시화</h1>
             <div className="page-band-sub">
-              복잡한 추천 로직 없이도 GIVC가 보유한 단일 품목 정보를 한 화면 지식그래프로 합치는 것만으로
-              산업부의 "창 띄웠다 끄는" 페인이 해결됩니다.
+              복잡한 추천 로직 없이도 GIVC가 보유한 핵심 품목 정보를 소재→부품→장비 가치사슬 지식그래프로 합치는 것만으로
+              KOAMI 소부장 가치사슬 분석의 "창 띄웠다 끄는" 페인이 해결됩니다.
             </div>
           </div>
           <div className="page-band-right">
             <Badge kind="info">
-              <Beaker size={11} /> {product.hsCode}
+              <Settings size={11} /> {product.hsCode}
             </Badge>
-            <Badge kind="default">{product.cas}</Badge>
+            <Badge kind="default">{product.ksic}</Badge>
           </div>
         </div>
       </div>
@@ -79,9 +80,9 @@ export function S6Page(): JSX.Element {
                 <button
                   key={p}
                   className="btn btn-sm"
-                  style={{ justifyContent: 'flex-start', opacity: p === '톨루엔' ? 1 : 0.55 }}
+                  style={{ justifyContent: 'flex-start', opacity: p === ACTIVE_OPTION ? 1 : 0.55 }}
                 >
-                  {p === '톨루엔' && (
+                  {p === ACTIVE_OPTION && (
                     <span
                       style={{
                         width: 4,
@@ -91,8 +92,8 @@ export function S6Page(): JSX.Element {
                       }}
                     ></span>
                   )}
-                  <span style={{ marginLeft: p === '톨루엔' ? 0 : 8 }}>{p}</span>
-                  {p === '톨루엔' && (
+                  <span style={{ marginLeft: p === ACTIVE_OPTION ? 0 : 8 }}>{p}</span>
+                  {p === ACTIVE_OPTION && (
                     <span
                       style={{
                         marginLeft: 'auto',
@@ -127,21 +128,21 @@ export function S6Page(): JSX.Element {
         <main className="col-main">
           <KpiStrip
             items={[
-              { label: '연간 수출', value: '1,032천톤', delta: '+8.5% YoY', deltaDir: 'up' },
-              { label: '연간 수입', value: '560천톤', delta: '+27% YoY', deltaDir: 'down' },
-              { label: '핵심 기업', value: '3개', delta: '예비 2개', deltaDir: 'up' },
+              { label: '연간 수출 (장비)', value: '$972M', delta: '+8.5% YoY', deltaDir: 'up' },
+              { label: '핵심부품 수입', value: '$994M', delta: '감속기 수입의존', deltaDir: 'down' },
+              { label: '핵심 기업', value: '4개', delta: '예비 1개', deltaDir: 'up' },
               {
                 label: '주요 수입국',
-                value: '일본 38%',
-                delta: '중국 27% · 미국 14%',
+                value: '일본 34%',
+                delta: '독일 22% · 중국 18%',
                 deltaDir: 'up',
               },
             ]}
           />
 
           <Card
-            title="중앙 · 톨루엔 지식 그래프"
-            sub="HSCode ↔ 수입국 ↔ 핵심기업 ↔ 전후방"
+            title="중앙 · 공작기계 가치사슬 지식 그래프"
+            sub="장비 ↔ 부품(베어링·감속기) ↔ 소재 ↔ 수입국"
             flushBody
           >
             <KGraph graph={graph} highlightFrom={hoverRowId} />
@@ -171,7 +172,7 @@ export function S6Page(): JSX.Element {
                     >
                       <td className="col-name">
                         {c.name}
-                        <span className="company-sub">{c.biz}</span>
+                        <span className="company-sub">{c.tier} · {c.biz}</span>
                       </td>
                       <td>
                         {c.coreType === 1 ? (
@@ -232,9 +233,9 @@ export function S6Page(): JSX.Element {
           </Card>
 
           <Callout kind="info" title="기능 설명">
-            현재는 톨루엔 단일 노드 중심이지만, <strong>전후방 데이터</strong>를 결합하면{' '}
-            <strong>'영향 분석'</strong>까지 자동화됩니다. 전후방 데이터셋 범위에 따라 분석 깊이가
-            확장됩니다.
+            현재는 머시닝센터(장비) 중심 가치사슬이지만, <strong>전후방 데이터</strong>를 결합하면{' '}
+            <strong>'자립화 영향 분석'</strong>까지 자동화됩니다. 소재→부품→장비 단계별 데이터셋 범위에 따라
+            분석 깊이가 확장됩니다.
           </Callout>
 
           <ProvenanceLegend />
@@ -281,8 +282,8 @@ export function S6Page(): JSX.Element {
               뉴스 매칭이 산업 단위에서{' '}
               <strong style={{ color: 'var(--axis-text-primary)' }}>품목 단위</strong>로 내려오면 —
               예를 들어{' '}
-              <strong style={{ color: 'var(--axis-text-primary)' }}>'나프타'와 '경질 라프타'를 구분</strong>
-              하는 의미 통일 — 위험 알림이 한 단계 더 깊어집니다.
+              <strong style={{ color: 'var(--axis-text-primary)' }}>'정밀 베어링'과 '정밀 감속기'를 구분</strong>
+              하는 의미 통일 — 수입의존 부품의 위험 알림이 한 단계 더 깊어집니다.
             </div>
           </Card>
         </aside>

@@ -9,7 +9,7 @@ interface AppHeaderProps {
 const HEADER_TABS = [
   { id: '/', label: 'Overview' },
   { id: '/scenario/rnd', label: 'S4 · R&D 추천' },
-  { id: '/scenario/toluene', label: 'S6 · 공작기계' },
+  { id: '/scenario/s6', label: 'S6 · 공작기계' },
   { id: '/about/ontology', label: '온톨로지' },
   { id: '/about/data', label: '데이터 출처' },
 ] as const;
