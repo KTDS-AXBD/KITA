@@ -72,8 +72,8 @@
 
 - [ ] 33개 기본 항목(I1~I33) 100% 통과
 - [ ] 신규 기능 항목(N1~N12) 100% 통과 (chatgivc-align)
-- [ ] 첫 로딩 <2s (Lighthouse/실측)
-- [ ] S4 가중치 재계산 <100ms (콘솔 `performance.now()`)
+- [x] 첫 로딩 <2s (Lighthouse/실측) — **✅ 측정 완료 2026-05-26**, 3화면 모두 0.5~0.7s (아래 Lighthouse 결과)
+- [ ] S4 가중치 재계산 <100ms (콘솔 `performance.now()`) — *F016서 0.17ms 실측(MEMORY), 시연 노트북 재확인 권장*
 - [ ] 출처 표기(⭐/△/※) 누락 0 (신규 GvcPane·통합뷰·질의 결과 포함)
 - [ ] Tweaks `localStorage('koami-tweaks')` 영속 (새로고침 후 값 유지)
 - [ ] `grep -r 'window.parent' src/` → 0건 (host-protocol 제거 검증)
@@ -91,6 +91,21 @@
 | `pnpm dev` | ✅ localhost:5173 200 OK | ✅ 동일 |
 | `grep window.parent src/` | ✅ 0건 | ✅ 0건 |
 | `grep -rE 'GVC[0-9]{5}' src/` | — | ✅ 0건 (F027 가드 테스트) |
+
+### Lighthouse 실측 (2026-05-26)
+
+> `pnpm build` → `vite preview :4173` → `npx lighthouse --preset=desktop --only-categories=performance` (Chrome headless). 목표: 첫 로딩 <2s.
+
+| 화면 | Perf | FCP | LCP | Speed Index | TBT | CLS | TTI |
+|------|:----:|:---:|:---:|:----:|:---:|:---:|:---:|
+| Landing (`/`) | **99** | 0.7s | 0.7s | 0.7s | 0ms | 0 | 0.7s |
+| S4 R&D (`/#/scenario/rnd`) | **100** | 0.5s | 0.5s | 0.5s | 0ms | 0.039 | 0.5s |
+| S6 가치사슬+ChatGIVC (`/#/scenario/s6`) | **100** | 0.5s | 0.5s | 0.5s | 0ms | 0.017 | 0.5s |
+
+- ✅ **3화면 전부 첫 로딩 0.5~0.7s — <2s 목표 대폭 통과** (TBT 0ms, CLS <0.1 양호)
+- 빌드 산출: JS 238.8KB (gz 77.9) + CSS 51.3KB (gz 9.9)
+- ⚠️ desktop 프리셋·localhost·headless 기준. 실 시연 환경(노트북·네트워크·CF Access)은 별도 변수 — 시연 노트북 실측 권장 (M5)
+- HTML 리포트: `/tmp/koami-lh-{landing,scenario-rnd,scenario-s6}.report.html` (재부팅 시 소멸, `npx lighthouse`로 재생성)
 
 ## 차이 기록
 
