@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useHintsStore, useGvcDomainStore } from '@/store';
+import { ChatGivcQueryPane } from './ChatGivcQueryPane';
 import { s6Repository } from '@/data/repository';
 import {
   Card,
@@ -27,6 +28,7 @@ export function S6Page(): JSX.Element {
   const toggleHint = useHintsStore((s) => s.toggleS6);
   const [hoverRowId, setHoverRowId] = useState<string | null>(null);
   const activeDomain = useGvcDomainStore((s) => s.activeDomain);
+  const [givcTab, setGivcTab] = useState<'analysis' | 'query'>('analysis');
 
   const product = s6Repository.getProduct();
   const trade = s6Repository.getTradeSeries();
@@ -230,14 +232,15 @@ export function S6Page(): JSX.Element {
             </div>
           </Card>
 
-          {/* ─── F026: GVC 재정렬 + 통합 시나리오 (additive) ─── */}
+          {/* ─── F026+F027: GVC 재정렬 + ChatGIVC 질의 (additive) ─── */}
           <div style={{ marginTop: 8 }}>
+            {/* 헤더 + 도메인 토글 (F026 원형 유지) */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: 14,
+                marginBottom: 10,
                 paddingBottom: 10,
                 borderBottom: '1px solid var(--axis-line-soft)',
               }}
@@ -252,12 +255,57 @@ export function S6Page(): JSX.Element {
               </div>
               <DomainToggle />
             </div>
-            <GvcPane domain={activeDomain} />
-            <div style={{ marginTop: 14 }}>
-              <GvcIntegration />
+
+            {/* ─── F027: 탭 switcher ─── */}
+            <div
+              style={{
+                display: 'flex',
+                gap: 4,
+                marginBottom: 14,
+                borderBottom: '1px solid var(--axis-line-soft)',
+                paddingBottom: 0,
+              }}
+            >
+              {(
+                [
+                  { id: 'analysis', label: '📊 분석' },
+                  { id: 'query', label: '💬 ChatGIVC 질의' },
+                ] as const
+              ).map((tab) => (
+                <button
+                  key={tab.id}
+                  className="btn btn-ghost btn-sm"
+                  style={{
+                    borderRadius: '4px 4px 0 0',
+                    borderBottom: givcTab === tab.id
+                      ? '2px solid var(--axis-color-blue-600)'
+                      : '2px solid transparent',
+                    color: givcTab === tab.id
+                      ? 'var(--axis-color-blue-600)'
+                      : undefined,
+                    fontWeight: givcTab === tab.id ? 600 : undefined,
+                  }}
+                  onClick={() => setGivcTab(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
+
+            {/* 📊 분석 탭 — F026 원형 (무변경) */}
+            {givcTab === 'analysis' && (
+              <>
+                <GvcPane domain={activeDomain} />
+                <div style={{ marginTop: 14 }}>
+                  <GvcIntegration />
+                </div>
+              </>
+            )}
+
+            {/* 💬 ChatGIVC 질의 탭 — F027 신규 */}
+            {givcTab === 'query' && <ChatGivcQueryPane domain={activeDomain} />}
           </div>
-          {/* ─── /F026 ─── */}
+          {/* ─── /F026+F027 ─── */}
 
           <Callout kind="info" title="기능 설명">
             현재는 머시닝센터(장비) 중심 가치사슬이지만, <strong>전후방 데이터</strong>를 결합하면{' '}
