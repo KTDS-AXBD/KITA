@@ -94,7 +94,7 @@ interface Env { AI: Ai; ASSETS: Fetcher; RATE_LIMIT_KV: KVNamespace; DB: D1Datab
   { "binding": "DB", "database_name": "koami-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
 ]
 ```
-> 실 `wrangler.jsonc`는 gitignore — deploy-guide에 D1 바인딩 절차 추가. database_id는 MEMORY의 `74b58bed…`.
+> 실 `wrangler.jsonc`는 gitignore — deploy-guide에 D1 바인딩 절차 추가. database_id는 MEMORY의 `f0536778…`.
 
 ### 3.2 rate-limit 범위 축소 (필수)
 현재 `app.use('/api/*', rateLimit)` → 쿼리 엔드포인트까지 3회/시간 throttle. **`/api/chat`로 한정**:

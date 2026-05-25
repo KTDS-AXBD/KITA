@@ -21,7 +21,7 @@
   ```jsonc
   "d1_databases": [
     { "binding": "DB", "database_name": "koami-givc-poc",
-      "database_id": "74b58bed-dee6-4f95-b338-11e304f08fad" }
+      "database_id": "f0536778-8bf5-4bfa-8db9-e6ade5988457" }
   ]
   ```
   - 엔드포인트: `GET /api/givc/graph?root=TOL&depth=2` · `/api/givc/trade?hs=290230` · `/api/givc/search?q=<term>` (SELECT-only, rate-limit 미적용).
