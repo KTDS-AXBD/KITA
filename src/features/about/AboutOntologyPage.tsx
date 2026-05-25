@@ -6,7 +6,7 @@ export function AboutOntologyPage(): JSX.Element {
       <div className="article-eyebrow">About · Ontology</div>
       <h1>GIVC 위에 온톨로지를 얹는다는 것</h1>
       <p className="article-lead">
-        GIVC는 산업부·산자부가 산업 현황을 분석하기 위해 만든 데이터 마트입니다.
+        GIVC는 기계산업 소재·부품·장비(소부장) 가치사슬 현황을 분석하기 위한 데이터 마트입니다.
         <strong style={{ color: 'var(--axis-text-primary)' }}> 온톨로지 레이어</strong>는 GIVC
         테이블 위에 "의미 통일(Schema 정합화)"과 "관계 추론(Relation inference)"을 더해, 단순
         조회를 의사결정 지원으로 끌어올립니다.
@@ -19,8 +19,8 @@ export function AboutOntologyPage(): JSX.Element {
         쓰고, 매번 의미가 달라집니다.
       </p>
       <p>
-        온톨로지 레이어는 이 작업의 <strong>의미 단위</strong>를 미리 통일해 둡니다 — "톨루엔"이
-        한 곳에서는 HS 290230, 다른 곳에서는 BTX의 하위 품목으로 등장하더라도{' '}
+        온톨로지 레이어는 이 작업의 <strong>의미 단위</strong>를 미리 통일해 둡니다 — "정밀 감속기"가
+        한 곳에서는 HS 848340, 다른 곳에서는 동력전달장치의 하위 부품으로 등장하더라도{' '}
         <strong>같은 엔티티</strong>로 다룹니다.
       </p>
 
@@ -32,9 +32,9 @@ export function AboutOntologyPage(): JSX.Element {
             화면에 자동 생성. 가중치 슬라이더 조작 시 결과·근거·반대 추천이 모두 실시간 재계산.
           </div>
         </Card>
-        <Card title="S6 · 톨루엔 단일 품목">
+        <Card title="S6 · 공작기계 가치사슬">
           <div style={{ fontSize: 13, color: 'var(--axis-text-secondary)', lineHeight: 1.6 }}>
-            톨루엔 하나만 보더라도 — HS코드·수입국·핵심기업·전후방을 한 화면 지식그래프로 통합.
+            핵심 품목 하나로 — 소재→부품→장비 가치사슬과 HS코드·수입국·핵심기업을 한 화면 지식그래프로 통합.
             창을 띄웠다 끄는 페인을 단일 화면 통합만으로 해결.
           </div>
         </Card>

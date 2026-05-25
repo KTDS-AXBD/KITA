@@ -50,7 +50,7 @@ function MiniS6(): JSX.Element {
           strokeWidth="1.5"
         />
         <text x="160" y="63" textAnchor="middle" fontSize="10" fontWeight="700" fill="var(--axis-text-primary)">
-          톨루엔
+          감속기
         </text>
         <circle cx="60" cy="30" r="10" fill="var(--axis-color-green-50)" stroke="var(--axis-color-green-300)" />
         <text x="60" y="33" textAnchor="middle" fontSize="8" fill="var(--axis-text-secondary)">
@@ -107,9 +107,9 @@ export function LandingPage(): JSX.Element {
           무엇이 가능한가.
         </h1>
         <p className="hero-sub">
-          설문 대신 데모로 — 산업부·산자부 정책 의사결정에 필요한
-          <strong style={{ color: 'var(--axis-text-primary)' }}> R&D 적합 기업 추천</strong>과
-          <strong style={{ color: 'var(--axis-text-primary)' }}> 단일 품목 풀 가시화</strong>를
+          설문 대신 데모로 — 기계산업 소재·부품·장비(소부장) 정책·회원사 지원에 필요한
+          <strong style={{ color: 'var(--axis-text-primary)' }}> 자립화 R&D 적합 기업 추천</strong>과
+          <strong style={{ color: 'var(--axis-text-primary)' }}> 핵심 품목 가치사슬 가시화</strong>를
           현재 보유 데이터만으로 구현 가능한 수준에서 보여주고, 추가 데이터가 결합될 때의 확장 path까지 한 화면에 제시합니다.
         </p>
         <div className="hero-cta">
@@ -163,9 +163,9 @@ export function LandingPage(): JSX.Element {
             className="scenario-card primary"
           >
             <span className="sc-tag">MAIN · S4</span>
-            <div className="sc-title">산기평 R&D 적합 기업 추천</div>
+            <div className="sc-title">소부장 자립화 R&D 적합 기업 추천</div>
             <p className="sc-desc">
-              산자부가 새 R&D 공고를 띄울 때, GIVC 위 온톨로지 레이어가
+              산기평이 소부장 자립화 R&D 공고를 띄울 때, GIVC 위 온톨로지 레이어가
               <strong style={{ color: '#fff' }}> 적합 기업 Top 5 + 선정 근거 + 반대 추천</strong>을 자동 제시합니다.
               가중치를 바꾸면 결과가 실시간으로 재계산됩니다.
             </p>
@@ -193,10 +193,10 @@ export function LandingPage(): JSX.Element {
             className="scenario-card"
           >
             <span className="sc-tag">SUB · S6</span>
-            <div className="sc-title">톨루엔 단일 품목 풀 가시화</div>
+            <div className="sc-title">공작기계 핵심 품목 가치사슬 가시화</div>
             <p className="sc-desc">
-              복잡한 추천 로직 없이도 GIVC가 보유한 단일 품목 정보를 한 화면 지식그래프로 합치는 것만으로
-              산업부의 "창 띄웠다 끄는" 페인이 해결됩니다.
+              복잡한 추천 로직 없이도 GIVC가 보유한 핵심 품목 정보를 소재→부품→장비 가치사슬 지식그래프로 합치는 것만으로
+              KOAMI 소부장 가치사슬 분석의 "창 띄웠다 끄는" 페인이 해결됩니다.
             </p>
             <div className="sc-meta">
               <span className="badge">지식그래프</span>
@@ -315,8 +315,8 @@ export function LandingPage(): JSX.Element {
                 <td>
                   <Badge kind="info">Sub</Badge>
                 </td>
-                <td>S6 톨루엔</td>
-                <td>단일 품목 한 화면 통합 가시화</td>
+                <td>S6 공작기계</td>
+                <td>핵심 품목 가치사슬(소재→부품→장비) 한 화면 통합 가시화</td>
               </tr>
               <tr>
                 <td>

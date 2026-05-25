@@ -8,7 +8,7 @@ interface CatalogRow {
 }
 
 const CATALOG: CatalogRow[] = [
-  { ns: 'mart.lnk0951a', type: '⭐ 실', use: '품목·HS코드 연결, S6 톨루엔 중심 그래프', usage: 'S6 중앙 그래프, KPI 수출입' },
+  { ns: 'mart.lnk0951a', type: '⭐ 실', use: '품목·HS코드 연결, S6 공작기계 가치사슬 그래프', usage: 'S6 중앙 그래프, KPI 수출입' },
   { ns: 'mart.lnk0951a.itemcode', type: '⭐ 실', use: 'HS코드 분류', usage: 'S6 HS노드' },
   { ns: 'scmm_his_chart', type: '⭐ 실', use: 'R&D 투자·부도율 시계열', usage: 'S4 지표 노드 (R&D, 리스크)' },
   { ns: '  └ itmrnd0001010', type: '⭐ 실', use: 'R&D 투자 증가율', usage: 'S4 가중치 슬라이더 [R&D]' },
