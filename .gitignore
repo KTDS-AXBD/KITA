@@ -39,3 +39,4 @@ scripts/poc/out/
 # F014 적재 생성물/캐시
 scripts/ingest/out/
 scripts/ingest/.cache/
+/s6-real-data.png
