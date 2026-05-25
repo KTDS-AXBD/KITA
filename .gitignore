@@ -35,3 +35,7 @@ scripts/poc/out/
 
 # Playwright MCP 임시 산출물
 .playwright-mcp/
+
+# F014 적재 생성물/캐시
+scripts/ingest/out/
+scripts/ingest/.cache/
