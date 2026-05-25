@@ -60,7 +60,8 @@
 | F013 | M0 PoC 게이트 ✅ 4/4 PASS — 0a 관세청2종 승인·제한없음 + DART 키유효 / 0b D1 깊이2 **0.37ms** / 0c Vectorize 의미검색 **100%** / 0d 톨루엔 실데이터 4분기 적재. 저장소(D1+Vectorize) 타당성 입증 → F014 진행 | KITA-REQ-013 | P0 | S4 | ✅ |
 | F014 | 적재 파이프라인 + 저장소 스키마 ✅ — `pnpm ingest:all` 1명령(관세청 무역 4분기·국가3 + DART 기업 6사 실매출 + 그래프 11노드 + Vectorize), 정식 스키마 5테이블, 검증·provenance real 24 | KITA-REQ-014 | P0 | S5 | ✅ |
 | F015 | Repository 실데이터 구현체 + 어댑터 계층 ✅ — SnapshotTolueneRepository(동기) + 어댑터(gap-fill·결정적 레이아웃) + index.ts 토글(VITE_DATA_SOURCE=real). **화면 코드 diff 0** + typecheck/lint/test 9/9 PASS | KITA-REQ-015 | P0 | S5 | ✅ |
-| F016 | S6 4종 조회 + 검증 — 정형(SQL)·그래프·전문검색(FTS) P0 / 의미검색(RAG) P1 + 회귀(vitest+33인터랙션)·성능 기준 유지 | KITA-REQ-016 | P0 | S6 | 📋 |
+| F016 | S6 P0 조회 정식화 + 검증 — 정형(SQL)·그래프(재귀CTE)·전문검색(FTS5) 3종 + 회귀(vitest+33인터랙션, 실데이터 모드)·성능 실측(Lighthouse 첫로딩 <2s·S4 재계산 <100ms) | KITA-REQ-016 | P0 | S6 | 🔧 |
+| F018 | S6 P1 조회 확장 — 의미검색(RAG via Worker) + 뉴스 워드클라우드 실적재(뉴스빅데이터 메타 / BIGKinds 풀텍스트 저작권 차단). F016에서 분리(S6 2026-05-25), 외부 의존·저작권 게이트 | KITA-REQ-018 | P1 | 별도 | 📋 |
 | F017 | Phase 2 확장 — S4 슬라이스 + GIVC·PII 적재(마스킹·접근통제·NDA). 외부 게이트 의존, 보류 | KITA-REQ-017 | P1 | 별도 | 📋 |
 
 ---
