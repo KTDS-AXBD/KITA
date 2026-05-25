@@ -21,13 +21,16 @@
     "poc:vec": "node --env-file-if-exists=.dev.vars scripts/poc/bench-vectorize.mjs",
     "poc:ingest": "node --env-file-if-exists=.dev.vars scripts/ingest/poc-toluene.mjs",
     "poc:snapshot": "node scripts/poc/build-snapshot.mjs",
-    "db:migrate": "wrangler d1 execute kita-givc-poc --remote --file migrations/0001_kita_givc.sql",
+    "db:migrate": "wrangler d1 execute kita-givc-poc --remote --file migrations/0001_kita_givc.sql && wrangler d1 execute kita-givc-poc --remote --file migrations/0002_fts.sql",
+    "db:migrate:local": "wrangler d1 execute kita-givc-poc --local --file migrations/0001_kita_givc.sql && wrangler d1 execute kita-givc-poc --local --file migrations/0002_fts.sql",
     "ingest:trade": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-trade.mjs",
     "ingest:companies": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-companies.mjs",
     "ingest:graph": "node scripts/ingest/build-graph.mjs",
+    "ingest:fts": "node scripts/ingest/ingest-fts.mjs",
     "ingest:vec": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-vectorize.mjs",
     "ingest:all": "node --env-file-if-exists=.dev.vars scripts/ingest/ingest-all.mjs",
-    "ingest:snapshot": "node scripts/ingest/build-snapshot.mjs"
+    "ingest:snapshot": "node scripts/ingest/build-snapshot.mjs",
+    "smoke:queries": "node scripts/ingest/smoke-queries.mjs --local"
   },
   "dependencies": {
     "@ktds-axbd/harness-kit": "^0.12.0",

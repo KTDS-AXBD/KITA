@@ -4,6 +4,7 @@ import { query } from './lib/d1.mjs';
 import { ingestTrade } from './ingest-trade.mjs';
 import { ingestCompanies } from './ingest-companies.mjs';
 import { buildGraph } from './build-graph.mjs';
+import { ingestFts } from './ingest-fts.mjs';
 import { ingestVectorize } from './ingest-vectorize.mjs';
 
 const SKIP_VEC = process.argv.includes('--no-vectorize');
@@ -13,6 +14,7 @@ const SKIP_VEC = process.argv.includes('--no-vectorize');
   console.log('  무역:', JSON.stringify(await ingestTrade()));
   console.log('  기업:', JSON.stringify(await ingestCompanies()));
   console.log('  그래프:', JSON.stringify(await buildGraph()));
+  console.log('  FTS:', JSON.stringify(await ingestFts()));
   console.log('  벡터:', SKIP_VEC ? '(skip)' : JSON.stringify(await ingestVectorize()));
 
   const stats = query(`

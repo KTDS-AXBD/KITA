@@ -80,10 +80,12 @@ describe('그래프 재귀 CTE', () => {
     expect(s).toContain("'xDROP'");
     expect(s).toContain('r.depth < 4');
   });
-  it('nodesByIdsSql / edgesWithinSql: IN 절 + src<dst dedup', () => {
+  it('nodesByIdsSql / edgesWithinSql: IN 절 + src<dst dedup + 결정적 ORDER BY', () => {
     expect(nodesByIdsSql(['TOL', 'C_JP'])).toContain("IN ('TOL','C_JP')");
+    expect(nodesByIdsSql(['TOL'])).toContain('ORDER BY CASE type');
     expect(nodesByIdsSql([])).toContain("IN ('')");
     expect(edgesWithinSql(['a', 'b'])).toContain('src < dst');
+    expect(edgesWithinSql(['a', 'b'])).toContain('ORDER BY src, dst');
   });
 });
 

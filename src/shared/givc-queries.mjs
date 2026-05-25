@@ -69,16 +69,16 @@ export const graphReachSql = (root = 'TOL', depth = 4) =>
 )
 SELECT DISTINCT id FROM reach;`;
 
-/** 노드 id 목록 → 노드 상세(provenance AS source). ids는 sanitize 후 IN 절 */
+/** 노드 id 목록 → 노드 상세(provenance AS source). 결정적 정렬(타입랭크: 중심→hscode→국가→기업, then id) */
 export const nodesByIdsSql = (ids) => {
   const list = (ids ?? []).map((id) => `'${sanitizeId(id)}'`).join(',') || "''";
-  return `SELECT id, type, label, r, meta, provenance AS source FROM graph_nodes WHERE id IN (${list});`;
+  return `SELECT id, type, label, r, meta, provenance AS source FROM graph_nodes WHERE id IN (${list}) ORDER BY CASE type WHEN 'rnd' THEN 0 WHEN 'hscode' THEN 1 WHEN 'country' THEN 2 WHEN 'company' THEN 3 ELSE 4 END, id;`;
 };
 
-/** 부분 그래프 엣지(src<dst dedup, 스냅샷 shape 일치) */
+/** 부분 그래프 엣지(src<dst dedup, 결정적 정렬) */
 export const edgesWithinSql = (ids) => {
   const list = (ids ?? []).map((id) => `'${sanitizeId(id)}'`).join(',') || "''";
-  return `SELECT src, dst FROM graph_edges WHERE src IN (${list}) AND dst IN (${list}) AND src < dst;`;
+  return `SELECT src, dst FROM graph_edges WHERE src IN (${list}) AND dst IN (${list}) AND src < dst ORDER BY src, dst;`;
 };
 
 // ── FTS5 전문검색 (기업·그래프 코퍼스) ────────────────────────
