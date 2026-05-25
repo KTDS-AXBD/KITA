@@ -32,3 +32,6 @@ wrangler.jsonc
 
 # F013 PoC 생성물
 scripts/poc/out/
+
+# Playwright MCP 임시 산출물
+.playwright-mcp/
