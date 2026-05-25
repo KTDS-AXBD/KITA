@@ -40,14 +40,19 @@ bash scripts/healthcheck.sh https://kita.minu.best
 - `ssl_verify_result 0` = 인증서 정상 발급·체인 검증 통과.
 - `docs/qa-checklist.md` 수행 (최소 Chrome 1920 + 오프라인 1회).
 
-## 접근제어 (S3: 공개 모델)
-- **공개 (현재)**: `kita.minu.best`는 누구나 접근. 데이터 100% Mock + 영업 멘트 중립화로 노출 위험 낮음. 영업기밀(고객명·전략)은 git 제외 + 프로토타입 중립화로 코드/화면에 없음.
-- **비추측 URL+시연후 만료 모델은 폐기** — 커스텀 도메인은 기억 쉽고 영구라 obscurity 통제가 무의미.
-- **더 강한 통제가 필요하면**: 아래 CF Access 런북 적용 (지정 이메일 + One-time PIN). 단 방문자마다 인증 필요 → 즉석 공유는 번거로워짐.
+## 접근제어 (CF Access 게이팅 — 2026-05-25 적용)
+- **현재 상태**: `kita.minu.best`는 **CF Access로 보호**됨. 허용 이메일(`sinclairseo@gmail.com`·`ktds.axbd@gmail.com`)만 OTP 또는 Google 인증 후 접근. 비인증 요청은 302 → `axconsulting.cloudflareaccess.com` 로그인.
+- **앱**: Zero Trust → Access → Applications → **`KITA Demo`** (self-hosted, domain `kita.minu.best`, path 전체, session 24h). 정책 **`Allowed viewers`** (Allow + Emails).
+- **`/api/chat`도 자동 보호** — 같은 호스트라 인증 쿠키 `CF_Authorization`가 same-origin fetch에 실려 What-If LLM은 정상 동작하면서 무단 호출은 차단.
+- **접근모델 이력**: 비추측 URL+시연후 만료(폐기) → 공개 커스텀 도메인 → **CF Access 게이팅(현재)**.
 
-### CF Access 적용 런북 (옵션 — 지정 이메일 + One-time PIN, 대시보드)
+### 관리
+- **이메일 추가/삭제**: Zero Trust 대시보드 → Access → Applications → `KITA Demo` → 정책 Edit. 새 고객 참석자 이메일은 시연 전 추가.
+- **해제(다시 공개)**: 대시보드에서 `KITA Demo` 앱 삭제 → 즉시 공개 복귀.
 
-> 외부 IdP 불필요. Cloudflare 내장 One-time PIN(이메일 코드)으로 허용 이메일 검증. 토큰엔 Access 권한이 없어 대시보드 수동.
+### (참조) 대시보드로 재생성하려면 — 지정 이메일 + One-time PIN
+
+> 위 앱은 Access API로 생성됨(self-hosted, allowed_idps 비움=OTP+Google). 아래는 대시보드 수동 재생성 절차.
 
 **0. Zero Trust 최초 활성화 (1회성)**: dash.cloudflare.com → 계정 `AX컨설팅팀` → 좌측 **Zero Trust** (또는 one.dash.cloudflare.com) → 팀 이름 입력(예 `ktds-axbd` → `ktds-axbd.cloudflareaccess.com`) → **Zero Trust Free**(50명, $0, 카드 등록 요구 가능) 확인.
 
