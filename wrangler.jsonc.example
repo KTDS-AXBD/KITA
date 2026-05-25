@@ -31,6 +31,8 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    // /api/* 는 Worker 우선(Hono /api/chat·/api/givc). 없으면 navigation 요청이 SPA fallback에 가로채임(F023 실측)
+    "run_worker_first": ["/api/*"]
   }
 }
