@@ -44,13 +44,13 @@ src/
 ├─ features/
 │  ├─ landing/              # F002 LandingPage
 │  ├─ rnd/                  # F003 S4 — scoring.ts / useRndRecommendation / S4Page
-│  ├─ toluene/              # F004 S6 — TradeChart / WordCloud / AnomalyPanel / S6Page
+│  ├─ s6/                   # F004 S6 — TradeChart / WordCloud / AnomalyPanel / S6Page (F021 toluene→s6 리네임)
 │  └─ about/                # AboutOntologyPage, AboutDataPage
 ├─ store/                   # Zustand: weights / hints / tweaks(persist)
 ├─ data/
 │  ├─ mock/                 # TS fixtures (F005 source 필수 타입)
 │  ├─ graph-layout/         # F006 좌표 JSON 스냅샷 + mergeLayout()
-│  └─ repository/           # Rnd / Toluene Repository (Mock 구현)
+│  └─ repository/           # Rnd / S6 / Gvc Repository (Mock 구현)
 ├─ types/                   # Provenance, Candidate, GraphNode, Tweaks 등 (React 비의존)
 ├─ worker/                  # F009 Hono Worker — /api/chat (CF Workers AI) + ASSETS fallthrough
 └─ styles/                  # AXIS CSS (그대로 이송)
