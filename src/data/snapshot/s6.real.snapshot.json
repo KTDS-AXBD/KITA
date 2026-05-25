@@ -1,0 +1,237 @@
+{
+  "_generated": "2026-05-25T03:39:24.666Z",
+  "_note": "F014 실데이터 스냅샷 (옵션A). 관세청 무역 + DART 기업.",
+  "graph": {
+    "nodes": [
+      {
+        "id": "TOL",
+        "type": "rnd",
+        "label": "톨루엔",
+        "r": 12,
+        "meta": {
+          "HS": "290230",
+          "CAS": "108-88-3"
+        },
+        "source": "real"
+      },
+      {
+        "id": "HS290230",
+        "type": "hscode",
+        "label": "HS 290230",
+        "r": 8,
+        "source": "real"
+      },
+      {
+        "id": "C_CN",
+        "type": "country",
+        "label": "중국",
+        "r": 10.1,
+        "meta": {
+          "비중": "18%"
+        },
+        "source": "real"
+      },
+      {
+        "id": "C_JP",
+        "type": "country",
+        "label": "일본",
+        "r": 17.9,
+        "meta": {
+          "비중": "82%"
+        },
+        "source": "real"
+      },
+      {
+        "id": "C_US",
+        "type": "country",
+        "label": "미국",
+        "r": 8,
+        "meta": {
+          "비중": "0%"
+        },
+        "source": "real"
+      },
+      {
+        "id": "00165413",
+        "type": "company",
+        "label": "롯데케미칼(주)",
+        "r": 10,
+        "source": "real"
+      },
+      {
+        "id": "00461593",
+        "type": "company",
+        "label": "한화토탈에너지스 주식회사",
+        "r": 10,
+        "source": "real"
+      },
+      {
+        "id": "00278373",
+        "type": "company",
+        "label": "여천NCC(주)",
+        "r": 10,
+        "source": "real"
+      },
+      {
+        "id": "00106368",
+        "type": "company",
+        "label": "금호석유화학(주)",
+        "r": 8,
+        "source": "real"
+      },
+      {
+        "id": "00260383",
+        "type": "company",
+        "label": "대한유화(주)",
+        "r": 8,
+        "source": "real"
+      },
+      {
+        "id": "01316236",
+        "type": "company",
+        "label": "효성화학(주)",
+        "r": 8,
+        "source": "real"
+      }
+    ],
+    "edges": [
+      [
+        "HS290230",
+        "TOL"
+      ],
+      [
+        "C_CN",
+        "TOL"
+      ],
+      [
+        "C_CN",
+        "HS290230"
+      ],
+      [
+        "C_JP",
+        "TOL"
+      ],
+      [
+        "C_JP",
+        "HS290230"
+      ],
+      [
+        "C_US",
+        "TOL"
+      ],
+      [
+        "C_US",
+        "HS290230"
+      ],
+      [
+        "00165413",
+        "TOL"
+      ],
+      [
+        "00461593",
+        "TOL"
+      ],
+      [
+        "00278373",
+        "TOL"
+      ],
+      [
+        "00106368",
+        "TOL"
+      ],
+      [
+        "00260383",
+        "TOL"
+      ],
+      [
+        "01316236",
+        "TOL"
+      ]
+    ],
+    "viewBox": "0 0 800 500"
+  },
+  "tradeSeries": {
+    "quarters": [
+      "2024Q1",
+      "2024Q2",
+      "2024Q3",
+      "2024Q4"
+    ],
+    "exports": [
+      186218559,
+      204938718,
+      81646711,
+      58342434
+    ],
+    "imports": [
+      90116945,
+      90085762,
+      104131398,
+      101272559
+    ],
+    "anomalies": [],
+    "source": "real"
+  },
+  "companies": [
+    {
+      "id": "00165413",
+      "name": "롯데케미칼(주)",
+      "biz": "원료 공급(BTX·아로마틱)",
+      "sales": "20.4조",
+      "share": "40%",
+      "coreType": 1,
+      "role": "원료 공급(BTX·아로마틱)",
+      "source": "real"
+    },
+    {
+      "id": "00278373",
+      "name": "여천NCC(주)",
+      "biz": "원료 공급(NCC)",
+      "sales": "6.4조",
+      "share": "13%",
+      "coreType": 1,
+      "role": "원료 공급(NCC)",
+      "source": "real"
+    },
+    {
+      "id": "00461593",
+      "name": "한화토탈에너지스 주식회사",
+      "biz": "원료 공급(아로마틱)",
+      "sales": "11.8조",
+      "share": "23%",
+      "coreType": 1,
+      "role": "원료 공급(아로마틱)",
+      "source": "real"
+    },
+    {
+      "id": "00106368",
+      "name": "금호석유화학(주)",
+      "biz": "후방 수요(합성고무·수지)",
+      "sales": "7.2조",
+      "share": "14%",
+      "coreType": 2,
+      "role": "후방 수요(합성고무·수지)",
+      "source": "real"
+    },
+    {
+      "id": "00260383",
+      "name": "대한유화(주)",
+      "biz": "후방 수요(올레핀·아로마틱)",
+      "sales": "2.8조",
+      "share": "5%",
+      "coreType": 2,
+      "role": "후방 수요(올레핀·아로마틱)",
+      "source": "real"
+    },
+    {
+      "id": "01316236",
+      "name": "효성화학(주)",
+      "biz": "후방 수요(TPA·필름)",
+      "sales": "2.8조",
+      "share": "6%",
+      "coreType": 2,
+      "role": "후방 수요(TPA·필름)",
+      "source": "real"
+    }
+  ]
+}

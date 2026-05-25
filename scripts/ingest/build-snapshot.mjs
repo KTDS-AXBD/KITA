@@ -28,7 +28,8 @@ const snapshot = {
   companies,
 };
 
-const outDir = join(__dir, 'out');
+// committed 위치(SPA import 가능) — F015 SnapshotTolueneRepository가 소비
+const outDir = join(__dir, '..', '..', 'src', 'data', 'snapshot');
 mkdirSync(outDir, { recursive: true });
 const outPath = join(outDir, 's6.real.snapshot.json');
 writeFileSync(outPath, JSON.stringify(snapshot, null, 2));
