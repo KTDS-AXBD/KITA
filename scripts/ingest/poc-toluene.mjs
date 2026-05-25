@@ -5,7 +5,7 @@
  * + --graph-only: 0b 벤치용 톨루엔 그래프 시드만 적재.
  *
  * 사전(👤 Master):
- *   - wrangler d1 create kita-givc-poc + schema-poc.sql 적용
+ *   - wrangler d1 create koami-givc-poc + schema-poc.sql 적용
  *   - .dev.vars: DATA_GO_KR_KEY (관세청 OpenAPI serviceKey)
  * 실행:
  *   node scripts/ingest/poc-toluene.mjs --graph-only      # 0b 시드
@@ -14,7 +14,7 @@
 import { execFileSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
-const DB = 'kita-givc-poc';
+const DB = 'koami-givc-poc';
 const LOC = args.includes('--local') ? '--local' : '--remote';
 const GRAPH_ONLY = args.includes('--graph-only');
 const HS = '290230';

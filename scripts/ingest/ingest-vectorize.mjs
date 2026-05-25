@@ -3,7 +3,7 @@ import { query } from './lib/d1.mjs';
 
 const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID;
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
-const INDEX = process.env.VECTORIZE_INDEX ?? 'kita-givc-poc';
+const INDEX = process.env.VECTORIZE_INDEX ?? 'koami-givc-poc';
 const MODEL = '@cf/baai/bge-m3';
 const BASE = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}`;
 const H = { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' };

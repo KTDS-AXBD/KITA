@@ -1,8 +1,8 @@
-# F014 — kita-givc 적재 파이프라인 + 저장소 스키마 Planning Document
+# F014 — koami-givc 적재 파이프라인 + 저장소 스키마 Planning Document
 
 > **Summary**: F013 M0 게이트(4/4 PASS)에서 검증한 PoC 스크립트를 **정식 적재 파이프라인**으로 승격. ① D1 정식 스키마(migrations) ② 관세청 무역 적재 정식화(15101609 총량 + 15100475 국가별) ③ **DART 기업 적재 신규**(corpCode→company→재무) ④ 그래프·Vectorize 코퍼스 실데이터 빌드 ⑤ 검증·롤백 ⑥ 스냅샷 생성. Repository 실구현체·어댑터(F015)는 후속.
 >
-> **Project**: KITA PoC (kita-givc) · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-25 · **Status**: Draft
+> **Project**: KOAMI PoC (koami-givc) · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-25 · **Status**: Draft
 
 ---
 
@@ -26,7 +26,7 @@ F013에서 타당성 입증한 D1+Vectorize 위에, S6 톨루엔 화면의 **전
 ### 1.2 Background
 
 - F013 게이트 4/4 PASS([리포트](../../05-act/f013-m0-gate-report.md)) — D1 그래프 0.37ms, Vectorize 100%, 관세청 실데이터 4분기 적재.
-- 데이터 소스 확정: [데이터 수집 명세서](../../02-design/features/kita-givc-data-sources.md) — 관세청 15100475/15101609(✅ 승인), DART(✅ 키), 뉴스(P1).
+- 데이터 소스 확정: [데이터 수집 명세서](../../02-design/features/koami-givc-data-sources.md) — 관세청 15100475/15101609(✅ 승인), DART(✅ 키), 뉴스(P1).
 - PoC 자산: `scripts/poc/schema-poc.sql`·`scripts/ingest/poc-toluene.mjs`·`scripts/poc/build-snapshot.mjs`.
 
 **fs 실측 (2026-05-25):**
@@ -37,7 +37,7 @@ F013에서 타당성 입증한 D1+Vectorize 위에, S6 톨루엔 화면의 **전
 ### 1.3 Related Documents
 
 - SSOT: `SPEC.md` F014 (S5), 선행 F013 ✅, 후속 F015
-- [데이터 수집 명세서](../../02-design/features/kita-givc-data-sources.md), [F013 Design](../../02-design/features/f013-m0-poc-gate.design.md)(스키마·스냅샷 옵션A)
+- [데이터 수집 명세서](../../02-design/features/koami-givc-data-sources.md), [F013 Design](../../02-design/features/f013-m0-poc-gate.design.md)(스키마·스냅샷 옵션A)
 
 ---
 
@@ -149,7 +149,7 @@ scripts/ingest/
   ├─ build-graph.mjs       # 노드·엣지 조립(provenance)
   ├─ ingest-vectorize.mjs  # 코퍼스 임베딩·upsert
   └─ ingest-all.mjs        # 오케스트레이션(검증·롤백·리포트)
-migrations/000X_kita_givc.sql   # 정식 스키마
+migrations/000X_koami_givc.sql   # 정식 스키마
 scripts/poc/build-snapshot.mjs  # 재사용(Companies 추가)
 ```
 

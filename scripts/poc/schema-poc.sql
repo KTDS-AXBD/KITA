@@ -1,6 +1,6 @@
--- F013 M0 PoC — D1 스키마 (kita-givc-poc)
+-- F013 M0 PoC — D1 스키마 (koami-givc-poc)
 -- Design §3.1 / §5. 본 적재 정식 migration은 F014에서. 여기는 PoC 검증용.
--- 적용: wrangler d1 execute kita-givc-poc --file scripts/poc/schema-poc.sql --remote
+-- 적용: wrangler d1 execute koami-givc-poc --file scripts/poc/schema-poc.sql --remote
 --   (또는 --local 로컬 better-sqlite3 비교)
 
 -- ── 그래프 (0b) — 현 KnowledgeGraph shape 매핑 (src/types/graph.ts) ──────────

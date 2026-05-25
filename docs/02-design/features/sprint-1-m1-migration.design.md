@@ -2,7 +2,7 @@
 
 > **Summary**: 11개 프로토타입 `.jsx`(window-global) → Vite+React18+TS 모듈 구조 매핑, Zustand 3-store / Repository 인터페이스 / Provenance 타입 강제 / 스코어링 명세.
 >
-> **Project**: KITA PoC (GIVC × 온톨로지 데모)
+> **Project**: KOAMI PoC (GIVC × 온톨로지 데모)
 > **Version**: (pre-1.0)
 > **Author**: 서민원 책임 + Claude Code
 > **Date**: 2026-05-24
@@ -203,7 +203,7 @@ interface TweaksState {
   top5Layout: 'table' | 'card'; langMode: 'ko' | 'en';
   set: <K extends keyof TweaksValues>(k: K, v: TweaksValues[K]) => void;
 }
-// persist 미들웨어로 localStorage('kita-tweaks') 저장. window.parent.postMessage 전부 제거.
+// persist 미들웨어로 localStorage('koami-tweaks') 저장. window.parent.postMessage 전부 제거.
 ```
 
 > **⚠️ Tweaks host-protocol 제거**: `tweaks-panel.jsx`의 `useTweaks`는 `window.parent.postMessage({type:'__edit_mode_set_keys'})` + `__edit_mode_available`/`__activate_edit_mode` 리스너로 프로토타입 호스트와 통신. 프로덕션엔 부모 호스트 없음 → ① postMessage 호출 전부 제거 ② 패널 open 상태는 로컬 + 토글 버튼 자체 제공(기존엔 호스트 툴바가 토글) ③ 값 영속은 zustand `persist`. **`grep window.parent` 0건**이 검증 기준.

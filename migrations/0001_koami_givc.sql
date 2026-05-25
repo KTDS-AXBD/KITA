@@ -1,4 +1,4 @@
--- F014 kita-givc 정식 스키마 (Design §2). 적용: pnpm db:migrate (execute --file, 멱등 DROP+CREATE)
+-- F014 koami-givc 정식 스키마 (Design §2). 적용: pnpm db:migrate (execute --file, 멱등 DROP+CREATE)
 -- ⚠️ d1_migrations 정식 기록은 본 사업화 단계에서 wrangler d1 migrations apply로 전환.
 
 DROP TABLE IF EXISTS trade_stats;

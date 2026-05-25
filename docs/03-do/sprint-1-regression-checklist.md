@@ -1,6 +1,6 @@
 # Sprint 1 — M1 빌드 이송 회귀 체크리스트 (33개)
 
-> Plan §4.1의 33개 인터랙션을 프로토타입(`docs/spec/claude design/KITA PoC.html`)과 이송 결과(`pnpm dev`)에서 나란히 비교. **시각·동작 동일성** 검증. 자동화 불가 항목 — 사용자(서민원 책임) 시연 직전 수동 통과.
+> Plan §4.1의 33개 인터랙션을 프로토타입(`docs/spec/claude design/KOAMI PoC.html`)과 이송 결과(`pnpm dev`)에서 나란히 비교. **시각·동작 동일성** 검증. 자동화 불가 항목 — 사용자(서민원 책임) 시연 직전 수동 통과.
 >
 > **실행 방법**:
 > 1. 두 창에 (A) 프로토타입 HTML 직접 열기, (B) `pnpm dev` 띄우기
@@ -51,7 +51,7 @@
 - [ ] 첫 로딩 <2s (Lighthouse/실측)
 - [ ] S4 가중치 재계산 <100ms (콘솔 `performance.now()`)
 - [ ] 출처 표기(⭐/△/※) 누락 0
-- [ ] Tweaks `localStorage('kita-tweaks')` 영속 (새로고침 후 값 유지)
+- [ ] Tweaks `localStorage('koami-tweaks')` 영속 (새로고침 후 값 유지)
 - [ ] `grep -r 'window.parent' src/` → 0건 (host-protocol 제거 검증)
 
 ## 자동 검증 결과 (2026-05-24)

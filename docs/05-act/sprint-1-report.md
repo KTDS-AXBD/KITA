@@ -104,7 +104,7 @@
 ## 6. 시연 직전 사용자 점검 항목
 
 1. `pnpm install && pnpm dev` 실행 → http://localhost:5173 부팅
-2. 33 체크리스트 항목별 프로토타입(`docs/spec/claude design/KITA PoC.html` 더블클릭) vs 이송 결과 시각 대조
+2. 33 체크리스트 항목별 프로토타입(`docs/spec/claude design/KOAMI PoC.html` 더블클릭) vs 이송 결과 시각 대조
 3. Tweaks 패널 토글 → 모든 컨트롤 동작, 새로고침 후 값 유지 확인
 4. 콘솔 `performance.now()`로 S4 슬라이더 재계산 <100ms 확인 (실측)
 5. Lighthouse 첫 로딩 <2s 확인

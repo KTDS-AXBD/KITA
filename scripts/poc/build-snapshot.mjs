@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const DB = 'kita-givc-poc';
+const DB = 'koami-givc-poc';
 const LOC = process.argv.includes('--local') ? '--local' : '--remote';
 
 function q(sql) {

@@ -1,6 +1,6 @@
 # F016 — S6 P0 조회 정식화 + 검증 (Design)
 
-> **Plan**: [f016-s6-queries.plan.md](../../01-plan/features/f016-s6-queries.plan.md) · **REQ**: KITA-REQ-016 · **생성**: 2026-05-25
+> **Plan**: [f016-s6-queries.plan.md](../../01-plan/features/f016-s6-queries.plan.md) · **REQ**: KOAMI-REQ-016 · **생성**: 2026-05-25
 > 결정1=하이브리드(빌드 정식화 + 읽기전용 D1 Worker) · 결정2=`entity_fts`(기업·그래프 코퍼스)로 FTS5 3종 유지.
 
 ## 0. 설계 요약
@@ -72,7 +72,7 @@ CREATE VIRTUAL TABLE entity_fts USING fts5(
   text                   -- 검색 대상(인덱싱)
 );
 ```
-> 멱등 DROP+CREATE(0001 패턴 일치). `db:migrate`에 0002 추가: `wrangler d1 execute kita-givc-poc <LOC> --file migrations/0002_fts.sql`.
+> 멱등 DROP+CREATE(0001 패턴 일치). `db:migrate`에 0002 추가: `wrangler d1 execute koami-givc-poc <LOC> --file migrations/0002_fts.sql`.
 
 ### 2.2 채움 (ingest, `--local`/`--remote` 공용)
 신규 `scripts/ingest/ingest-fts.mjs` (또는 `build-snapshot` 직전 단계):
@@ -91,7 +91,7 @@ interface Env { AI: Ai; ASSETS: Fetcher; RATE_LIMIT_KV: KVNamespace; DB: D1Datab
 `wrangler.jsonc.example`에 추가:
 ```jsonc
 "d1_databases": [
-  { "binding": "DB", "database_name": "kita-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
+  { "binding": "DB", "database_name": "koami-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
 ]
 ```
 > 실 `wrangler.jsonc`는 gitignore — deploy-guide에 D1 바인딩 절차 추가. database_id는 MEMORY의 `74b58bed…`.

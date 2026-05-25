@@ -27,7 +27,7 @@ export const useTweaksStore = create<TweaksState>()(
       reset: () => set({ ...DEFAULTS }),
     }),
     {
-      name: 'kita-tweaks',
+      name: 'koami-tweaks',
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({
         flavor: s.flavor,

@@ -1,6 +1,6 @@
-# F013 — kita-givc M0 PoC 게이트 판정 리포트
+# F013 — koami-givc M0 PoC 게이트 판정 리포트
 
-> **판정일**: 2026-05-25 · **Plan/Design**: [Plan](../01-plan/features/f013-m0-poc-gate.plan.md) · [Design](../02-design/features/f013-m0-poc-gate.design.md) · [데이터 명세](../02-design/features/kita-givc-data-sources.md)
+> **판정일**: 2026-05-25 · **Plan/Design**: [Plan](../01-plan/features/f013-m0-poc-gate.plan.md) · [Design](../02-design/features/f013-m0-poc-gate.design.md) · [데이터 명세](../02-design/features/koami-givc-data-sources.md)
 > **종합 판정**: 🟢 **PASS (4/4)** — 저장소(D1+Vectorize) 타당성 입증. 0a~0d 전부 통과. **→ F014 진행 가능.**
 
 ---
@@ -66,7 +66,7 @@
 | 0d 적재 | `scripts/ingest/poc-toluene.mjs` (Encoding 키 raw append) |
 | 스냅샷 | `scripts/poc/build-snapshot.mjs` → `scripts/poc/out/s6.real.snapshot.json` |
 | 평가셋 | `scripts/poc/fixtures/semantic-eval.json` (15건) |
-| CF 리소스 | D1 `kita-givc-poc`(74b58bed-…) · Vectorize `kita-givc-poc`(1024d/cosine) |
+| CF 리소스 | D1 `koami-givc-poc`(74b58bed-…) · Vectorize `koami-givc-poc`(1024d/cosine) |
 
 ---
 

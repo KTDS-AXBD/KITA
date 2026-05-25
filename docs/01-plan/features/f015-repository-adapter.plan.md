@@ -1,8 +1,8 @@
-# F015 — kita-givc Repository 실구현체 + 어댑터 Planning Document
+# F015 — koami-givc Repository 실구현체 + 어댑터 Planning Document
 
 > **Summary**: F014 적재 스냅샷(`s6.real.snapshot.json`)을 **동기** `TolueneRepository` 인터페이스로 서빙하는 `SnapshotTolueneRepository` + 어댑터. 화면(`S6Page`) 코드 무변경 보장(옵션A). 실데이터 없는 항목(뉴스·힌트)은 Mock fallback(하이브리드). 토글로 Mock↔실 전환(데모 안전).
 >
-> **Project**: KITA PoC (kita-givc) · **Version**: 0.1.0 · **Date**: 2026-05-25 · **Status**: Draft
+> **Project**: KOAMI PoC (koami-givc) · **Version**: 0.1.0 · **Date**: 2026-05-25 · **Status**: Draft
 
 ---
 

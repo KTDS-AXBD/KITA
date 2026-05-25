@@ -1,6 +1,6 @@
-# kita-givc 데이터 수집 명세서 (Data Sources Manifest)
+# koami-givc 데이터 수집 명세서 (Data Sources Manifest)
 
-> kita-givc 실데이터 파이프라인의 **수집 대상 데이터 통합 목록**. Phase 1 = 비PII 공개데이터 S6 톨루엔 수직 슬라이스.
+> koami-givc 실데이터 파이프라인의 **수집 대상 데이터 통합 목록**. Phase 1 = 비PII 공개데이터 S6 톨루엔 수직 슬라이스.
 > 관련: [F013 Plan](../../01-plan/features/f013-m0-poc-gate.plan.md) · [F013 Design](f013-m0-poc-gate.design.md) · [게이트 리포트](../../05-act/f013-m0-gate-report.md)
 > 출처표기: ⭐ real(GIVC/외부 실데이터) · △ est(추정) · ※ virt(가상). 화면 타입(`src/types/`)에 NOT NULL 강제.
 

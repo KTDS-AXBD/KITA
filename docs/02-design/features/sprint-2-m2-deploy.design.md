@@ -2,7 +2,7 @@
 
 > **Summary**: CF Workers Static Assets로 `dist/` 배포 설정 + 배포/롤백/헬스체크/접근제어/QA 절차. 자동(코드·설정·dry-run) vs Master 수동(배포·CF·스모크) 경계 명세.
 >
-> **Project**: KITA PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
+> **Project**: KOAMI PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
 > **Planning Doc**: [sprint-2-m2-deploy.plan.md](../../01-plan/features/sprint-2-m2-deploy.plan.md)
 
 ---
@@ -32,7 +32,7 @@
 [pnpm build] → dist/ (정적 SPA, hash routing)
       │
       ▼
-[wrangler deploy] ──▶ CF Worker (Static Assets) ──▶ https://kita.<...>.workers.dev
+[wrangler deploy] ──▶ CF Worker (Static Assets) ──▶ https://koami.<...>.workers.dev
       │ (Master 수동)                                       │
       │                                            [접근제어: 비추측 경로/CF Access]
       ▼                                                     │
@@ -65,7 +65,7 @@
 
 ```jsonc
 {
-  "name": "kita",
+  "name": "koami",
   "compatibility_date": "2026-05-01",
   "assets": { "directory": "./dist", "not_found_handling": "single-page-application" }
   // hash routing이라 SPA fallback은 사실상 불필요하나, 직접 URL 접근 대비 SPA 모드 설정
@@ -73,7 +73,7 @@
 }
 ```
 
-> `name: "kita"` → `https://kita.<account>.workers.dev`. account는 `.dev.vars`의 `ACCOUNT_ID` 또는 `wrangler whoami`로 확인.
+> `name: "koami"` → `https://koami.<account>.workers.dev`. account는 `.dev.vars`의 `ACCOUNT_ID` 또는 `wrangler whoami`로 확인.
 
 ### 3.2 package.json scripts 추가 (F007)
 

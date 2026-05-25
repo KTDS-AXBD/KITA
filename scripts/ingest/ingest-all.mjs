@@ -10,7 +10,7 @@ import { ingestVectorize } from './ingest-vectorize.mjs';
 const SKIP_VEC = process.argv.includes('--no-vectorize');
 
 (async () => {
-  console.log('▶ kita-givc 적재 (ingest-all)');
+  console.log('▶ koami-givc 적재 (ingest-all)');
   console.log('  무역:', JSON.stringify(await ingestTrade()));
   console.log('  기업:', JSON.stringify(await ingestCompanies()));
   console.log('  그래프:', JSON.stringify(await buildGraph()));

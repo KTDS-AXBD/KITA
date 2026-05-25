@@ -1,7 +1,7 @@
 # F016 — S6 P0 조회 정식화 + 검증 (Plan)
 
-> **REQ**: KITA-REQ-016 · **우선**: P0 · **Sprint**: S6 · **선행**: F013(M0 게이트)·F014(적재)·F015(Repository) ✅
-> **생성**: 2026-05-25 (`/pdca plan F016`, fs 실측 기반) · **트랙**: kita-givc Phase 1 마지막
+> **REQ**: KOAMI-REQ-016 · **우선**: P0 · **Sprint**: S6 · **선행**: F013(M0 게이트)·F014(적재)·F015(Repository) ✅
+> **생성**: 2026-05-25 (`/pdca plan F016`, fs 실측 기반) · **트랙**: koami-givc Phase 1 마지막
 
 ## Executive Summary
 
@@ -73,7 +73,7 @@ CREATE VIRTUAL TABLE entity_fts USING fts5(entity_id UNINDEXED, kind UNINDEXED, 
 > `news_meta`는 F018용으로 유지(미사용). `entity_fts`가 P0 검색 코퍼스.
 
 ### 3.3 읽기전용 Worker 엔드포인트
-`src/worker/index.ts` + D1 바인딩(`wrangler.jsonc.example`에 `kita-givc-poc` 추가).
+`src/worker/index.ts` + D1 바인딩(`wrangler.jsonc.example`에 `koami-givc-poc` 추가).
 - `GET /api/givc/graph?root=TOL&depth=2` → 재귀CTE 노드/엣지
 - `GET /api/givc/trade?hs=290230` → 무역 시계열
 - `GET /api/givc/search?q=<term>` → FTS5 MATCH 결과
@@ -99,7 +99,7 @@ CREATE VIRTUAL TABLE entity_fts USING fts5(entity_id UNINDEXED, kind UNINDEXED, 
 - [ ] **provenance**: ⭐real/△est/※virt 누락 0 유지(무역·기업 real, share △est, 뉴스·힌트 virt).
 - [ ] **green**: typecheck(turbo 우회)·lint·test 통과.
 
-> CI guard(DoD 6축 f)는 N/A — KITA는 `.github/workflows` 미존재(MEMORY). 로컬 검증으로 대체.
+> CI guard(DoD 6축 f)는 N/A — KOAMI는 `.github/workflows` 미존재(MEMORY). 로컬 검증으로 대체.
 
 ## 5. 작업 순서
 

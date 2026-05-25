@@ -1,4 +1,4 @@
-# KITA PoC 운영 매뉴얼 (F011)
+# KOAMI PoC 운영 매뉴얼 (F011)
 
 > 발표자 외 인수·장애 대응용 1페이지 런북. 상세 배포는 `deploy-guide.md`, QA는 `qa-checklist.md`.
 

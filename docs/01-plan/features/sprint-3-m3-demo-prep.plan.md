@@ -2,7 +2,7 @@
 
 > **Summary**: 시연 실행 런북 완성 — F011 시연 스크립트(outline)·운영 매뉴얼·README 핸드오버. F010 About는 S1에서 충실 이송됨(미세 polish만), F012 Tweaks ✅(S1)·다국어 EN 보류(P2). 문서 중심 sprint.
 >
-> **Project**: KITA PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
+> **Project**: KOAMI PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
 
 ---
 

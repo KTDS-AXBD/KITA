@@ -7,7 +7,7 @@
  * 인덱스: Vectorize v2 (cosine). corpus upsert → query top-k.
  *
  * 사전(👤 Master):
- *   - wrangler vectorize create kita-givc-poc --dimensions=1024 --metric=cosine
+ *   - wrangler vectorize create koami-givc-poc --dimensions=1024 --metric=cosine
  *   - env: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (AI Run + Vectorize Edit 권한)
  * 실행: node scripts/poc/bench-vectorize.mjs
  */
@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 const __dir = dirname(fileURLToPath(import.meta.url));
 const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID;
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
-const INDEX = process.env.VECTORIZE_INDEX ?? 'kita-givc-poc';
+const INDEX = process.env.VECTORIZE_INDEX ?? 'koami-givc-poc';
 const MODEL = '@cf/baai/bge-m3';
 const DIM = 1024;
 const K = 3;

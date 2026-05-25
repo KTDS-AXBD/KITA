@@ -1,7 +1,7 @@
 /** F014 — D1 공통 헬퍼 (wrangler d1 execFileSync 래퍼 + 검증). shell 미사용(injection 안전) */
 import { execFileSync } from 'node:child_process';
 
-export const DB = process.env.KITA_GIVC_DB ?? 'kita-givc-poc';
+export const DB = process.env.KOAMI_GIVC_DB ?? 'koami-givc-poc';
 export const LOC = process.argv.includes('--local') ? '--local' : '--remote';
 export const esc = (s) => String(s).replace(/'/g, "''");
 

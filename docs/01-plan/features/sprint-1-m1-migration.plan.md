@@ -2,7 +2,7 @@
 
 > **Summary**: 빌드 없는 CDN React+Babel 프로토타입을 Vite + React 18 + TypeScript 프로덕션 SPA로 이송 (Zustand 전역 상태 + Repository 데이터 레이어 + 출처 메타 타입 강제).
 >
-> **Project**: KITA PoC (GIVC × 온톨로지 데모)
+> **Project**: KOAMI PoC (GIVC × 온톨로지 데모)
 > **Version**: (pre-1.0, package.json 미생성 — F001에서 셋업)
 > **Author**: 서민원 책임 + Claude Code
 > **Date**: 2026-05-24
@@ -40,7 +40,7 @@
 
 - SSOT: `SPEC.md` §5 (F001~F006), §6 (Sprint 1 DoD)
 - PRD: `docs/req/prd-final.md` (§4 기능범위, §6 기술결정) — *로컬 전용(영업기밀)*
-- 이송 원본: `docs/spec/claude design/` (KITA PoC.html + src/*.jsx + axis/*.css)
+- 이송 원본: `docs/spec/claude design/` (KOAMI PoC.html + src/*.jsx + axis/*.css)
 - 프로젝트 가이드: `CLAUDE.md` (출처 표기 규칙, 컨벤션)
 
 ---
@@ -201,7 +201,7 @@
 ### 6.3 Clean Architecture Approach (Dynamic, 제안 폴더 구조)
 
 ```
-KITA/
+KOAMI/
 ├─ index.html               # Vite 엔트리 (CDN script 제거)
 ├─ package.json             # pnpm, vite, react18, typescript, zustand, vitest
 ├─ tsconfig.json            # strict

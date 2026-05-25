@@ -1,5 +1,5 @@
 /**
- * F016 — kita-givc P0 공용 SQL 빌더 (빌드 스크립트 · Worker · vitest 공유).
+ * F016 — koami-givc P0 공용 SQL 빌더 (빌드 스크립트 · Worker · vitest 공유).
  *
  * 설계: 바인딩(`?`) 대신 **완성 SQL 문자열을 반환하는 빌더**로 통일.
  *   - 빌드 CLI(`lib/d1.mjs query()`): `--command` 인라인 실행(바인딩 없음).

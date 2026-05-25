@@ -1,6 +1,6 @@
-# F014 — kita-givc 적재 파이프라인 완료 리포트
+# F014 — koami-givc 적재 파이프라인 완료 리포트
 
-> **완료일**: 2026-05-25 · **Plan**: [f014](../01-plan/features/f014-ingest-pipeline.plan.md) · **Design**: [f014](../02-design/features/f014-ingest-pipeline.design.md) · **데이터 명세**: [manifest](../02-design/features/kita-givc-data-sources.md)
+> **완료일**: 2026-05-25 · **Plan**: [f014](../01-plan/features/f014-ingest-pipeline.plan.md) · **Design**: [f014](../02-design/features/f014-ingest-pipeline.design.md) · **데이터 명세**: [manifest](../02-design/features/koami-givc-data-sources.md)
 > **결과**: ✅ **완료** — 관세청 무역 + DART 기업 실데이터 적재 파이프라인 1명령 재현. provenance 전부 real, 검증 PASS.
 
 ## 1. Executive Summary
@@ -25,7 +25,7 @@
 
 ## 3. DoD 달성
 
-- [x] D1 정식 스키마 migration(5테이블) 적용 — `migrations/0001_kita_givc.sql`
+- [x] D1 정식 스키마 migration(5테이블) 적용 — `migrations/0001_koami_givc.sql`
 - [x] 관세청 무역(총량+국가별) 적재 + 검증
 - [x] DART 기업 6사 개황+매출 적재(corp_code 실해소) + 그래프 company 노드
 - [x] 그래프 실데이터 빌드(11≤50, provenance 100%) + Vectorize 코퍼스
@@ -35,7 +35,7 @@
 ## 4. 구현 산출물
 
 ```
-migrations/0001_kita_givc.sql               # 정식 스키마(5테이블)
+migrations/0001_koami_givc.sql               # 정식 스키마(5테이블)
 scripts/ingest/lib/{d1,datagokr,dart}.mjs   # 공통 헬퍼(검증·관세청·DART)
 scripts/ingest/ingest-trade.mjs             # 15101609+15100475
 scripts/ingest/ingest-companies.mjs         # DART 6사

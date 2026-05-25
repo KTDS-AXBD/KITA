@@ -2,7 +2,7 @@
 
 > **Summary**: WhatIfChat에 하이브리드 토글 추가 — 기본 정적(Mock) 응답 + 옵션 ON 시 CF Workers AI 실 LLM(`/api/chat`). 같은 Worker에 Hono `/api/chat`(harness-kit rate-limit 세션당 3회) + ASSETS fallthrough. 신규 의존성·바인딩 3종이라 **PoC 선검증** + 하이브리드 실행(Worker dev/dry-run 자동, 실 배포·스모크 Master 수동).
 >
-> **Project**: KITA PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
+> **Project**: KOAMI PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
 
 ---
 

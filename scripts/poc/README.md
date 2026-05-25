@@ -1,6 +1,6 @@
 # F013 M0 PoC 게이트 — 실행 가이드
 
-> kita-givc 착수 게이트. **4개(0a~0d) 전부 PASS 시에만 F014 진행.** 미달 시 저장소 재선택/범위 축소.
+> koami-givc 착수 게이트. **4개(0a~0d) 전부 PASS 시에만 F014 진행.** 미달 시 저장소 재선택/범위 축소.
 > 설계: [`docs/02-design/features/f013-m0-poc-gate.design.md`](../../docs/02-design/features/f013-m0-poc-gate.design.md)
 
 ## 👤 Master 선행 작업 (프로비저닝 — 실행 블로커)
@@ -13,8 +13,8 @@ echo 'DATA_GO_KR_KEY=...' >> .dev.vars
 echo 'OPENDART_KEY=...'   >> .dev.vars
 
 # 2) CF 리소스 생성 (저비용·가역)
-wrangler d1 create kita-givc-poc
-wrangler vectorize create kita-givc-poc --dimensions=1024 --metric=cosine
+wrangler d1 create koami-givc-poc
+wrangler vectorize create koami-givc-poc --dimensions=1024 --metric=cosine
 
 # 3) env (bench-vectorize용 — REST 호출): CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN
 #    토큰 권한: Workers AI Run + Vectorize Edit
@@ -24,7 +24,7 @@ wrangler vectorize create kita-givc-poc --dimensions=1024 --metric=cosine
 
 ```bash
 # 스키마 적용
-wrangler d1 execute kita-givc-poc --file scripts/poc/schema-poc.sql --remote
+wrangler d1 execute koami-givc-poc --file scripts/poc/schema-poc.sql --remote
 
 # 0d-seed → 0b: 그래프 시드 후 깊이2 ≤50ms 벤치
 node scripts/ingest/poc-toluene.mjs --graph-only

@@ -6,12 +6,12 @@
   //   (A) 커스텀 도메인 [운영, S3 채택]: 도메인이 같은 CF 계정의 active zone이면 배포 시 DNS+SSL 자동 생성.
   //       아래 "workers_dev"/"routes" 주석을 해제하고 pattern을 실제 도메인으로.
   //   (B) workers.dev [간이]: 그 두 줄을 주석 유지 → https://<name>.<account>.workers.dev
-  //       "name"은 비추측 값 권장: kita-demo-$(openssl rand -hex 4)
+  //       "name"은 비추측 값 권장: koami-demo-$(openssl rand -hex 4)
   //
   // dist/(Vite 빌드)를 정적 서빙. hash routing이라 SPA fallback은 직접 URL 접근 대비용.
   // F009-later: "main" + Workers AI 바인딩 추가 시 같은 Worker에 /api/chat 공존 가능.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "kita-demo-REPLACE_WITH_RANDOM",
+  "name": "koami-demo-REPLACE_WITH_RANDOM",
   "compatibility_date": "2026-05-01",
   // (A) 커스텀 도메인 사용 시 주석 해제:
   // "workers_dev": false,
@@ -24,9 +24,9 @@
   "kv_namespaces": [
     { "binding": "RATE_LIMIT_KV", "id": "REPLACE_WITH_KV_ID" }
   ],
-  // F016 — kita-givc 읽기전용 조회(/api/givc/*). database_id는 `wrangler d1 list`로 확인.
+  // F016 — koami-givc 읽기전용 조회(/api/givc/*). database_id는 `wrangler d1 list`로 확인.
   "d1_databases": [
-    { "binding": "DB", "database_name": "kita-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
+    { "binding": "DB", "database_name": "koami-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
   ],
   "assets": {
     "directory": "./dist",

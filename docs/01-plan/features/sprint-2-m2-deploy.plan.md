@@ -2,7 +2,7 @@
 
 > **Summary**: S1에서 빌드된 Vite SPA(`dist/`)를 Cloudflare에 배포(F007) + 공개 URL 접근제어·QA 체크리스트·배포 후 헬스체크(F008). 비가역·대외 작업이라 **하이브리드 실행**(코드/설정·dry-run 자동, 실 배포·시크릿·스모크는 Master 수동).
 >
-> **Project**: KITA PoC (GIVC × 온톨로지 데모)
+> **Project**: KOAMI PoC (GIVC × 온톨로지 데모)
 > **Version**: 0.1.0
 > **Author**: 서민원 책임 + Claude Code
 > **Date**: 2026-05-24
@@ -154,7 +154,7 @@ Dynamic 유지 (S1과 동일). S2는 인프라/배포 레이어 추가.
 ### 6.3 구조 (S2 추가분)
 
 ```
-KITA/
+KOAMI/
 ├─ wrangler.jsonc          # F007 — Workers Static Assets (dist/ 서빙)
 ├─ public/
 │  └─ favicon.svg          # 콘솔 404 해소

@@ -1,8 +1,8 @@
-# F013 — kita-givc M0 PoC 게이트 Planning Document
+# F013 — koami-givc M0 PoC 게이트 Planning Document
 
-> **Summary**: 실데이터 파이프라인(kita-givc) **착수 게이트**. ① 공개데이터 소스·라이선스 확정(0a) ② D1 그래프 깊이2 ≤50ms(0b) ③ Vectorize 의미검색 ≥80%·비용추산(0c) ④ 적재 1라운드 스크립트 재현(0d). **4개 전부 통과 시에만 M1(F014~F016) 착수.** 미달 시 저장소 재선택 또는 범위 축소(§5.5). 신규 스택(D1 그래프·Vectorize·임베딩) 러닝커브 + 외부 결정(데이터소스·라이선스)이 섞인 리스크 선소거가 목적.
+> **Summary**: 실데이터 파이프라인(koami-givc) **착수 게이트**. ① 공개데이터 소스·라이선스 확정(0a) ② D1 그래프 깊이2 ≤50ms(0b) ③ Vectorize 의미검색 ≥80%·비용추산(0c) ④ 적재 1라운드 스크립트 재현(0d). **4개 전부 통과 시에만 M1(F014~F016) 착수.** 미달 시 저장소 재선택 또는 범위 축소(§5.5). 신규 스택(D1 그래프·Vectorize·임베딩) 러닝커브 + 외부 결정(데이터소스·라이선스)이 섞인 리스크 선소거가 목적.
 >
-> **Project**: KITA PoC (kita-givc 트랙) · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-25 · **Status**: Draft
+> **Project**: KOAMI PoC (koami-givc 트랙) · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-25 · **Status**: Draft
 
 ---
 
@@ -21,11 +21,11 @@
 
 ### 1.1 Purpose
 
-kita-givc Phase 1(비PII 공개데이터·S6 톨루엔 수직 슬라이스)의 **착수 가부**를 결정한다. PRD §4.0 M0 게이트(0a~0d)를 실행해 저장소(D1+Vectorize+R2) *제안*을 검증/확정한다.
+koami-givc Phase 1(비PII 공개데이터·S6 톨루엔 수직 슬라이스)의 **착수 가부**를 결정한다. PRD §4.0 M0 게이트(0a~0d)를 실행해 저장소(D1+Vectorize+R2) *제안*을 검증/확정한다.
 
 ### 1.2 Background
 
-- PRD `docs/req/kita-givc/prd-final.md` §4.0(M0)·§5.5(중단조건)·§6.2(기술스택 제안)·§7(오픈이슈 #4·#5).
+- PRD `docs/req/koami-givc/prd-final.md` §4.0(M0)·§5.5(중단조건)·§6.2(기술스택 제안)·§7(오픈이슈 #4·#5).
 - 기술스택은 **제안 단계** — "M0에서 검증"이라고 PRD가 명시. 즉 D1 그래프 적정성·Vectorize 도입 여부가 본 게이트의 검증 대상.
 - 신규 스택 러닝커브로 M0에 **별도 버퍼** 배정(낙관 일정 금지, §6.1).
 
@@ -39,7 +39,7 @@ kita-givc Phase 1(비PII 공개데이터·S6 톨루엔 수직 슬라이스)의 *
 ### 1.3 Related Documents
 
 - SSOT: `SPEC.md` F013 (Sprint S4), 의존: F014~F016
-- PRD `docs/req/kita-givc/prd-final.md` (로컬전용) §4.0·§5·§6.2·§7
+- PRD `docs/req/koami-givc/prd-final.md` (로컬전용) §4.0·§5·§6.2·§7
 - 인터페이스 계약: `src/data/repository/TolueneRepository.ts`, `src/types/provenance.ts`
 
 ---
@@ -206,7 +206,7 @@ R2 (원본)                              # 0d 원본 파일 보관(선택)
 
 - [x] Repository 패턴·provenance 타입·빌드타임 스냅샷 선례 확립(S1)
 - [ ] 👤 data.go.kr·OpenDART API key 발급(Master)
-- [ ] 👤 CF D1/Vectorize 리소스 생성 승인 — `wrangler d1 create kita-givc` / `wrangler vectorize create`
+- [ ] 👤 CF D1/Vectorize 리소스 생성 승인 — `wrangler d1 create koami-givc` / `wrangler vectorize create`
 - [ ] `wrangler.jsonc`에 D1/Vectorize 바인딩 추가(PoC 범위, example 동기화)
 - [ ] `scripts/ingest/`·`scripts/poc/` 디렉토리(신규)
 

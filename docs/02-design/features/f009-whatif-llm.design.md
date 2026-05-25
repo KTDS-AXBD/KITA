@@ -2,7 +2,7 @@
 
 > **Summary**: Hono Worker `/api/chat`(CF Workers AI `@cf/meta/llama-3.1-8b-instruct-fp8`) + harness-kit rate-limit(세션당 3회, X-Session-Id) + ASSETS fallthrough. WhatIfChat 토글(OFF=Mock 기본). PoC 선검증.
 >
-> **Project**: KITA PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
+> **Project**: KOAMI PoC · **Version**: 0.1.0 · **Author**: 서민원 + Claude Code · **Date**: 2026-05-24 · **Status**: Draft
 > **Planning Doc**: [f009-whatif-llm.plan.md](../../01-plan/features/f009-whatif-llm.plan.md)
 
 ---
@@ -120,7 +120,7 @@ export default app;
 ### 4.1 변경 (src/components/primitives/WhatIfChat.tsx)
 
 - **토글 추가**: "실 LLM" 스위치(`useState(false)`, 기본 OFF). 라벨에 "시범" 배지.
-- **세션 ID**: `sessionStorage.getItem('kita-sid')` 없으면 `crypto.randomUUID()` 생성·저장.
+- **세션 ID**: `sessionStorage.getItem('koami-sid')` 없으면 `crypto.randomUUID()` 생성·저장.
 - **ask() 분기**:
   ```
   if (!liveMode) → 기존 Mock(setTimeout)         // 변경 없음

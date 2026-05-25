@@ -1,10 +1,10 @@
-# KITA — GIVC × 온톨로지 인터랙티브 데모
+# KOAMI — GIVC × 온톨로지 인터랙티브 데모
 
 KT DS Enterprise사업본부 AX컨설팅팀 / 서민원 책임
 
 **Prototype 리뷰용 시연 사이트**. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 한 화면에 보여주는 PoC.
 
-🔗 **라이브: <https://kita.minu.best>** (CF Access 보호 — 허용 이메일만 접근, 데이터 100% Mock)
+🔗 **라이브: <https://koami.minu.best>** (CF Access 보호 — 허용 이메일만 접근, 데이터 100% Mock)
 
 > SSOT: [`SPEC.md`](./SPEC.md) — F-item, Sprint 계획, DoD.
 > 가이드: [`CLAUDE.md`](./CLAUDE.md) — 기술 결정·컨벤션·보안.
@@ -105,10 +105,10 @@ docs/
 | **What-If LLM** (F009) | ✅ Hono `/api/chat` + CF Workers AI + KV rate-limit |
 | **M3 시연 준비** (S3, F010~F012) | F010 About ✅ · F011 시연스크립트/매뉴얼 ✅ (백업 영상 녹화·리허설=수동) · F012 Tweaks ✅, 다국어 EN 보류(P2) |
 
-> 시연 직전 런북: [`docs/qa-checklist.md`](./docs/qa-checklist.md) + [`docs/demo-script.md`](./docs/demo-script.md). URL: <https://kita.minu.best> (CF Access 보호 — 참석자 이메일 사전 등록).
+> 시연 직전 런북: [`docs/qa-checklist.md`](./docs/qa-checklist.md) + [`docs/demo-script.md`](./docs/demo-script.md). URL: <https://koami.minu.best> (CF Access 보호 — 참석자 이메일 사전 등록).
 
 ## 보안
 
 - `.dev.vars`는 LLM API 키 5종 보관 — gitignore. 권한 600. **절대 커밋 금지**.
-- 데모 URL <https://kita.minu.best> — **CF Access 게이팅**(지정 이메일 + OTP/Google). 데이터 100% Mock + 영업멘트 중립화. 접근제어·이메일 관리 [`docs/deploy-guide.md`](./docs/deploy-guide.md).
+- 데모 URL <https://koami.minu.best> — **CF Access 게이팅**(지정 이메일 + OTP/Google). 데이터 100% Mock + 영업멘트 중립화. 접근제어·이메일 관리 [`docs/deploy-guide.md`](./docs/deploy-guide.md).
 - `grep -r 'window.parent' src/` → 0건이 host-protocol 제거 검증 기준.

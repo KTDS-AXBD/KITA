@@ -1,4 +1,4 @@
-# F015 — kita-givc Repository 실구현체 + 어댑터 완료 리포트
+# F015 — koami-givc Repository 실구현체 + 어댑터 완료 리포트
 
 > **완료일**: 2026-05-25 · **Plan**: [f015](../01-plan/features/f015-repository-adapter.plan.md) · **결과**: ✅ **완료** — 실데이터 스냅샷을 동기 `TolueneRepository`로 서빙, **화면 코드 변경 0**(KPI 충족).
 

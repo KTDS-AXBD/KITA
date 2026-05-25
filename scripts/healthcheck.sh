@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# KITA 배포 URL 가용성 헬스체크 (F008)
-# 사용: bash scripts/healthcheck.sh https://kita.<account>.workers.dev
+# KOAMI 배포 URL 가용성 헬스체크 (F008)
+# 사용: bash scripts/healthcheck.sh https://koami.<account>.workers.dev
 # 시연 D-1에 실행하여 / 200 + 핵심 asset 로드를 확인한다.
 set -uo pipefail
 
@@ -24,7 +24,7 @@ check() {
   fi
 }
 
-echo "=== KITA 헬스체크: $URL ==="
+echo "=== KOAMI 헬스체크: $URL ==="
 check "$URL/"
 
 # index.html에서 첫 js/css asset 경로 추출 → 실재 확인

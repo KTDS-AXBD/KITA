@@ -18,7 +18,7 @@ interface Env {
   AI: Ai;
   ASSETS: Fetcher;
   RATE_LIMIT_KV: KVNamespace;
-  DB: D1Database; // F016 — kita-givc 읽기전용 조회
+  DB: D1Database; // F016 — koami-givc 읽기전용 조회
 }
 
 const app = new Hono<{ Bindings: Env }>();
@@ -57,7 +57,7 @@ app.post('/api/chat', async (c) => {
   return c.json({ answer: result.response ?? '' });
 });
 
-// ── F016 kita-givc 읽기전용 조회 (하이브리드: 화면은 스냅샷, 본 엔드포인트는 라이브 조회 증거) ──
+// ── F016 koami-givc 읽기전용 조회 (하이브리드: 화면은 스냅샷, 본 엔드포인트는 라이브 조회 증거) ──
 // SELECT-only(공용 SQL 빌더만 사용·입력 전량 sanitize). rate-limit 미적용.
 
 // 그래프 재귀 CTE — 루트에서 깊이 N 도달 노드/엣지

@@ -12,7 +12,7 @@
 import { execFileSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
-const DB = 'kita-givc-poc';
+const DB = 'koami-givc-poc';
 const SEED = valOf('--seed') ?? 'TOL';
 const RUNS = Number(valOf('--runs') ?? 20);
 const WARMUP = 3;

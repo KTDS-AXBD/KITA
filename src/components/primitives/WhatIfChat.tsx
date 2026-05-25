@@ -46,7 +46,7 @@ function renderMini(text: string): ReactNode[] {
 
 /** 세션 단위 rate-limit 키 (서버 X-Session-Id). 브라우저 세션 1개 = 3회 한도. */
 function getSessionId(): string {
-  const KEY = 'kita-sid';
+  const KEY = 'koami-sid';
   let sid = sessionStorage.getItem(KEY);
   if (!sid) {
     sid = crypto.randomUUID();

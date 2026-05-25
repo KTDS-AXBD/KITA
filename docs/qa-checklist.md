@@ -1,4 +1,4 @@
-# KITA 시연 QA 체크리스트 (F008)
+# KOAMI 시연 QA 체크리스트 (F008)
 
 > 배포 후 / 시연 D-1에 점검. S1 33 인터랙션 회귀(`docs/03-do/sprint-1-regression-checklist.md`)와 연계.
 
