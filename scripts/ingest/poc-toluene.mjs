@@ -49,39 +49,55 @@ function seedGraph() {
   console.log(`  ✓ 그래프 시드: 노드 ${NODES.length} · 엣지 ${EDGES.length}(×2)`);
 }
 
-// ── 관세청 무역통계 추출 (0d full) ──────────────────────────────────────────
-async function fetchTrade() {
-  const KEY = process.env.DATA_GO_KR_KEY;
-  if (!KEY) throw new Error('DATA_GO_KR_KEY 미설정 (.dev.vars) — 관세청 OpenAPI serviceKey 필요');
-  // 관세청_품목별 국가별 수출입실적 (data ID 15100475)
-  // endpoint: apis.data.go.kr/1220000/nitemtrade/getNitemtradeList
-  // ⚠️ data.go.kr Encoding 키(%2B 등 포함)는 raw append 필수 — URLSearchParams는 이중 인코딩(401).
-  //    Decoding(raw) 키를 쓸 경우엔 encodeURIComponent(KEY)로 1회 인코딩.
-  const strt = process.env.STRT_YYMM ?? '202301';
-  const end = process.env.END_YYMM ?? '202412';
-  const url = `https://apis.data.go.kr/1220000/nitemtrade/getNitemtradeList`
-    + `?serviceKey=${KEY}&hsSgn=${HS}&strtYymm=${strt}&endYymm=${end}&type=json`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`관세청 API ${res.status} — ${body.slice(0, 120)} `
-      + `(403=활용신청 승인/전파 대기 또는 데이터셋 불일치, 401=키 형식)`);
+// ── 관세청 무역통계 추출 (0d full) — 실 스펙(data ID 15100475) ────────────────
+//   포맷: XML / 응답필드: year("YYYY.MM" 월단위)·expDlr·impDlr·statCdCntnKor1(국가명)·hsCd
+//   파라미터: serviceKey·strtYymm·endYymm(1년이내)·hsSgn(품목)·cntyCd(국가코드 필수)
+//   ⚠️ Encoding 키(%2B 등)는 raw append 필수 (URLSearchParams 이중 인코딩 시 401).
+const BASE = 'https://apis.data.go.kr/1220000/nitemtrade/getNitemtradeList';
+const CNTY_CDS = (process.env.CNTY_CDS ?? 'JP,CN,US').split(','); // 그래프 국가 노드와 정합
+
+/** 의존성 없는 XML <item> 추출 (PoC — 정규화는 F014에서 정식 파서) */
+function parseXmlItems(xml) {
+  const items = [];
+  for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
+    const block = m[1];
+    const get = (t) => (block.match(new RegExp(`<${t}>([\\s\\S]*?)</${t}>`)) ?? [, ''])[1].trim();
+    items.push({ year: get('year'), expDlr: get('expDlr'), impDlr: get('impDlr'), cnty: get('statCdCntnKor1') });
   }
-  return res.json();
+  return items;
 }
 
-// TODO(0d): 실제 응답 필드 → TradeSeries 정규화. API 응답 shape 확인 후 매핑.
-function normalizeTrade(raw) {
-  const items = raw?.response?.body?.items?.item ?? [];
-  const rows = items.map((it) => ({
-    hs_code: HS,
-    period: it.year ? `${it.year}Q?` : it.statKor ?? 'unknown', // TODO: 분기 매핑
-    exports: Number(it.expDlr ?? 0),
-    imports: Number(it.impDlr ?? 0),
-    src_date: raw?.response?.header?.resultMsg ?? null,
-    provenance: 'real',
-  }));
-  return rows;
+async function fetchTradeCountry(KEY, cnty, strt, end) {
+  const url = `${BASE}?serviceKey=${KEY}&strtYymm=${strt}&endYymm=${end}&hsSgn=${HS}&cntyCd=${cnty}`;
+  const res = await fetch(url);
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`관세청 API ${res.status} (${cnty}) — ${text.slice(0, 80)} `
+      + `(403=승인/게이트웨이 전파 대기, 401=키 형식)`);
+  }
+  const code = (text.match(/<resultCode>([\s\S]*?)<\/resultCode>/) ?? [, ''])[1].trim();
+  if (code && code !== '00') {
+    const msg = (text.match(/<resultMsg>([\s\S]*?)<\/resultMsg>/) ?? [, ''])[1].trim();
+    throw new Error(`관세청 resultCode ${code}: ${msg}`);
+  }
+  return parseXmlItems(text);
+}
+
+const toQuarter = (ym) => { const [y, m] = ym.split('.').map(Number); return `${y}Q${Math.ceil(m / 3)}`; };
+
+/** 월단위·다국가 item → 분기 집계(TradeSeries shape) */
+function normalizeTrade(items) {
+  const byQ = {};
+  for (const it of items) {
+    if (!it.year?.includes('.')) continue;
+    const q = toQuarter(it.year);
+    (byQ[q] ??= { period: q, exports: 0, imports: 0 });
+    byQ[q].exports += Number(it.expDlr || 0);
+    byQ[q].imports += Number(it.impDlr || 0);
+  }
+  return Object.values(byQ)
+    .sort((a, b) => a.period.localeCompare(b.period))
+    .map((r) => ({ hs_code: HS, period: r.period, exports: r.exports, imports: r.imports, src_date: null, provenance: 'real' }));
 }
 
 function validateTrade(rows) {
@@ -105,11 +121,20 @@ function upsertTrade(rows) {
   seedGraph();
   if (GRAPH_ONLY) { console.log('  ✓ graph-only 완료 (0b bench 준비)'); return; }
 
-  const raw = await fetchTrade();
-  const rows = normalizeTrade(raw);
+  const KEY = process.env.DATA_GO_KR_KEY;
+  if (!KEY) throw new Error('DATA_GO_KR_KEY 미설정 (.dev.vars) — 관세청 OpenAPI serviceKey 필요');
+  const strt = process.env.STRT_YYMM ?? '202401';
+  const end = process.env.END_YYMM ?? '202412';
+  const all = [];
+  for (const c of CNTY_CDS) {
+    const items = await fetchTradeCountry(KEY, c, strt, end);
+    console.log(`  · ${c}: ${items.length} items`);
+    all.push(...items);
+  }
+  const rows = normalizeTrade(all);
   validateTrade(rows);
   upsertTrade(rows);
-  console.log(`  ✓ trade_stats 적재 ${rows.length}행`);
+  console.log(`  ✓ trade_stats 적재 ${rows.length}행 (분기 집계, 국가 ${CNTY_CDS.join('/')})`);
   d1(`SELECT period, exports, imports FROM trade_stats WHERE hs_code='${HS}' ORDER BY period;`);
   console.log('  ✓ 0d 1라운드 재현 완료 (검증 PASS)');
 })().catch((e) => {
