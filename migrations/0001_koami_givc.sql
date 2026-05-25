@@ -33,8 +33,9 @@ CREATE TABLE companies (
   biz        TEXT,
   sales      TEXT,
   share      TEXT,
-  core_type  INTEGER,                                -- 1=원료공급 / 2=후방수요·가공
+  core_type  INTEGER,                                -- 1=핵심(완성장비·자립화 핵심부품) / 2=보조(소재·예비)
   role       TEXT,
+  tier       TEXT,                                   -- 가치사슬 단계: 소재 / 부품 / 장비 (F023 기계 다단계)
   provenance TEXT NOT NULL CHECK (provenance IN ('real','est','virt'))
 );
 

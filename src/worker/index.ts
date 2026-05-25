@@ -62,7 +62,7 @@ app.post('/api/chat', async (c) => {
 
 // 그래프 재귀 CTE — 루트에서 깊이 N 도달 노드/엣지
 app.get('/api/givc/graph', async (c) => {
-  const root = c.req.query('root') ?? 'TOL';
+  const root = c.req.query('root') ?? 'MC';
   const depth = Number(c.req.query('depth') ?? 2);
   const reach = await c.env.DB.prepare(graphReachSql(root, depth)).all<{ id: string }>();
   const ids = reach.results.map((r) => r.id);
@@ -74,7 +74,7 @@ app.get('/api/givc/graph', async (c) => {
 
 // 정형 SQL — 무역 시계열 + 국가별 비중
 app.get('/api/givc/trade', async (c) => {
-  const hs = c.req.query('hs') ?? '290230';
+  const hs = c.req.query('hs') ?? '845710';
   const series = await c.env.DB.prepare(tradeSeriesSql(hs)).all();
   const byCountry = await c.env.DB.prepare(tradeByCountrySql(hs)).all();
   return c.json({ series: series.results, byCountry: byCountry.results });

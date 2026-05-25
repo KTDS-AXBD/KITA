@@ -35,14 +35,16 @@ async function waitMutation(id, timeoutMs = 90000) {
 
 function buildCorpus() {
   const nodes = query('SELECT id,type,label,meta FROM graph_nodes;');
-  const comps = query('SELECT id,name,sales,role FROM companies;');
-  const salesById = Object.fromEntries(comps.map((c) => [c.id, c]));
+  const comps = query('SELECT id,name,sales,role,tier FROM companies;');
+  const compById = Object.fromEntries(comps.map((c) => [c.id, c]));
   return nodes.map((n) => {
     let text = n.label;
-    if (n.type === 'company') { const c = salesById[n.id]; text = `${n.label} — ${c?.role ?? '석유화학'} 기업, 매출 ${c?.sales ?? 'N/A'}. 톨루엔 밸류체인.`; }
-    else if (n.type === 'country') { const m = n.meta ? JSON.parse(n.meta) : {}; text = `${n.label} — 톨루엔(HS290230) 교역 상대국, 수입 비중 ${m['비중'] ?? ''}.`; }
-    else if (n.id === 'TOL') text = '톨루엔(Toluene) 방향족 탄화수소 용제. HS 290230, CAS 108-88-3. 도료·잉크·합성원료.';
-    else if (n.type === 'hscode') text = 'HS코드 290230 — 톨루엔 품목 국제 통일 상품분류, 무역통계 집계 단위.';
+    const m = n.meta ? JSON.parse(n.meta) : {};
+    if (n.type === 'company') { const c = compById[n.id]; text = `${n.label} — ${c?.role ?? '기계'} 기업(${c?.tier ?? ''} 단계), 매출 ${c?.sales ?? 'N/A'}. 공작기계 소부장 가치사슬.`; }
+    else if (n.type === 'country') { text = `${n.label} — 머시닝센터(HS845710) 교역 상대국, 수입 비중 ${m['비중'] ?? ''}.`; }
+    else if (n.id === 'MC') text = '머시닝센터(공작기계) 금속절삭 가공장비. HS 845710, KSIC C2922. 소재·부품을 정밀 절삭하는 소부장 가치사슬 정점.';
+    else if (n.type === 'metric') text = `${n.label} — 공작기계 가치사슬 ${m.tier ?? '부품'} 단계, HS ${m.HS ?? ''}, 무역수지 ${m['무역수지'] ?? ''}.`;
+    else if (n.type === 'hscode') text = 'HS코드 845710 — 머시닝센터 품목 국제 통일 상품분류, 무역통계 집계 단위.';
     return { id: n.id, values: null, text };
   });
 }

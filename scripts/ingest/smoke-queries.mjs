@@ -10,16 +10,16 @@ const check = (label, cond, detail) => {
   if (!cond) fail++;
 };
 
-// 1) 그래프 재귀 CTE — TOL 깊이2 도달
-const reach = query(graphReachSql('TOL', 2)).map((r) => r.id);
+// 1) 그래프 재귀 CTE — MC(머시닝센터) 깊이2 도달
+const reach = query(graphReachSql('MC', 2)).map((r) => r.id);
 check('그래프 재귀CTE 도달', reach.length > 1, `${reach.length}노드 (${reach.slice(0, 5).join(',')}…)`);
 
-// 2) FTS5 전문검색 — '톨루엔'(그래프 label 보장 토큰)
-const hits = query(entitySearchSql('톨루엔', 5));
+// 2) FTS5 전문검색 — '감속기'(기계 가치사슬 보장 토큰)
+const hits = query(entitySearchSql('감속기', 5));
 check('FTS5 MATCH', hits.length >= 1, `${hits.length}건 (${hits.map((h) => h.entity_id).slice(0, 3).join(',')})`);
 
-// 3) 정형 SQL — 무역 시계열
-const trade = query(tradeSeriesSql('290230'));
+// 3) 정형 SQL — 무역 시계열(머시닝센터 845710)
+const trade = query(tradeSeriesSql('845710'));
 check('정형 무역시계열', trade.length >= 1, `${trade.length}분기`);
 
 if (fail) {

@@ -15,18 +15,18 @@ export async function ingestCompanies() {
     rows.push({
       id: t.corp_code, corp_code: t.corp_code,
       name: c?.corp_name ?? t.name, biz: t.role, salesWon,
-      core_type: t.core_type, role: t.role,
+      core_type: t.core_type, role: t.role, tier: t.tier,
     });
   }
   const tot = rows.reduce((s, r) => s + (r.salesWon || 0), 0) || 1; // share proxy 분모
   validate(rows, ['id', 'name'], 'companies');
-  upsert('companies', ['id', 'corp_code', 'name', 'biz', 'sales', 'share', 'core_type', 'role', 'provenance'],
+  upsert('companies', ['id', 'corp_code', 'name', 'biz', 'sales', 'share', 'core_type', 'role', 'tier', 'provenance'],
     rows.map((r) => `(`
       + `'${esc(r.id)}','${esc(r.corp_code)}','${esc(r.name)}',`
       + `${r.biz ? `'${esc(r.biz)}'` : 'NULL'},`
       + `${r.salesWon ? `'${esc(fmtKRW(r.salesWon))}'` : 'NULL'},`
       + `${r.salesWon ? `'${(r.salesWon / tot * 100).toFixed(0)}%'` : 'NULL'},`
-      + `${r.core_type},'${esc(r.role)}','real')`));
+      + `${r.core_type},'${esc(r.role)}',${r.tier ? `'${esc(r.tier)}'` : 'NULL'},'real')`));
 
   return { companies: rows.length, withSales: rows.filter((r) => r.salesWon).length };
 }

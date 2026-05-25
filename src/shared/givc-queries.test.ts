@@ -38,12 +38,12 @@ describe('sanitize (injection 안전)', () => {
   it('sanitizeHs: 숫자만, 빈값 기본', () => {
     expect(sanitizeHs('HS 290230')).toBe('290230');
     expect(sanitizeHs("29;DROP TABLE")).toBe('29');
-    expect(sanitizeHs('')).toBe('290230');
+    expect(sanitizeHs('')).toBe('845710'); // F023: 기본 앵커 머시닝센터
   });
   it('sanitizeId: 영숫자·언더스코어만', () => {
     expect(sanitizeId('C_JP')).toBe('C_JP');
     expect(sanitizeId("a'b")).toBe('ab');
-    expect(sanitizeId('')).toBe('TOL');
+    expect(sanitizeId('')).toBe('MC'); // F023: 기본 그래프 anchor
   });
   it('sanitizeMatch: 특수문자 제거 + 토큰 따옴표', () => {
     expect(sanitizeMatch('a*"b c')).toBe('"a" "b" "c"');

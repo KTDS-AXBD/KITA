@@ -9,19 +9,19 @@
  * 타입은 인접 givc-queries.d.ts 참조(.mjs라 node/Worker/vitest 모두 import 가능).
  */
 
-const HS_DEFAULT = '290230';
+const HS_DEFAULT = '845710'; // F023: 머시닝센터(공작기계) 앵커 HS
 
 /** SQL 문자열 리터럴 escape (작은따옴표 → 2개). lib/d1.mjs esc와 동일 규약 */
 export const esc = (s) => String(s).replace(/'/g, "''");
 
-/** HS 코드 — 숫자만 허용(비숫자 제거). 빈 값이면 기본 290230 */
+/** HS 코드 — 숫자만 허용(비숫자 제거). 빈 값이면 기본 845710(머시닝센터) */
 export const sanitizeHs = (hs) => {
   const d = String(hs ?? '').replace(/[^0-9]/g, '');
   return d || HS_DEFAULT;
 };
 
-/** 그래프 ID — 영문/숫자/언더스코어만 허용(노드 id 규약: TOL·C_JP·HS290230·기업id) */
-export const sanitizeId = (id) => String(id ?? '').replace(/[^A-Za-z0-9_]/g, '') || 'TOL';
+/** 그래프 ID — 영문/숫자/언더스코어만 허용(노드 id 규약: MC·CN·HS845710·기업id) */
+export const sanitizeId = (id) => String(id ?? '').replace(/[^A-Za-z0-9_]/g, '') || 'MC';
 
 /** 탐색 깊이 — 정수 1~4 클램프(재귀 폭주 방어, F013 깊이2 기준 여유) */
 export const clampDepth = (d) => {
@@ -55,11 +55,11 @@ export const tradeByCountrySql = (hs = HS_DEFAULT) =>
   `SELECT cnty_cd, cnty_nm, imports, share, provenance FROM trade_by_country WHERE hs_code='${sanitizeHs(hs)}' ORDER BY imports DESC;`;
 
 export const companiesSql = () =>
-  `SELECT id, name, biz, sales, share, core_type AS coreType, role, provenance AS source FROM companies ORDER BY core_type, name;`;
+  `SELECT id, name, biz, sales, share, core_type AS coreType, role, tier, provenance AS source FROM companies ORDER BY core_type, name;`;
 
 // ── 그래프 재귀 CTE (양방향, 깊이 클램프) ─────────────────────
 /** 루트에서 깊이 N까지 도달하는 노드 id 집합. 무방향 엣지(양방향 저장)도 견고하게 탐색 */
-export const graphReachSql = (root = 'TOL', depth = 4) =>
+export const graphReachSql = (root = 'MC', depth = 4) =>
   `WITH RECURSIVE reach(id, depth) AS (
   SELECT '${sanitizeId(root)}', 0
   UNION

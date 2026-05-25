@@ -1,8 +1,8 @@
 /**
- * F015/F021 — 스냅샷 → 도메인 타입 어댑터 (옵션A 동기).
+ * F015/F021/F023 — 스냅샷 → 도메인 타입 어댑터 (옵션A 동기).
  * 적재 스냅샷(s6.real.snapshot.json)을 화면 도메인 타입으로 흡수.
  * gap(뉴스·힌트)은 Mock fallback(※virt), 그래프 좌표는 결정적 산출(stale layout 미사용).
- * ⚠️ F021: real 경로 스냅샷은 아직 톨루엔 데이터 — 기계 실데이터 재적재는 F023.
+ * F023: real 경로 스냅샷 = 기계 다단계 가치사슬(머시닝센터 anchor + 베어링/감속기/특수강 tier + 상장 기계사).
  */
 import type {
   S6Focus,
@@ -12,6 +12,7 @@ import type {
   TradeAnomaly,
   WordCloudCollection,
   S6HintCard,
+  S6Kpi,
   KnowledgeGraph,
   PositionedGraph,
   PositionedNode,
@@ -30,18 +31,21 @@ interface SnapshotShape {
     viewBox: string;
   };
   tradeSeries: { quarters: string[]; exports: number[]; imports: number[]; source: string };
+  tierTrade: Record<string, { hs: string; exports: number; imports: number }>;
+  byCountry: { cnty_nm: string; share: number | null; imports: number }[];
   companies: { id: string; name: string; biz?: string; sales?: string; share?: string; coreType: number; role?: string; tier?: string; source: string }[];
 }
 
 const snap = snapshotJson as unknown as SnapshotShape;
 
-/** anchor 기준정보 — 공개 표준(HS/KSIC), ⭐real. F023에서 기계 스냅샷으로 교체 예정. */
+/** anchor 기준정보 — 공개 표준(HS/KSIC), ⭐real. F023 기계 가치사슬 재적재 완료. */
 export const REAL_PRODUCT: S6Focus = {
-  name: '톨루엔 (Toluene)',
-  hsCode: 'HS 290230',
-  ksic: 'KSIC C20111',
-  category: '방향족 탄화수소 / BTX (F023에서 기계 품목으로 교체)',
-  description: '실데이터: 관세청 무역통계 + DART 기업. ⚠️ 기계 가치사슬 재적재는 F023 대상.',
+  name: '머시닝센터 (공작기계)',
+  hsCode: 'HS 845710',
+  ksic: 'KSIC C2922',
+  category: '금속절삭 공작기계 / 장비 (가치사슬 정점)',
+  description:
+    '실데이터: 관세청 기계 무역통계(머시닝센터 + 베어링·감속기·특수강 tier) + DART 상장 기계사. 소재→부품→장비 소부장 다단계 가치사슬.',
 };
 
 /** 무역 시계열 + 이상치 산출(직전 분기 대비 ±10%↑ → △est) */
@@ -78,6 +82,26 @@ export function adaptCompanies(): S6Company[] {
     tier: toTier(c.tier),
     source: (c.source as Provenance) ?? 'real',
   }));
+}
+
+/** KPI 카드 산출 — 스냅샷 실데이터 기반(연간수출=앵커 4분기합·핵심부품수입=감속기·핵심기업=coreType1·수입국=top share). */
+export function adaptKpis(): S6Kpi[] {
+  const t = snap.tradeSeries;
+  const annualExp = t.exports.slice(-4).reduce((a, b) => a + b, 0);
+  const reducerImp = snap.tierTrade?.reducer?.imports ?? 0;
+  const core = snap.companies.filter((c) => c.coreType === 1).length;
+  const reserve = snap.companies.length - core;
+  const sorted = [...(snap.byCountry ?? [])].sort((a, b) => (b.share ?? 0) - (a.share ?? 0));
+  const top = sorted.at(0);
+  const pct = (s?: number | null): string => `${Math.round((s ?? 0) * 100)}%`;
+  const usdM = (v: number): string => `$${Math.round(v / 1e6).toLocaleString()}M`;
+  const others = sorted.slice(1, 3).map((c) => `${c.cnty_nm} ${pct(c.share)}`).join(' · ');
+  return [
+    { label: '연간 수출 (장비)', value: usdM(annualExp), delta: '머시닝센터 845710', deltaDir: 'up' },
+    { label: '핵심부품 수입', value: usdM(reducerImp), delta: '감속기 수입의존', deltaDir: 'down' },
+    { label: '핵심 기업', value: `${core}개`, delta: `예비 ${reserve}개`, deltaDir: 'up' },
+    { label: '주요 수입국', value: top ? `${top.cnty_nm} ${pct(top.share)}` : '—', delta: others, deltaDir: 'up' },
+  ];
 }
 
 export function adaptGraph(): KnowledgeGraph {

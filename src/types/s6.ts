@@ -57,3 +57,12 @@ export interface S6HintCard {
   delta: string;
   detail: string;
 }
+
+/** KPI 카드(연간수출·핵심부품수입·핵심기업·수입국). 구조적으로 components KpiItem과 호환.
+ *  F023: Mock=큐레이션 상수, real=스냅샷 산출(repository.getKpis). */
+export interface S6Kpi {
+  label: string;
+  value: string;
+  delta: string;
+  deltaDir: 'up' | 'down';
+}

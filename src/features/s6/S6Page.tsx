@@ -27,6 +27,7 @@ export function S6Page(): JSX.Element {
   const product = s6Repository.getProduct();
   const trade = s6Repository.getTradeSeries();
   const companies = s6Repository.listCompanies();
+  const kpis = s6Repository.getKpis();
   const wordcloud = s6Repository.getWordcloud();
   const hints = s6Repository.listHints();
   const graph = s6Repository.getPositionedGraph();
@@ -126,19 +127,8 @@ export function S6Page(): JSX.Element {
         </aside>
 
         <main className="col-main">
-          <KpiStrip
-            items={[
-              { label: '연간 수출 (장비)', value: '$972M', delta: '+8.5% YoY', deltaDir: 'up' },
-              { label: '핵심부품 수입', value: '$994M', delta: '감속기 수입의존', deltaDir: 'down' },
-              { label: '핵심 기업', value: '4개', delta: '예비 1개', deltaDir: 'up' },
-              {
-                label: '주요 수입국',
-                value: '일본 34%',
-                delta: '독일 22% · 중국 18%',
-                deltaDir: 'up',
-              },
-            ]}
-          />
+          {/* KPI — repository 산출(Mock=큐레이션, real=스냅샷 실데이터). F023: 하드코딩 제거 */}
+          <KpiStrip items={kpis} />
 
           <Card
             title="중앙 · 공작기계 가치사슬 지식 그래프"
@@ -149,7 +139,11 @@ export function S6Page(): JSX.Element {
           </Card>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 14 }}>
-            <Card title="좌측 · 수출입 추이" sub="22Q1 — 25Q4" flushBody>
+            <Card
+              title="좌측 · 수출입 추이"
+              sub={trade.quarters.length ? `${trade.quarters[0]} — ${trade.quarters[trade.quarters.length - 1]}` : '—'}
+              flushBody
+            >
               <TradeChart data={trade} />
             </Card>
 

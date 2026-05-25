@@ -4,6 +4,7 @@ import type {
   TradeSeries,
   WordCloudCollection,
   S6HintCard,
+  S6Kpi,
   KnowledgeGraph,
   PositionedGraph,
 } from '@/types';
@@ -13,6 +14,7 @@ import {
   S6_COMPANIES,
   S6_GRAPH,
   S6_WORDCLOUD,
+  S6_KPIS,
   HINTS_S6,
 } from '@/data/mock';
 import {
@@ -20,6 +22,7 @@ import {
   adaptTradeSeries,
   adaptCompanies,
   adaptGraph,
+  adaptKpis,
   layoutGraph,
   FALLBACK_WORDCLOUD,
   FALLBACK_HINTS,
@@ -29,6 +32,7 @@ export interface S6Repository {
   getProduct(): S6Focus;
   getTradeSeries(): TradeSeries;
   listCompanies(): S6Company[];
+  getKpis(): S6Kpi[];
   getWordcloud(): WordCloudCollection;
   listHints(): S6HintCard[];
   getGraph(): KnowledgeGraph;
@@ -44,6 +48,9 @@ class MockS6Repository implements S6Repository {
   }
   listCompanies(): S6Company[] {
     return S6_COMPANIES;
+  }
+  getKpis(): S6Kpi[] {
+    return S6_KPIS;
   }
   getWordcloud(): WordCloudCollection {
     return S6_WORDCLOUD;
@@ -62,8 +69,8 @@ class MockS6Repository implements S6Repository {
 
 export const s6Repository: S6Repository = new MockS6Repository();
 
-// F015 — 실데이터 구현체 (스냅샷 동기 서빙 + 어댑터 gap-fill). index.ts 토글로 선택.
-// ⚠️ F021: real 스냅샷은 아직 톨루엔 — 기계 실데이터 재적재는 F023.
+// F015/F023 — 실데이터 구현체 (스냅샷 동기 서빙 + 어댑터 gap-fill). index.ts 토글로 선택.
+// F023: real 스냅샷 = 기계 다단계 가치사슬(머시닝센터 + 베어링·감속기·특수강 tier + 상장 기계사).
 class SnapshotS6Repository implements S6Repository {
   getProduct(): S6Focus {
     return REAL_PRODUCT;
@@ -73,6 +80,9 @@ class SnapshotS6Repository implements S6Repository {
   }
   listCompanies(): S6Company[] {
     return adaptCompanies();
+  }
+  getKpis(): S6Kpi[] {
+    return adaptKpis();
   }
   getWordcloud(): WordCloudCollection {
     return FALLBACK_WORDCLOUD; // 뉴스 P1 미적재 → Mock(※virt)

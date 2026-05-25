@@ -4,6 +4,7 @@ import type {
   TradeSeries,
   WordCloudCollection,
   S6HintCard,
+  S6Kpi,
 } from '@/types';
 import type { GraphNode, GraphEdge, KnowledgeGraph } from '@/types';
 
@@ -262,6 +263,14 @@ export const S6_WORDCLOUD: WordCloudCollection = {
     { w: '원자재 가격', s: 12, t: 'neg' },
   ],
 };
+
+// KPI 카드 — Mock 시연용 큐레이션(가치사슬 헤드라인). real 모드는 스냅샷 산출(adaptKpis).
+export const S6_KPIS: S6Kpi[] = [
+  { label: '연간 수출 (장비)', value: '$972M', delta: '+8.5% YoY', deltaDir: 'up' },
+  { label: '핵심부품 수입', value: '$994M', delta: '감속기 수입의존', deltaDir: 'down' },
+  { label: '핵심 기업', value: '4개', delta: '예비 1개', deltaDir: 'up' },
+  { label: '주요 수입국', value: '일본 34%', delta: '독일 22% · 중국 18%', deltaDir: 'up' },
+];
 
 export const HINTS_S6: S6HintCard[] = [
   {
