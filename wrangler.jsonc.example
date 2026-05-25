@@ -24,6 +24,10 @@
   "kv_namespaces": [
     { "binding": "RATE_LIMIT_KV", "id": "REPLACE_WITH_KV_ID" }
   ],
+  // F016 — kita-givc 읽기전용 조회(/api/givc/*). database_id는 `wrangler d1 list`로 확인.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "kita-givc-poc", "database_id": "REPLACE_WITH_D1_ID" }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
