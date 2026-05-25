@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHintsStore } from '@/store';
+import { useHintsStore, useGvcDomainStore } from '@/store';
 import { s6Repository } from '@/data/repository';
 import {
   Card,
@@ -15,6 +15,9 @@ import { Search, Settings } from '@/components/icons';
 import { TradeChart } from './TradeChart';
 import { WordCloud } from './WordCloud';
 import { AnomalyPanel } from './AnomalyPanel';
+import { DomainToggle } from './DomainToggle';
+import { GvcPane } from './GvcPane';
+import { GvcIntegration } from './GvcIntegration';
 
 const PRODUCT_OPTIONS = ['머시닝센터', 'NC선반', '정밀 감속기', '정밀 베어링'];
 const ACTIVE_OPTION = '머시닝센터';
@@ -23,6 +26,7 @@ export function S6Page(): JSX.Element {
   const activeHints = useHintsStore((s) => s.s6);
   const toggleHint = useHintsStore((s) => s.toggleS6);
   const [hoverRowId, setHoverRowId] = useState<string | null>(null);
+  const activeDomain = useGvcDomainStore((s) => s.activeDomain);
 
   const product = s6Repository.getProduct();
   const trade = s6Repository.getTradeSeries();
@@ -225,6 +229,35 @@ export function S6Page(): JSX.Element {
               </span>
             </div>
           </Card>
+
+          {/* ─── F026: GVC 재정렬 + 통합 시나리오 (additive) ─── */}
+          <div style={{ marginTop: 8 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: 14,
+                paddingBottom: 10,
+                borderBottom: '1px solid var(--axis-line-soft)',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--axis-text-primary)' }}>
+                  GIVC 가치사슬 분석
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--axis-text-tertiary)', marginTop: 2 }}>
+                  기계 · 반도체 소부장 GVC 구조 비교
+                </div>
+              </div>
+              <DomainToggle />
+            </div>
+            <GvcPane domain={activeDomain} />
+            <div style={{ marginTop: 14 }}>
+              <GvcIntegration />
+            </div>
+          </div>
+          {/* ─── /F026 ─── */}
 
           <Callout kind="info" title="기능 설명">
             현재는 머시닝센터(장비) 중심 가치사슬이지만, <strong>전후방 데이터</strong>를 결합하면{' '}
