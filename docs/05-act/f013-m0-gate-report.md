@@ -1,7 +1,7 @@
 # F013 — kita-givc M0 PoC 게이트 판정 리포트
 
-> **판정일**: 2026-05-25 · **Plan/Design**: [Plan](../01-plan/features/f013-m0-poc-gate.plan.md) · [Design](../02-design/features/f013-m0-poc-gate.design.md)
-> **종합 판정**: 🟢 **조건부 PASS** — 저장소(D1+Vectorize) 타당성 입증. 0b·0c 압도적 통과, 0d 파이프라인·D1·스냅샷 경로 검증. **잔여 = 0d 라이브 관세청 fetch(키 활성화 대기) + 0a 라이선스 캡처.**
+> **판정일**: 2026-05-25 · **Plan/Design**: [Plan](../01-plan/features/f013-m0-poc-gate.plan.md) · [Design](../02-design/features/f013-m0-poc-gate.design.md) · [데이터 명세](../02-design/features/kita-givc-data-sources.md)
+> **종합 판정**: 🟢 **PASS (4/4)** — 저장소(D1+Vectorize) 타당성 입증. 0a~0d 전부 통과. **→ F014 진행 가능.**
 
 ---
 
@@ -11,8 +11,8 @@
 |------|------|------|:----:|------|
 | **0b** D1 그래프 깊이2 | ≤50ms | **중앙값 0.37ms** (p95 0.50ms, min 0.27 max 0.58) | ✅ **PASS** | 노드10·엣지24, 재귀 CTE 20회 측정(meta.duration) |
 | **0c** Vectorize 의미검색 | ≥80% | **100% (15/15)** | ✅ **PASS** | bge-m3(1024d, cosine), corpus 12 / 질의 15, top-k=3 |
-| **0d** 적재 1라운드 | 1명령 재현+검증 | 파이프라인·D1 write/read·스냅샷·XML파서 ✅ / **라이브 fetch 403(게이트웨이 전파 대기)** | 🟡 **부분** | 활용신청 승인 완료, 키 전파 후 라이브 1라운드 |
-| **0a** 소스·라이선스 | 상업이용+API 200 | **✅ 이용허락범위 "제한 없음"(상업가능) + 활용신청 승인(15100475, 2026-05-25)** / API 200은 전파 대기 | 🟢 **사실상 완료** | 라이선스·승인 확인, 게이트웨이 전파만 잔여 |
+| **0d** 적재 1라운드 | 1명령 재현+검증 | **✅ 관세청 톨루엔 실데이터 4분기 적재**(JP+CN+US, 2024Q1~Q4) + 검증 PASS + 스냅샷 | ✅ **PASS** | XML 파서·월→분기 집계·다국가 |
+| **0a** 소스·라이선스 | 상업이용+API 200 | **✅ 제한없음(상업) + 활용신청 승인 + API 200 정상서비스** | ✅ **PASS** | 15100475+15101609 |
 
 ---
 
@@ -34,7 +34,8 @@
 - ✅ **실 스펙 반영**: 데이터셋이 **XML 포맷**(JSON 아님) → 의존성 없는 XML 파서 + `year`("YYYY.MM" 월단위)→분기 집계 + 다국가(JP/CN/US, `cntyCd` 필수) 루프.
 - ✅ D1 write/read 경로 검증(graph seed upsert+count, trade_stats 스키마 적용).
 - ✅ 옵션A 스냅샷 경로(`build-snapshot.mjs`): D1 → `s6.real.snapshot.json`이 `KnowledgeGraph`/`TradeSeries` shape 일치(노드10·엣지12 dedup). **동기 인터페이스 보존 입증.**
-- 🟡 **라이브 관세청 fetch = HTTP 403** — 키 형식 확인(Encoding 키 raw append, 401→403). **활용신청 승인 직후라 apis.data.go.kr 게이트웨이 전파 대기**(자동승인도 수분~1h). → 전파 후 `pnpm poc:ingest` 1회로 0d 완료.
+- ✅ **라이브 적재 완료** — 관세청 HS 290230 톨루엔, JP+CN+US, 2024Q1~Q4 4분기 적재(수출 $4.3M~112M·수입 $77M~89M, resultCode 00 정상서비스) + 검증 PASS + 스냅샷 분기 4 반영.
+- ⚠️ **"전파 지연"은 오진이었음(근본원인)**: 초기 403 후 **백그라운드 curl 폴링이 200을 못 잡은 진짜 원인은 전파가 아니라 `curl: (3) Malformed input to a URL function`** — curl 8.5.0이 `%`-인코딩 serviceKey가 든 URL을 거부(`000` 무한 반복). **node fetch는 동일 URL 정상(200)**. 즉 API는 진작 작동, **폴링 도구(curl)만 결함**. 교훈: data.go.kr Encoding 키는 curl raw 전달 시 URL 파싱 실패 → node/`--data-urlencode`/Decoding 키 사용.
 
 ### 0a — 소스·라이선스 (🟢 사실상 완료)
 - ✅ 소스세트 확정 + **활용신청 완료**(Playwright 자동, 2026-05-25, 개발계정·자동승인·만료 2028-05-25):
@@ -49,11 +50,9 @@
 
 ## 3. 판정 및 권고
 
-- **저장소 타당성(핵심 게이트 질문) = 입증.** D1(그래프·정형) + Vectorize(의미검색) 조합이 S6 톨루엔 슬라이스에 충분. 0b/0c가 기준을 큰 폭으로 통과해 **저장소 재선택·범위 축소 불필요**(§5.5 미발동).
-- **권고: F014(적재 파이프라인) Plan 진행 가능.** 단 **0d 라이브 + 0a 라이선스 캡처**는 관세청 키 활성화 후 즉시 확인(블로커 아님 — 키 전파 타이밍 이슈).
-- **잔여 액션**:
-  1. 👤 data.go.kr 마이페이지에서 활용신청 **승인 상태 + 대상 API(15100475)** 확인. 승인 직후면 ~1-2h 후 재시도.
-  2. 🤖 키 활성화 시 `pnpm poc:ingest` → 라이브 1라운드 + 0a 라이선스(KOGL 유형) 캡처 → 본 리포트 0d/0a ✅ 갱신.
+- **🟢 게이트 4/4 PASS.** 저장소(D1+Vectorize) 타당성 입증 — D1(그래프 0.37ms·정형 실데이터) + Vectorize(의미검색 100%)가 S6 톨루엔 슬라이스에 충분. **저장소 재선택·범위 축소 불필요**(§5.5 미발동).
+- **권고: F014(적재 파이프라인) Plan 진행.** 본 PoC 스크립트(스키마·적재·스냅샷·XML 파서)를 F014에서 정식화 + DART 기업 적재(corpCode→company→재무) 추가.
+- **잔여(F014 이월)**: DART corpCode→대상 기업 corp_code 확정, 뉴스 메타데이터(P1), 어댑터 계층 정식 매핑.
 
 ---
 

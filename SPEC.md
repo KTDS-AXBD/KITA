@@ -57,7 +57,7 @@
 
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F013 | M0 PoC 게이트 — 공개데이터 소스·라이선스 확정 + D1 그래프 깊이2 ≤50ms + Vectorize 의미검색 ≥80% + 적재 1라운드 재현 (미달 시 저장소 재선택/범위 축소) | KITA-REQ-013 | P0 | S4 | 🔄 |
+| F013 | M0 PoC 게이트 ✅ 4/4 PASS — 0a 관세청2종 승인·제한없음 + DART 키유효 / 0b D1 깊이2 **0.37ms** / 0c Vectorize 의미검색 **100%** / 0d 톨루엔 실데이터 4분기 적재. 저장소(D1+Vectorize) 타당성 입증 → F014 진행 | KITA-REQ-013 | P0 | S4 | ✅ |
 | F014 | 적재 파이프라인 + 저장소 스키마 — 공개데이터→정규화·출처메타(⭐△※)·검증→D1/Vectorize/R2 적재, 실패 시 롤백 | KITA-REQ-014 | P0 | S5 | 📋 |
 | F015 | Repository 실데이터 구현체 + 어댑터 계층 — Mock과 동일 인터페이스, 스키마차 흡수(화면 코드 무변경 보장) | KITA-REQ-015 | P0 | S5 | 📋 |
 | F016 | S6 4종 조회 + 검증 — 정형(SQL)·그래프·전문검색(FTS) P0 / 의미검색(RAG) P1 + 회귀(vitest+33인터랙션)·성능 기준 유지 | KITA-REQ-016 | P0 | S6 | 📋 |
@@ -99,4 +99,4 @@
 *- **커스텀 도메인 전환** (2026-05-24): 공개 URL `https://kita.minu.best` (CF `custom_domain`, `workers_dev:false`). **CF Access 게이팅 적용** (2026-05-25): 지정 이메일(sinclairseo@gmail.com·ktds.axbd@gmail.com) + OTP/Google. F008 접근제어 이력: 비추측 URL+시연후 만료 → 공개 → Access 게이팅. 배포·접근제어 [deploy-guide](docs/deploy-guide.md)*
 *- **🎉 F001~F012 전부 완료** — 시연 가능 프로덕션 PoC 달성. **URL: https://kita.minu.best** (CF Access 보호). **남은 건 서민원 수동 런북**: 백업 영상 녹화 + 리허설 2회 + 실 노트북 QA ([qa-checklist](docs/qa-checklist.md)·[operations-manual](docs/operations-manual.md))*
 *- **실데이터 파이프라인 (kita-givc) 📋 신규** (2026-05-25): /ax:req-interview → PRD(스코어 73=구조적 천장·Ambiguity 0.12 Ready). F013~F017 등록 — Phase 1=비PII 공개데이터 S6 슬라이스(F013 M0 PoC 게이트 → F014 적재 + F015 Repository/어댑터 → F016 조회·검증), Phase 2=GIVC+PII(외부 게이트, F017). PRD 영업기밀 로컬전용(`docs/req/kita-givc/`)*
-*- **F013 🔄** (M0 PoC 게이트): [Plan](docs/01-plan/features/f013-m0-poc-gate.plan.md) · [Design](docs/02-design/features/f013-m0-poc-gate.design.md) · [게이트 리포트](docs/05-act/f013-m0-gate-report.md). 🟢 **조건부 PASS** — **0b 그래프 깊이2 중앙값 0.37ms**(기준 50ms)·**0c 의미검색 100%**(기준 80%, bge-m3) 실측 통과, 0d 파이프라인·D1·스냅샷(옵션A) 검증. 저장소(D1+Vectorize) 타당성 입증 → F014 진행 가능. 잔여 = **0d 라이브 관세청 fetch(키 활성화 대기, HTTP 403)** + 0a 라이선스 캡처. CF: D1 `kita-givc-poc`·Vectorize `kita-givc-poc`(1024d/cosine)*
+*- **F013 ✅** (M0 PoC 게이트 4/4 PASS): [Plan](docs/01-plan/features/f013-m0-poc-gate.plan.md) · [Design](docs/02-design/features/f013-m0-poc-gate.design.md) · [게이트 리포트](docs/05-act/f013-m0-gate-report.md) · [데이터 명세](docs/02-design/features/kita-givc-data-sources.md). 0a 관세청 15100475+15101609 활용신청 승인(제한없음/상업가능, Playwright 자동)·DART 키 유효 / 0b D1 깊이2 **0.37ms** / 0c Vectorize 의미검색 **100%**(bge-m3) / 0d 톨루엔 실데이터 4분기(2024Q1~Q4 JP+CN+US) 적재. 저장소 D1 `kita-givc-poc`·Vectorize `kita-givc-poc`(1024d). 교훈: curl이 %-인코딩 키 URL 거부(`malformed`)→node fetch 사용. **→ F014 진행 가능***
