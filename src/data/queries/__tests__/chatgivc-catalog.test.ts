@@ -21,7 +21,7 @@ describe('chatgivc-catalog', () => {
   it('ANCHOR_CODE — virt 포맷(GVC-MACH-* / GVC-SEMI-*), 실 코드 미포함', () => {
     expect(ANCHOR_CODE.mach).toMatch(/^GVC-MACH-/);
     expect(ANCHOR_CODE.semi).toMatch(/^GVC-SEMI-/);
-    // 실 GVC 코드(GVC20101...) 절대 금지
+    // 실 GVC 코드(실GVC코드...) 절대 금지
     expect(ANCHOR_CODE.mach).not.toMatch(/^GVC\d/);
     expect(ANCHOR_CODE.semi).not.toMatch(/^GVC\d/);
   });

@@ -23,7 +23,7 @@ S6 하단에 "💬 ChatGIVC 질의" 탭을 추가한다. 실 ChatGIVC SQL과 데
 ## §3 공개 경계
 
 - ✅ 테이블명·컬럼명 공개 OK: `scmm_his_chart`, `itm3101110000`, `mart.lnk0955a` 등
-- ❌ 실 GVC 제품코드 (`GVC20101…`) 절대 금지 → virt 코드(`GVC-MACH-*`/`GVC-SEMI-*`)만
+- ❌ 실 GVC 제품코드 (`실GVC코드…`) 절대 금지 → virt 코드(`GVC-MACH-*`/`GVC-SEMI-*`)만
 
 ## §4 DoD
 

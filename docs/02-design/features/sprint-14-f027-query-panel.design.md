@@ -97,5 +97,5 @@ WHERE  a.gvccd = 'GVC-MACH-MC001'
 
 ## §6 공개 경계 검증
 
-- 모든 SQL 템플릿: `GVC20101…` 없음 확인 → `GVC-MACH-*`/`GVC-SEMI-*`만
+- 모든 SQL 템플릿: `실GVC코드…` 없음 확인 → `GVC-MACH-*`/`GVC-SEMI-*`만
 - 테스트로 강제: `expect(sql).not.toMatch(/GVC\d{5}/)`

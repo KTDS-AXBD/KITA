@@ -36,7 +36,7 @@
 
 ## 공개 경계 검증
 
-- `GVC20101…` 등 실 GVC 코드 미포함 확인 (테스트 `expect(sql).not.toMatch(/GVC\d{5}/)`)
+- `실GVC코드…` 등 실 GVC 코드 미포함 확인 (테스트 `expect(sql).not.toMatch(/GVC\d{5}/)`)
 - virt 코드 `GVC-MACH-MC001` / `GVC-SEMI-WF001` 사용
 - 테이블명·컬럼명(`scmm_his_chart`, `mart.lnk0955a` 등) 공개 OK
 

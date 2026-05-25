@@ -22,7 +22,7 @@ export interface QueryEntry {
   curatedResult?: CuratedResult;
 }
 
-// virt GVC 앵커 코드 — 실 코드(GVC20101...) 절대 금지
+// virt GVC 앵커 코드 — 실 코드(실GVC코드...) 절대 금지
 export const ANCHOR_CODE: Record<GvcDomain, string> = {
   mach: 'GVC-MACH-MC001',
   semi: 'GVC-SEMI-WF001',

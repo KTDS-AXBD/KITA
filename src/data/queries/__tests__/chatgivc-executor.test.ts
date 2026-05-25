@@ -90,7 +90,7 @@ describe('chatgivc-executor', () => {
       for (const row of result!.rows) {
         for (const cell of row) {
           const s = String(cell);
-          // GVC20101... 실 코드 포함 금지
+          // 실GVC코드... 실 코드 포함 금지
           expect(s).not.toMatch(/GVC\d{5}/);
         }
       }
