@@ -15,10 +15,10 @@ created: 2026-05-25
 기존 테이블(trade_stats·companies 등)과 네임스페이스 분리. 향후 F026 Repository 교체 시 `gvc_*` 테이블만 GVC 레이어로 식별.
 
 ### ADR-2: 의미명 칼럼만 커밋 (공개 레포 제약)
-실 컬럼코드(`itm3101511500`, `gsc7400001010`)는 `docs/spec/기진회 DB/`(gitignore 로컬전용)에만 존재. 커밋 파일은 의미명(`metric_sales_growth`)만 사용.
+실 컬럼코드(로컬전용 스키마 원본)는 gitignore 로컬전용에만 존재. 커밋 파일은 의미명(`metric_sales_growth`)만 사용.
 
 ### ADR-3: virt GVC 코드 포맷 (`GVC-{DOMAIN}-{ID}`)
-실 코드(`GVC20101EA048`)와 명확히 구별. provenance=virt 필수. 기계: `GVC-MACH-*`, 반도체: `GVC-SEMI-*`.
+실 GVC코드(로컬전용)와 명확히 구별. provenance=virt 필수. 기계: `GVC-MACH-*`, 반도체: `GVC-SEMI-*`.
 
 ### ADR-4: mart.* 대체 불가 → 기존 파이프라인 유지
 M0 게이트: mart.* DDL 미제공. 무역/기업재무 원천은 기존 `trade_stats`/`trade_by_country`/`companies` 유지. gvc_products의 `hs_codes` 필드로 조회 연결만 선언.

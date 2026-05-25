@@ -46,7 +46,7 @@ date: 2026-05-25
 |------|------|
 | 실 컬럼코드 미포함 | ✅ 의미명만 (metric_sales_growth 등) |
 | 실 GVC코드 미포함 | ✅ virt 포맷만 (GVC-MACH-xxx, GVC-SEMI-xxx) |
-| `docs/spec/기진회 DB/` 미커밋 | ✅ gitignore 유지 |
+| 실 schema 원본(로컬전용) 미커밋 | ✅ gitignore 유지 |
 | mart.* 미러 없음 (기존 파이프라인 유지) | ✅ trade_stats/companies 등 기존 5테이블 무변경 |
 | features/ diff 0 | ✅ 0줄 |
 | merge 금지 | ✅ PR 생성까지만 |
@@ -78,7 +78,7 @@ metric_inventory_turnover / metric_employment_change / metric_rnd_growth
 
 ## 교훈
 
-1. **공개 레포 virt 코드 포맷**: `GVC-MACH-xxx` 형식은 실 코드(`GVC20101MS001`)와 명확히 구별됨 — 네이밍 컨벤션이 보안 제약의 1차 방어선.
+1. **공개 레포 virt 코드 포맷**: `GVC-MACH-xxx` 형식은 실 GVC코드(로컬전용)와 명확히 구별됨 — 네이밍 컨벤션이 보안 제약의 1차 방어선.
 2. **JSDoc에서 glob 패턴(`*`) 주의**: `*.mjs` 형태 주석이 ES 모듈 파서에서 오류 — 주석 내 글로브 패턴은 `xxx` 로 대체.
 3. **FK 순서 준수**: DROP(역순: metrics→network→products), CREATE(정순: products→network→metrics) — 멱등 마이그레이션의 표준 패턴.
 4. **gvc-seed.mjs 멱등성**: 도메인 DELETE+INSERT 방식으로 중복 적재 없음 (FK 위반 없이 재실행 가능).
