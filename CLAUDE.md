@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KITA** — KT DS AX컨설팅팀의 **Prototype 리뷰용 인터랙티브 데모 사이트** PoC. "GIVC 위에 온톨로지를 얹으면 무엇이 가능한가"를 화면으로 보여주고, 시연 중 고객(산자부/산업부 의사결정자)이 자발적으로 추가 데이터를 꺼내게 유도하는 게 목적.
 
-**현재 상태: 🎉 F001~F012 전부 ✅ — 시연 가능 프로덕션 PoC 달성.** Vite+TS+Zustand SPA가 **`https://kita.minu.best`**(CF 커스텀 도메인, **CF Access 게이팅** — 지정 이메일+OTP/Google)에 라이브 구동 + What-If 실 LLM 토글(CF Workers AI, KV rate-limit) + 시연 스크립트·운영 매뉴얼 완비. 남은 건 **서민원 수동 런북**(백업 영상·리허설·실노트북 QA) + 외부 시연일(고객 PM 재지정, 외부 게이트). **신규 트랙: 실데이터 파이프라인 `kita-givc`**(SPEC F013~F017 📋, PRD `docs/req/kita-givc/` 로컬전용) — Mock→실데이터 적재·조회, Phase 1 공개데이터 S6 슬라이스. 핵심 자산:
+**현재 상태: 🎉 F001~F012 전부 ✅ — 시연 가능 프로덕션 PoC 달성.** Vite+TS+Zustand SPA가 **`https://kita.minu.best`**(CF 커스텀 도메인, **CF Access 게이팅** — 지정 이메일+OTP/Google)에 라이브 구동 + What-If 실 LLM 토글(CF Workers AI, KV rate-limit) + 시연 스크립트·운영 매뉴얼 완비. 남은 건 **서민원 수동 런북**(백업 영상·리허설·실노트북 QA) + 외부 시연일(고객 PM 재지정, 외부 게이트). **신규 트랙: 실데이터 파이프라인 `kita-givc`** — Mock→실데이터 적재·조회, Phase 1 공개데이터 S6 톨루엔 슬라이스. **F013·F014·F015 ✅**(2026-05-25): M0 게이트 4/4 PASS(D1 그래프 0.37ms·Vectorize 100%) → 적재 파이프라인(`pnpm ingest:all` — 관세청 무역+DART 기업 6사 실데이터, `migrations/0001`, CF D1·Vectorize `kita-givc-poc`) → Repository 실구현체·어댑터(`SnapshotTolueneRepository` 동기, **화면 코드 무변경**, 토글 `VITE_DATA_SOURCE=real`). 남음=**F016**(4종 조회·33 회귀·성능)+뉴스 P1. F017(GIVC·PII) 외부 게이트 보류. 데이터 명세 `docs/02-design/features/kita-givc-data-sources.md`, PRD `docs/req/kita-givc/` 로컬전용. 핵심 자산:
 - **SPEC.md** (루트) — **SSOT**. F-item 상태·Sprint 진행. 작업 기준.
 - **프로덕션 소스** (`src/`, `config/`, `wrangler.jsonc.example`) — Vite+TS SPA + Hono Worker(`/api/chat`).
 - **`docs/req/prd-final.md`** — PRD (로컬 전용). **`docs/spec/claude design/`** — 원본 프로토타입(이송 참조).
