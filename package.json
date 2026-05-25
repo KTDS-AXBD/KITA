@@ -14,7 +14,13 @@
     "test:watch": "vitest",
     "deploy:cf": "pnpm build && wrangler deploy",
     "deploy:dryrun": "pnpm build && wrangler deploy --dry-run",
-    "serve:offline": "vite preview --port 4173"
+    "serve:offline": "vite preview --port 4173",
+    "poc:schema": "wrangler d1 execute kita-givc-poc --file scripts/poc/schema-poc.sql --remote",
+    "poc:seed": "node scripts/ingest/poc-toluene.mjs --graph-only",
+    "poc:graph": "node scripts/poc/bench-graph.mjs",
+    "poc:vec": "node scripts/poc/bench-vectorize.mjs",
+    "poc:ingest": "node scripts/ingest/poc-toluene.mjs",
+    "poc:snapshot": "node scripts/poc/build-snapshot.mjs"
   },
   "dependencies": {
     "@ktds-axbd/harness-kit": "^0.12.0",
