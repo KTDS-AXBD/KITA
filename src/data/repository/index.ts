@@ -1,6 +1,8 @@
 export { rndRepository } from './RndRepository';
 export type { RndRepository } from './RndRepository';
 export type { S6Repository } from './S6Repository';
+export { gvcRepository } from './GvcRepository';
+export type { GvcRepository } from './GvcRepository';
 
 import type { S6Repository } from './S6Repository';
 import { s6Repository as mockS6, snapshotS6Repository } from './S6Repository';

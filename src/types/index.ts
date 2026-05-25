@@ -4,3 +4,4 @@ export * from './graph';
 export * from './s6';
 export * from './hint-boosts';
 export * from './tweaks';
+export * from './gvc';
