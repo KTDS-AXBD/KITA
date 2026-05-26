@@ -87,6 +87,14 @@
 | F027 | 실 질의 데모 패널(ChatGIVC Query) ✅ — `ChatGivcQueryPane`(S6 하단 탭)+`chatgivc-catalog`(실SQL↔미러SQL **병기, C하이브리드**)+`executor`(GvcRepository 재사용 live + 큐레이션 정적). 도메인 토글 연동·출처표기(⭐/△/※). 실 GVC코드 0(virt + 자가 가드 테스트)·기존 S6 무손상(탭 additive)·test **71**(신규26). autopilot STATUS=FAILED(CI-부재 오판, 구현 MATCH100 정상) → Master 검토·스크럽(실코드 prefix illustrative)·수동 merge | KOAMI-REQ-027 | P0 | S14 | ✅ |
 | F028 | 본사업화 연동 청사진(blueprint) ✅ — (a)화면별 Repository↔실 `gvc.*`/`mart.*` 쿼리 매핑표 (b)퓨샷 NL→SQL 역량 카탈로그 (c)실 DB 전환 Migration Plan (d)PII/DLP/NDA 거버넌스 게이트 (e)확장성 **+ (f) 실 컬럼↔의미명 1:1 매핑 정식화**(scmm 6패밀리·product_network·어댑터 REAL_COLUMN_MAP 규칙). 문서(로컬 `docs/req/chatgivc-align/`). 잔여(mart.* DDL·NL→SQL엔진·보안승인·실GVC코드)는 외부 게이트 | KOAMI-REQ-028 | P0 | S15 | ✅ |
 
+### 시연 운영 · 의견 회신 설문 — 🆕 (2026-05-26, /req-interview)
+> 시연 후 고객(KOAMI)이 시나리오 우선순위·데이터 확보 의향·일정 의견을 회신할 수 있게 설문 페이지를 프로덕션 사이트에 추가. 09번 단독 HTML(`docs/spec/설문지/`, axis 토큰 적용 완성본)을 iframe 임베드(이식 설계서 B안). 응답 수집은 Google Form 백엔드 POST(placeholder, 실 폼 생성 시 entry.* 주입 활성화).
+> **결정(req-interview 2026-05-26)**: 이식=커스텀 HTML iframe / 진행=바로 구현+SPEC / 노출=S4·S6 하단 CTA만(헤더 네비 비노출) / 수집=placeholder 유지.
+
+| F | 기능 | REQ | 우선 | Sprint | 상태 |
+|---|------|-----|------|--------|------|
+| F029 | 의견 회신 설문 페이지 ✅ — 09번 단독 HTML을 `public/survey-static.html`로 복사 + `/survey` 라우트(`SurveyPage` iframe 임베드, 이식 설계서 B안) + S4·S6 하단 `SurveyCta` 카드(헤더 네비 비노출). 폼 로직(localStorage 임시저장·미리보기 모달·Google Form POST) 정적 HTML 격리·사이트 코드 무손상(라우트 1줄+import 2줄+CTA 2곳). Google Form 백엔드=placeholder(실 폼 생성 후 entry.* 주입 시 활성화). 검증 typecheck/lint/test 71/build·로컬 preview 실측(라우트·iframe 전체 렌더·CTA·콘솔에러0) | KOAMI-REQ-029 | P1 | 별도 | ✅ |
+
 ---
 
 ## 6. Execution Plan (Sprint)

@@ -5,6 +5,7 @@ import { LandingPage } from '@/features/landing/LandingPage';
 import { S4Page } from '@/features/rnd/S4Page';
 import { S6Page } from '@/features/s6/S6Page';
 import { AboutOntologyPage, AboutDataPage } from '@/features/about';
+import { SurveyPage } from '@/features/survey';
 import { TweaksPanel } from '@/components/tweaks/TweaksPanel';
 import { navigate } from '@/shell';
 
@@ -27,6 +28,7 @@ export default function App(): JSX.Element {
   else if (route === '/scenario/s6' || route === '/scenario/toluene') page = <S6Page key="s6" />;
   else if (route === '/about/ontology') page = <AboutOntologyPage />;
   else if (route === '/about/data') page = <AboutDataPage />;
+  else if (route === '/survey') page = <SurveyPage />;
   else
     page = (
       <div style={{ padding: 80, textAlign: 'center', color: 'var(--axis-text-tertiary)' }}>
