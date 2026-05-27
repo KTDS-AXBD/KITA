@@ -3,6 +3,178 @@
    Built on AXIS tokens (colors_and_type.css + axis-styles.css)
    ========================================================= */
 
+/* ── Ontology Platform (v0.32) 사이드바 대시보드 레이아웃 ── */
+.op-app-layout {
+  display: flex;
+  height: 100vh;
+  background: var(--op-bg-base);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* Sidebar */
+.op-sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--op-sidebar-width);
+  background: var(--op-bg-card);
+  border-right: 1px solid var(--op-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow-y: auto;
+}
+.op-sidebar-logo {
+  padding: 20px 20px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.op-sidebar-logo-fallback {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: var(--op-accent);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 14px;
+  flex-shrink: 0;
+}
+.op-sidebar-logo-title {
+  font-size: 13px; font-weight: 700; color: var(--op-text-primary); line-height: 1.2;
+}
+.op-sidebar-logo-sub {
+  font-size: 11px; color: var(--op-text-tertiary);
+}
+.op-sidebar-subtitle {
+  padding: 0 20px 16px;
+  font-size: 12px;
+  color: var(--op-text-tertiary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--op-border);
+}
+.op-sidebar-section-label {
+  padding: 16px 20px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--op-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.op-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  margin: 1px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--op-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  width: calc(100% - 16px);
+  text-align: left;
+  font-family: inherit;
+}
+.op-menu-item:hover {
+  background: #F8F9FA;
+  color: var(--op-text-primary);
+}
+.op-menu-item.active {
+  background: #F0F2F5;
+  font-weight: 600;
+  color: var(--op-text-primary);
+}
+.op-menu-icon {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  color: var(--op-text-tertiary);
+  display: flex; align-items: center;
+}
+.op-menu-item.active .op-menu-icon { color: var(--op-text-primary); }
+.op-menu-item:hover .op-menu-icon { color: var(--op-text-secondary); }
+.op-sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--op-border);
+  font-size: 11px;
+  color: var(--op-text-tertiary);
+  line-height: 1.6;
+}
+.op-sidebar-footer-ver { font-weight: 600; color: var(--op-text-secondary); }
+
+/* Main area */
+.op-main-area {
+  margin-left: var(--op-sidebar-width);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--op-bg-base);
+}
+
+/* Header bar */
+.op-header-bar {
+  height: var(--op-header-height);
+  background: var(--op-bg-card);
+  border-bottom: 1px solid var(--op-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.op-header-breadcrumb {
+  font-size: 13px;
+  color: var(--op-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.op-bc-root {
+  color: var(--op-text-tertiary);
+  font-size: 13px;
+}
+.op-bc-sep {
+  margin: 0 6px;
+  color: var(--op-text-tertiary);
+}
+.op-bc-current {
+  color: var(--op-text-primary);
+  font-weight: 600;
+}
+.op-header-right {
+  display: flex; align-items: center; gap: 12px;
+}
+.op-scenario-badge {
+  padding: 4px 10px; border-radius: 4px;
+  background: var(--op-accent-light); color: var(--op-accent);
+  font-weight: 600; font-size: 11px;
+}
+
+/* Page content */
+.op-page-content {
+  padding: 28px 32px 48px;
+  max-width: 1400px;
+  width: 100%;
+}
+
+/* Page skeleton (공통) */
+.op-page { }
+.op-section-header { margin-bottom: 24px; }
+.op-section-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; color: var(--op-text-primary); }
+.op-section-header p { font-size: 13px; color: var(--op-text-secondary); }
+.op-placeholder {
+  padding: 48px;
+  background: var(--op-bg-card);
+  border-radius: var(--op-radius);
+  border: 1px dashed var(--op-border);
+  text-align: center;
+  color: var(--op-text-tertiary);
+  font-size: 14px;
+}
+
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body { background: var(--axis-paper-soft); }

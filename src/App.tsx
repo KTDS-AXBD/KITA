@@ -1,13 +1,19 @@
 import { useEffect } from 'react';
 import { useTweaksStore } from '@/store';
-import { useHashRoute, AppHeader } from '@/shell';
+import { useHashRoute, AppHeader, AppLayout, navigate } from '@/shell';
 import { LandingPage } from '@/features/landing/LandingPage';
 import { S4Page } from '@/features/rnd/S4Page';
 import { S6Page } from '@/features/s6/S6Page';
 import { AboutOntologyPage, AboutDataPage } from '@/features/about';
 import { SurveyPage } from '@/features/survey';
 import { TweaksPanel } from '@/components/tweaks/TweaksPanel';
-import { navigate } from '@/shell';
+import { DataStatusPage } from '@/features/platform/data/DataStatusPage';
+import { CqManagePage } from '@/features/platform/cq/CqManagePage';
+import { OntologyPage } from '@/features/platform/ontology/OntologyPage';
+import { GraphPage } from '@/features/platform/graph/GraphPage';
+import { ScenarioPage } from '@/features/platform/scenario/ScenarioPage';
+import { ComparePage } from '@/features/platform/compare/ComparePage';
+import { PlanPage } from '@/features/platform/plan/PlanPage';
 
 export default function App(): JSX.Element {
   const route = useHashRoute();
@@ -20,6 +26,21 @@ export default function App(): JSX.Element {
     else document.documentElement.classList.remove('dark');
   }, [flavor, theme]);
 
+  // v0.32 Platform 대시보드 라우트 (사이드바 셸)
+  if (route.startsWith('/platform/')) {
+    let platformPage: JSX.Element;
+    if (route === '/platform/data') platformPage = <DataStatusPage />;
+    else if (route === '/platform/cq') platformPage = <CqManagePage />;
+    else if (route === '/platform/ontology') platformPage = <OntologyPage />;
+    else if (route === '/platform/graph') platformPage = <GraphPage />;
+    else if (route === '/platform/scenario') platformPage = <ScenarioPage />;
+    else if (route === '/platform/compare') platformPage = <ComparePage />;
+    else if (route === '/platform/plan') platformPage = <PlanPage />;
+    else platformPage = <DataStatusPage />;
+    return <AppLayout route={route}>{platformPage}</AppLayout>;
+  }
+
+  // 기존 라우트 (상단 탭 셸 유지)
   const tweaks = useTweaksStore.getState();
 
   let page: JSX.Element;
