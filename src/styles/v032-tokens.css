@@ -1,0 +1,38 @@
+/* v0.32 GIVC Ontology Platform 디자인 토큰
+   Prefix --op- (Ontology Platform) — 기존 --axis-* 와 병존 */
+:root {
+  --op-bg-base: #F4F6FB;
+  --op-bg-card: #FFFFFF;
+
+  --op-text-primary: #111111;
+  --op-text-secondary: #666666;
+  --op-text-tertiary: #999999;
+
+  --op-border: #E8ECF1;
+  --op-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --op-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --op-accent: #E60012;
+  --op-accent-light: rgba(230, 0, 18, 0.06);
+
+  --op-radius: 12px;
+  --op-radius-sm: 8px;
+
+  --op-sidebar-width: 240px;
+  --op-header-height: 48px;
+
+  /* 지식그래프 노드 색상 */
+  --op-color-event: #E60012;
+  --op-color-region: #FF9F0A;
+  --op-color-country: #4A90D9;
+  --op-color-raw: #8B6914;
+  --op-color-intermediate: #7B68EE;
+  --op-color-product: #2ECC71;
+  --op-color-industry: #E74C3C;
+  --op-color-company: #3498DB;
+  --op-color-ews: #F39C12;
+  --op-color-rnd: #9B59B6;
+  --op-color-policy: #34495E;
+  --op-color-trade: #1ABC9C;
+  --op-color-risk: #E60012;
+}
