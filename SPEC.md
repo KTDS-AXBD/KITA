@@ -101,7 +101,7 @@
 
 | F | 기능 | REQ | 우선 | Sprint | 상태 |
 |---|------|-----|------|--------|------|
-| F030 | 디자인 시스템 + 앱 셸 — 사이드바(MAIN 5+REF) + 헤더 브레드크럼 + 디자인 토큰(#E60012·Pretendard·radius12) + 공용 컴포넌트(KPI카드·데이터테이블·엔티티카드·툴팁3·Cypher블록·토글·타임라인·모달·배지) + hash 라우팅 확장 + **cytoscape 번들·성능 PoC 동반** | KOAMI-REQ-030 | P0 | S16 | 🔧 |
+| F030 | 디자인 시스템 + 앱 셸 ✅ — `v032-tokens.css`(`--op-*` prefix로 기존 `--axis-*`와 네임스페이스 격리·25토큰·노드색11) + `src/shell/`(AppLayout·Sidebar MAIN5+REF2·HeaderBar 브레드크럼) + `src/components/platform/` 공용 9종(Badge 실/추정/유료+verified/draft/pending·KpiCard·DataTable·EntityCard·Tooltip3·CypherBlock·Toggle·Modal·Timeline) + `/platform/*` 7라우트(data·cq·ontology·graph·scenario·compare·plan, stub) + cytoscape PoC(소부장 10노드 미니그래프·성능로깅). **기존 라우트(/scenario/rnd·s6·about·survey) AppHeader 유지=공존**(diff 1796+/3-, big-bang 회피). 검증 typecheck/lint/test **71**/build(699KB·gz226·cytoscape포함, 번들최적화는 F034 dynamic import). PR #5 squash merge. ⚠️CI부재 false-FAILED(MATCH100) Master 독립검증 후 수동merge | KOAMI-REQ-030 | P0 | S16 | ✅ |
 | F031 | 데이터 현황 페이지 — KPI 4(총27/실19/추정4/유료4) + 데이터소스 현황표(상태닷·구분배지·출처·활용영역·수집방법·갱신일). 소부장 우선 정렬 + 호르무즈 소스 통합 | KOAMI-REQ-031 | P0 | S17 | 📋 |
 | F032 | CQ 관리 페이지 — 좌 CQ 목록(필터 pills·상태배지 verified/draft/pending) + 우 상세(질문·배경·엔티티태그·Cypher·검증결과) + 신규 CQ 등록 모달 | KOAMI-REQ-032 | P0 | S18 | 📋 |
 | F033 | 온톨로지 모델 정의 페이지 — 엔티티 13종·관계 8종·속성 카드(색상블록·툴팁) + 제약(constraints) 다크블록 + 관계 속성 편집 모달 | KOAMI-REQ-033 | P0 | S18 | 📋 |
@@ -133,7 +133,7 @@
 | S13 ✅ | Repository 정렬 + 통합 시나리오 | F026 | 실적 ~autopilot | ✅ gvcS6Adapter + 반도체 S6 도메인 토글 + 통합뷰. 기존 S6 무손상·test45·proprietary0. STATUS=DONE(가드레일로 false-FAILED 차단)·Master 수동 merge |
 | S14 ✅ | 실 질의 데모 패널 | F027 | 실적 ~autopilot | ✅ ChatGivcQueryPane(S6 탭)+카탈로그(C하이브리드 병기)+executor·도메인토글·test71·실GVC코드0. CI-부재 오판 FAILED→Master 검토·스크럽·수동 merge |
 | S15 ✅ | 본사업화 연동 청사진 | F028 | 실적 ~병렬(S12·S14) | ✅ blueprint (a)~(f) 완성 — 실컬럼↔의미명 1:1 매핑 정식화. 잔여는 외부 게이트(mart.* DDL·보안승인) |
-| S16 | 디자인 시스템 + 앱 셸 (v0.32) | F030 | 6월 리뷰 역산 | 사이드바 대시보드 셸·라우팅·디자인 토큰·공용 컴포넌트 + cytoscape PoC(번들·렌더). 7페이지 셸 동작, typecheck/lint/build PASS |
+| S16 ✅ | 디자인 시스템 + 앱 셸 (v0.32) | F030 | 실적 ~13분(autopilot) | ✅ `--op-*` 토큰 격리·shell(AppLayout/Sidebar/HeaderBar)·공용 9종·/platform/* 7라우트 stub·cytoscape PoC + 기존 라우트 공존(diff 1796+/3-). typecheck/lint/test71/build PASS. Master 독립검증(typecheck·test·build 재실행·proprietary0)·PR #5 수동merge `705bddc` |
 | S17 | 정적 콘텐츠 3종 | F031·F036·F037 | 6월 리뷰 역산 | 데이터현황·비교검증·추진계획 렌더 + 출처배지(실/추정/유료) 부착. 셸 이후 병렬 |
 | S18 | 방법론 2종 | F032·F033 | 6월 리뷰 역산 | CQ 관리(목록·상세·등록모달) + 온톨로지 정의(엔티티13·관계8·제약). 도메인 공용 |
 | S19 | 지식그래프 + 데이터레이어 | F034·F038 | 6월 리뷰 역산 | cytoscape 그래프 + 노드 상세패널 + 도메인 토글(소부장/호르무즈) + Mock/real 어댑터 |
