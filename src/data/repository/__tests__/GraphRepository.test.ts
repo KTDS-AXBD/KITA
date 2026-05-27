@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { graphRepository } from '../GraphRepository';
+import { GraphRepositoryReal } from '../GraphRepository';
 
 describe('GraphRepository', () => {
   it('소부장 그래프 30노드 이상', async () => {
@@ -35,5 +36,40 @@ describe('GraphRepository', () => {
         expect(ids.has(e.target), `edge ${e.id}: target '${e.target}' missing`).toBe(true);
       }
     }
+  });
+});
+
+describe('GraphRepositoryReal', () => {
+  afterEach(() => { vi.restoreAllMocks(); });
+
+  it('sobujiang — fetch 성공 시 API 응답 반환', async () => {
+    const mockGraph = {
+      domain: 'sobujiang',
+      nodes: [{ id: 'MC', label: '머시닝센터', type: 'RnDProject', detail: '', source: 'real' }],
+      edges: [{ id: 'e_MC_HS845710', source: 'MC', target: 'HS845710', label: '' }],
+    };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockGraph),
+    }));
+    const repo = new GraphRepositoryReal();
+    const g = await repo.getGraph('sobujiang');
+    expect(g.domain).toBe('sobujiang');
+    expect(g.nodes[0]?.id).toBe('MC');
+  });
+
+  it('hormuz — Mock fallback 반환', async () => {
+    const repo = new GraphRepositoryReal();
+    const g = await repo.getGraph('hormuz');
+    expect(g.domain).toBe('hormuz');
+    expect(g.nodes.length).toBeGreaterThanOrEqual(40);
+  });
+
+  it('sobujiang — fetch 실패 시 Mock fallback', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network error')));
+    const repo = new GraphRepositoryReal();
+    const g = await repo.getGraph('sobujiang');
+    expect(g.domain).toBe('sobujiang');
+    expect(g.nodes.length).toBeGreaterThanOrEqual(30);
   });
 });
