@@ -1,5 +1,6 @@
 import { Timeline } from '@/components/platform';
 import type { TimelineItem } from '@/components/platform';
+import { CQ_ITEMS as CQ_SSOT } from '../cq/cqData';
 
 const PHASES: TimelineItem[] = [
   { phase: 'Phase 0', label: '준비', date: '5/26~5/30', status: 'done' },
@@ -21,19 +22,20 @@ interface CqItem {
   id: string;
   text: string;
   tier: 1 | 2;
+  sid?: string;
 }
 
-const CQ_ITEMS: CqItem[] = [
-  { id: 'CQ-002', text: '소부장 자립화 R&D 적합 기업 Top 5 + 선정 근거 + 반대 추천', tier: 1 },
-  { id: 'CQ-001', text: '호르무즈 봉쇄 시 영향 품목 + 인과 경로', tier: 1 },
-  { id: 'CQ-003', text: '특정 HS코드 품목의 수입 의존 국가 및 대체 가능 국가', tier: 2 },
-  { id: 'CQ-004', text: '특정 기업의 원자재 의존도 및 원가 영향 시뮬레이션', tier: 2 },
-  { id: 'CQ-005', text: 'EWS 경보 발령 시 후방 영향 전파 경로 및 시간', tier: 2 },
-  { id: 'CQ-006', text: 'R&D/특허 기반 국산화 가능 품목 식별', tier: 2 },
-  { id: 'CQ-007', text: '산업 간 전파 경로 — 소부장 → 공작기계 → 수출 영향', tier: 2 },
-];
+// SSOT 일원화: CQ 정의는 cq/cqData.ts(CQ_SSOT)에서 파생한다.
+// (이전엔 PlanPage가 자체 CQ 배열을 들고 있어 CQ-003~007 문구가 cqData와 어긋났다. F040에서 폐기.)
+const CQ_ITEMS: CqItem[] = CQ_SSOT.map((c) => ({
+  id: c.id,
+  text: c.question,
+  tier: c.tier,
+  sid: c.scenarioSid,
+}));
 
-const tier1 = CQ_ITEMS.filter((c) => c.tier === 1);
+// Tier 1(시연 대상) 우선 노출. Tier 1 안에서는 MAIN(CQ-002)을 앞세운다.
+const tier1 = CQ_ITEMS.filter((c) => c.tier === 1).sort((a) => (a.id === 'CQ-002' ? -1 : 0));
 const tier2 = CQ_ITEMS.filter((c) => c.tier === 2);
 
 const TIER_LABEL_STYLE = (t: 1 | 2): React.CSSProperties => ({
@@ -60,7 +62,7 @@ function CqSection({ tier, items }: { tier: 1 | 2; items: CqItem[] }): JSX.Eleme
       }}
     >
       <div style={TIER_LABEL_STYLE(tier)}>
-        Tier {tier} — {tier === 1 ? '시연 대상' : '고객 확인 후 추가'}
+        Tier {tier} · {tier === 1 ? '시연 대상' : '고객 확인 후 추가'}
       </div>
       {items.map((cq, i) => (
         <div
@@ -84,6 +86,16 @@ function CqSection({ tier, items }: { tier: 1 | 2; items: CqItem[] }): JSX.Eleme
           >
             {cq.id}
           </span>
+          {cq.sid && (
+            <span
+              style={{
+                fontSize: 11, fontWeight: 700, padding: '1px 6px', borderRadius: 3,
+                background: '#E8ECF1', color: '#666', flexShrink: 0, marginTop: 1,
+              }}
+            >
+              {cq.sid}
+            </span>
+          )}
           <span style={{ fontSize: 13, color: 'var(--op-text-primary)', lineHeight: 1.5 }}>{cq.text}</span>
         </div>
       ))}

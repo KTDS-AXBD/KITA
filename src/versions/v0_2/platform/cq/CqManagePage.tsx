@@ -1,6 +1,17 @@
 import { useState, useCallback } from 'react';
-import { Badge, Modal, CypherBlock } from '@/components/platform';
-import { CQ_ITEMS, CqItem, CqStatus } from './cqData';
+import { Badge, Modal, CypherBlock, Timeline } from '@/components/platform';
+import type { TimelineItem } from '@/components/platform';
+import {
+  CQ_ITEMS,
+  CqItem,
+  CqStatus,
+  CqProvenance,
+  ProvenanceKind,
+  SURVEY_SCENARIOS,
+  DATA_INTENT_ITEMS,
+  DATA_INTENT_LABEL,
+  CUSTOMER_INTENT_LABEL,
+} from './cqData';
 
 type FilterKey = 'all' | 'tier1' | 'tier2' | 'verified' | 'unverified';
 
@@ -34,6 +45,44 @@ const DATA_STATUS_LABEL: Record<string, string> = {
   confirmed: '확보',
   partial: '부분확보',
   pending: '미확보',
+};
+
+// ── 빌드업 이력(provenance) → Timeline 매핑 ──
+const PROV_KIND_LABEL: Record<ProvenanceKind, string> = {
+  registered: '등록',
+  survey: '질의서',
+  data: '데이터',
+  verified: '검증',
+  report: '보고',
+};
+
+const PROV_KIND_STATUS: Record<ProvenanceKind, TimelineItem['status']> = {
+  registered: 'done',
+  survey: 'active',
+  data: 'active',
+  verified: 'done',
+  report: 'upcoming',
+};
+
+function provenanceToTimeline(prov: CqProvenance[]): TimelineItem[] {
+  return prov.map((p) => ({
+    phase: `[${PROV_KIND_LABEL[p.kind]}] ${p.round}`,
+    label: p.note,
+    date: p.date,
+    status: PROV_KIND_STATUS[p.kind],
+  }));
+}
+
+const SCENARIO_BY_SID = Object.fromEntries(SURVEY_SCENARIOS.map((s) => [s.sid, s]));
+const DATA_INTENT_RESPONSE = Object.fromEntries(DATA_INTENT_ITEMS.map((d) => [d.key, d.response]));
+
+const SUBHEAD: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 700,
+  color: 'var(--op-text-secondary)',
+  marginBottom: 12,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
 };
 
 function matchFilter(cq: CqItem, filter: FilterKey): boolean {
@@ -74,6 +123,34 @@ function CqDetailPanel({ cq }: { cq: CqItem }): JSX.Element {
           <div style={{ fontSize: 12, color: 'var(--op-text-secondary)', lineHeight: 1.6 }}>{cq.background}</div>
         </div>
       </section>
+
+      {/* 질의서 연결: 고객 질의 (일회성 아님: 우선순위·데이터의향 회신으로 빌드업) */}
+      {(cq.scenarioSid || cq.customerAsk) && (
+        <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
+          <h4 style={SUBHEAD}>질의서 연결 · 고객 질의</h4>
+          {cq.scenarioSid && (
+            <div style={{ marginBottom: 10 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--op-text-tertiary)', marginBottom: 4 }}>시나리오 매핑</div>
+              <span style={{ padding: '2px 9px', borderRadius: 4, background: '#111', color: '#fff', fontSize: 12, fontWeight: 700, marginRight: 6 }}>
+                {cq.scenarioSid}
+              </span>
+              <span style={{ fontSize: 12, color: 'var(--op-text-secondary)' }}>
+                {SCENARIO_BY_SID[cq.scenarioSid]?.title ?? ''}
+                {SCENARIO_BY_SID[cq.scenarioSid]?.role === 'main' && ' · 🥇 MAIN'}
+                {SCENARIO_BY_SID[cq.scenarioSid]?.role === 'sub' && ' · 🥈 SUB'}
+              </span>
+            </div>
+          )}
+          {cq.customerAsk && (
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--op-text-tertiary)', marginBottom: 4 }}>고객에게 묻는 것</div>
+              <div style={{ fontSize: 12, color: 'var(--op-text-secondary)', lineHeight: 1.6, padding: '8px 12px', background: 'var(--op-bg-base)', borderRadius: 'var(--op-radius-sm)' }}>
+                {cq.customerAsk}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* 관련 엔티티/관계 */}
       <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
@@ -140,32 +217,115 @@ function CqDetailPanel({ cq }: { cq: CqItem }): JSX.Element {
         </section>
       )}
 
-      {/* 데이터 요구사항 */}
+      {/* 데이터 요구사항 (고객 회신 = 질의서 B 데이터의향 폐루프) */}
       {cq.dataRequirements && (
-        <section>
-          <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--op-text-secondary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.04em' }}>데이터 요구사항</h4>
+        <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
+          <h4 style={SUBHEAD}>데이터 요구사항 · 고객 회신</h4>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--op-border)' }}>
-                {['필요 데이터', '출처', '상태'].map((h) => (
+                {['필요 데이터', '출처', '상태', '고객 회신'].map((h) => (
                   <th key={h} style={{ textAlign: 'left', padding: '6px 8px', color: 'var(--op-text-tertiary)', fontWeight: 600, fontSize: 11 }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {cq.dataRequirements.map((dr) => (
-                <tr key={dr.data} style={{ borderBottom: '1px solid var(--op-border)' }}>
-                  <td style={{ padding: '7px 8px' }}>{dr.data}</td>
-                  <td style={{ padding: '7px 8px', color: 'var(--op-text-secondary)' }}>{dr.source}</td>
-                  <td style={{ padding: '7px 8px' }}>
-                    <span style={DATA_STATUS_STYLE[dr.status]}>{DATA_STATUS_LABEL[dr.status]}</span>
-                  </td>
-                </tr>
-              ))}
+              {cq.dataRequirements.map((dr) => {
+                const intent = dr.surveyKey ? DATA_INTENT_RESPONSE[dr.surveyKey] : undefined;
+                return (
+                  <tr key={dr.data} style={{ borderBottom: '1px solid var(--op-border)' }}>
+                    <td style={{ padding: '7px 8px' }}>{dr.data}</td>
+                    <td style={{ padding: '7px 8px', color: 'var(--op-text-secondary)' }}>{dr.source}</td>
+                    <td style={{ padding: '7px 8px' }}>
+                      <span style={DATA_STATUS_STYLE[dr.status]}>{DATA_STATUS_LABEL[dr.status]}</span>
+                    </td>
+                    <td style={{ padding: '7px 8px' }}>
+                      {intent ? (
+                        <span
+                          title={dr.surveyKey ? `질의서 B: ${DATA_INTENT_LABEL[dr.surveyKey]}` : undefined}
+                          style={{
+                            fontSize: 11, fontWeight: 600, padding: '1px 7px', borderRadius: 3,
+                            background: intent === 'pending' ? '#E8ECF1' : '#111',
+                            color: intent === 'pending' ? '#666' : '#fff',
+                          }}
+                        >
+                          {CUSTOMER_INTENT_LABEL[intent]}
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--op-text-tertiary)' }}>-</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+          <div style={{ fontSize: 11, color: 'var(--op-text-tertiary)', marginTop: 8, lineHeight: 1.6 }}>
+            고객 회신은 질의서(Google Form) B 데이터의향과 연동됩니다. 폼 활성화·회신 수집 후 미회신에서 즉시/일부/추후/불가로 갱신되며 상태(확보)를 끌어올립니다.
+          </div>
         </section>
       )}
+
+      {/* 산자부 보고 연결 */}
+      {cq.reportRef && (
+        <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
+          <h4 style={SUBHEAD}>산자부 보고 연결</h4>
+          <div style={{ fontSize: 12, color: 'var(--op-text-secondary)', lineHeight: 1.6, padding: '10px 14px', background: 'var(--op-bg-base)', borderRadius: 'var(--op-radius-sm)', borderLeft: '3px solid #111' }}>
+            {cq.reportRef}
+          </div>
+        </section>
+      )}
+
+      {/* 빌드업 이력: 일회성 아님 (기진회 PoC -> 산자부 보고로 누적) */}
+      {cq.provenance && cq.provenance.length > 0 && (
+        <section>
+          <h4 style={SUBHEAD}>빌드업 이력 · 기진회 PoC -&gt; 산자부 보고</h4>
+          <Timeline items={provenanceToTimeline(cq.provenance)} />
+        </section>
+      )}
+    </div>
+  );
+}
+
+// ── 시나리오 커버리지 (질의서 S1~S7 ↔ CQ 매핑, backlog 표기) ──
+function ScenarioCoverage({ onSelect, activeSid }: { onSelect: (cqId: string) => void; activeSid?: string }): JSX.Element {
+  return (
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
+      {SURVEY_SCENARIOS.map((s) => {
+        const mapped = s.cqIds.length > 0;
+        const isActive = activeSid === s.sid;
+        return (
+          <button
+            key={s.sid}
+            onClick={() => { const first = s.cqIds[0]; if (first) onSelect(first); }}
+            disabled={!mapped}
+            title={mapped ? `${s.cqIds.join(', ')} 보기` : '대응 CQ 미등록 (우선순위 회신 대기)'}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px',
+              borderRadius: 6, fontSize: 11, cursor: mapped ? 'pointer' : 'default',
+              border: isActive ? '1px solid #111' : '1px solid var(--op-border)',
+              background: mapped ? 'var(--op-bg-card)' : 'var(--op-bg-base)',
+              opacity: mapped ? 1 : 0.7,
+            }}
+          >
+            <span style={{ fontWeight: 700, color: mapped ? 'var(--op-text-primary)' : 'var(--op-text-tertiary)' }}>
+              {s.sid}
+            </span>
+            <span style={{ color: 'var(--op-text-secondary)' }}>{s.title}</span>
+            {s.role === 'main' && <span title="MAIN">🥇</span>}
+            {s.role === 'sub' && <span title="SUB">🥈</span>}
+            <span
+              style={{
+                fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 3,
+                background: mapped ? '#111' : '#E8ECF1',
+                color: mapped ? '#fff' : '#888',
+              }}
+            >
+              {mapped ? `CQ ${s.cqIds.length}` : 'backlog'}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -174,6 +334,8 @@ interface AddCqForm {
   tier: '1' | '2';
   question: string;
   background: string;
+  scenarioSid: string;
+  customerAsk: string;
 }
 
 export function CqManagePage(): JSX.Element {
@@ -181,7 +343,7 @@ export function CqManagePage(): JSX.Element {
   const [selectedId, setSelectedId] = useState<string>('CQ-001');
   const [filter, setFilter] = useState<FilterKey>('all');
   const [addOpen, setAddOpen] = useState(false);
-  const [form, setForm] = useState<AddCqForm>({ tier: '1', question: '', background: '' });
+  const [form, setForm] = useState<AddCqForm>({ tier: '1', question: '', background: '', scenarioSid: '', customerAsk: '' });
 
   const filtered = items.filter((cq) => matchFilter(cq, filter));
   const selected = items.find((cq) => cq.id === selectedId) ?? items[0];
@@ -189,6 +351,7 @@ export function CqManagePage(): JSX.Element {
   const handleAdd = useCallback(() => {
     if (!form.question.trim()) return;
     const nextId = `CQ-${String(items.length + 1).padStart(3, '0')}`;
+    const today = new Date().toISOString().slice(0, 10);
     const newCq: CqItem = {
       id: nextId,
       tier: Number(form.tier) as 1 | 2,
@@ -200,26 +363,33 @@ export function CqManagePage(): JSX.Element {
       entities: [],
       relations: [],
       cypher: `// ${nextId} 쿼리를 입력하세요\nMATCH (n) RETURN n LIMIT 10`,
+      scenarioSid: form.scenarioSid || undefined,
+      customerAsk: form.customerAsk.trim() || undefined,
+      // 신규 CQ도 빌드업 자산: 등록 시점을 이력 첫 항목으로 기록(일회성 아님)
+      provenance: [
+        { round: '신규 등록', date: today, kind: 'registered', note: form.background.trim() || '신규 CQ 등록' },
+      ],
     };
     setItems((prev) => [...prev, newCq]);
     setSelectedId(nextId);
     setFilter('all');
     setAddOpen(false);
-    setForm({ tier: '1', question: '', background: '' });
+    setForm({ tier: '1', question: '', background: '', scenarioSid: '', customerAsk: '' });
   }, [form, items.length]);
 
   return (
     <div className="op-page" style={{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* 페이지 헤더 */}
-      <div style={{ padding: '20px 28px 0', flexShrink: 0 }}>
+      <div style={{ padding: '20px 28px 12px', flexShrink: 0, borderBottom: '1px solid var(--op-border)' }}>
         <div className="op-section-header" style={{ marginBottom: 0 }}>
           <h2>CQ 관리</h2>
-          <p>Competency Question · 온톨로지가 답해야 할 질문 정의 · 검증</p>
+          <p>Competency Question · 질의서 시나리오 ↔ CQ ↔ 산자부 보고 빌드업 추적</p>
         </div>
+        <ScenarioCoverage onSelect={setSelectedId} activeSid={selected?.scenarioSid} />
       </div>
 
       {/* 2패널 레이아웃 */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', marginTop: 16 }}>
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* 좌 — CQ 목록 */}
         <div style={{ width: 300, flexShrink: 0, borderRight: '1px solid var(--op-border)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--op-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
@@ -309,6 +479,19 @@ export function CqManagePage(): JSX.Element {
             </select>
           </div>
           <div>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', marginBottom: 6 }}>질의서 시나리오 (선택)</label>
+            <select
+              value={form.scenarioSid}
+              onChange={(e) => setForm((f) => ({ ...f, scenarioSid: e.target.value }))}
+              style={{ width: '100%', padding: '8px 10px', border: '1px solid var(--op-border)', borderRadius: 'var(--op-radius-sm)', fontSize: 13, background: 'white' }}
+            >
+              <option value="">- 미지정 -</option>
+              {SURVEY_SCENARIOS.map((s) => (
+                <option key={s.sid} value={s.sid}>{s.sid} · {s.title}</option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', marginBottom: 6 }}>질문 *</label>
             <textarea
               value={form.question}
@@ -323,7 +506,17 @@ export function CqManagePage(): JSX.Element {
             <textarea
               value={form.background}
               onChange={(e) => setForm((f) => ({ ...f, background: e.target.value }))}
-              placeholder="질문 등록 배경, Pain Point, 활용 시나리오 등"
+              placeholder="질문 등록 배경, 고객 니즈, 활용 시나리오 등"
+              rows={2}
+              style={{ width: '100%', padding: '8px 10px', border: '1px solid var(--op-border)', borderRadius: 'var(--op-radius-sm)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', marginBottom: 6 }}>고객 질의 (선택)</label>
+            <textarea
+              value={form.customerAsk}
+              onChange={(e) => setForm((f) => ({ ...f, customerAsk: e.target.value }))}
+              placeholder="이 CQ로 고객에게 확인할 우선순위·데이터 의향 (질의서 연동)"
               rows={2}
               style={{ width: '100%', padding: '8px 10px', border: '1px solid var(--op-border)', borderRadius: 'var(--op-radius-sm)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
