@@ -106,7 +106,7 @@
 | F032 | CQ 관리 페이지 ✅ — 좌우 2패널(좌 CQ 목록·필터 pills 5종·상태배지) + 우 상세(질문·엔티티태그·Cypher·검증·데이터요구 5섹션) + 신규 CQ 등록 모달. `cqData.ts`(CQ 7건: Tier1×2·Tier2×5). PR #7 | KOAMI-REQ-032 | P0 | S18 | ✅ |
 | F033 | 온톨로지 모델 정의 페이지 ✅ — KPI 4(엔티티13·관계8·인스턴스161·관계331) + 엔티티 카드 13종(EntityCard 재활용·3열) + 관계 테이블 8행(호버·클릭 모달·툴팁) + 제약 다크블록 3종(Neo4j Cypher) + 관계 편집 모달. `ontologyData.ts`. PR #7 | KOAMI-REQ-033 | P0 | S18 | ✅ |
 | F034 | 지식그래프 페이지 ✅ — cytoscape(`GraphCanvas` lazy chunk) + 노드 상세패널 + 범례 + 툴바(도메인 토글·노드필터·영향경로). 소부장(37노드)/호르무즈(44노드) 2그래프. **메인 번들 745→327KB**(cytoscape 445KB 별도 lazy chunk, gz104/143). PR #8 | KOAMI-REQ-034 | P0 | S19 | ✅ |
-| F035 | 시나리오 분석 페이지 (시연 하이라이트) — CQ 선택(토글 CQ-002 소부장/CQ-001 호르무즈) → NL질의 → Cypher 변환 → 애니메이션 추론 → 결과 A 영향경로(cytoscape mini) B Top5 C 설명가능성(인과경로·취약성·EWS·재현성) D 대응옵션 E 의사결정 리포트 | KOAMI-REQ-035 | P0 | S20 | 🔧 |
+| F035 | 시나리오 분석 페이지 (시연 하이라이트) ✅ — CQ 선택(토글 CQ-002 소부장/CQ-001 호르무즈) → NL질의 → Cypher 변환 → 5단계 애니메이션 추론 → 결과 A 영향경로(cytoscape mini) B Top5 C 설명가능성(인과경로·취약성·EWS·재현성) D 대응옵션 E 의사결정 리포트. typecheck/lint 0·test84·build(359KB+445KB lazy) PASS. PR #9 | KOAMI-REQ-035 | P0 | S20 | ✅ |
 | F036 | 비교 검증 페이지 (전략 핵심) ✅ — chatGIVC(LLM+RAG) vs 온톨로지+KG 2카드(채팅버블·주석 ✗/✓) + 6축 비교표. PR #6 | KOAMI-REQ-036 | P0 | S17 | ✅ |
 | F037 | 추진 계획 페이지 ✅ — Phase 0~4 타임라인(5/26~6/27, `Timeline` 컴포넌트) + CQ Tier1(시연 2)/Tier2(고객확인 5) 목록 + 푸터. PR #6 | KOAMI-REQ-037 | P0 | S17 | ✅ |
 | F038 | 데이터 레이어 / Repository — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터(공작기계 무역/기업) 재활용. **S19분 ✅**(`GraphRepository` Mock/real 토글 기반 + 그래프 fixtures, test +5=76). **S21분 잔여**(real D1 연결) | KOAMI-REQ-038 | P0 | S19·S21 | 🔧 |
@@ -137,7 +137,7 @@
 | S17 ✅ | 정적 콘텐츠 3종 | F031·F036·F037 | 실적 ~10분(autopilot) | ✅ 데이터현황(27건·StatusDot)·비교검증(chatGIVC vs 온톨로지 6축)·추진계획(Phase타임라인) + 출처배지. typecheck/lint/test71/build PASS. Master 독립검증·PR #6 수동merge `1e7a15f` |
 | S18 ✅ | 방법론 2종 | F032·F033 | 실적 ~11분(autopilot) | ✅ CQ 관리(7건·필터·등록모달) + 온톨로지 정의(엔티티13·관계8·제약3). 신규 컴포넌트0(F030 재활용). typecheck/test71/build745KB. Match97%(DoD 9/9 충족). Master 독립검증·PR #7 merge `3a0f67b` |
 | S19 ✅ | 지식그래프 + 데이터레이어 | F034·F038(S19분) | 실적 ~23분(autopilot) | ✅ cytoscape 그래프(소부장37/호르무즈44노드)+노드 상세패널+도메인 토글+GraphRepository Mock/real 토글. **번들 코드스플릿**(메인745→327KB·cytoscape 445KB lazy). typecheck/test76/build PASS·Match95%. Master 독립검증(청크분리 확인)·PR #8 merge `51700f9`. F038 real D1는 S21 |
-| S20 | 시나리오 분석 (하이라이트) | F035 | 6월 리뷰 역산 | CQ 선택→Cypher→애니메이션 추론→A~E 결과. 콘솔에러0 |
+| S20 ✅ | 시나리오 분석 (하이라이트) | F035 | 실적 ~autopilot | ✅ CQ-002(소부장)/CQ-001(호르무즈) 토글+5단계 애니메이션 추론+A~E 결과 패널. typecheck/lint 0·test84·build PASS. PR #9 merge |
 | S21 | 통합 + 배포 + 회귀 | F038·F039 | 6월 리뷰 역산 | 데이터레이어 통합·koami.minu.best 교체 배포·버전 활성화 검증·회귀 |
 
 **Critical Path:** F001(이송 기반) → F002~F006 → F007(배포). F009(실 LLM)·F012(P2)는 여유 시.
