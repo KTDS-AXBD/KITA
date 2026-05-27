@@ -14,7 +14,7 @@ export interface CqDataReq {
 }
 
 /**
- * 빌드업 이력 1건. CQ가 일회성 질문이 아니라 기진회 PoC -> 산자부 보고로
+ * 빌드업 이력 1건. CQ가 일회성 질문이 아니라 기진회 PoC -> 산업부 보고로
  * 누적되는 자산임을 코드로 강제하는 장치(F040). 라운드/날짜/종류/메모.
  */
 export type ProvenanceKind = 'registered' | 'survey' | 'data' | 'verified' | 'report';
@@ -46,9 +46,9 @@ export interface CqItem {
   scenarioSid?: string;
   /** 이 CQ가 고객에게 던지는 질의(질의서 항목 연결). */
   customerAsk?: string;
-  /** 산자부 보고 연결 - 이 CQ의 답이 들어가는 의사결정 보고 deliverable. */
+  /** 산업부 보고 연결 - 이 CQ의 답이 들어가는 의사결정 보고 deliverable. */
   reportRef?: string;
-  /** 빌드업 이력(기진회 세미나 -> 질의서 -> KG 검증 -> 산자부 보고). */
+  /** 빌드업 이력(기진회 세미나 -> 질의서 -> KG 검증 -> 산업부 보고). */
   provenance?: CqProvenance[];
 }
 
@@ -137,7 +137,7 @@ export const CQ_ITEMS: CqItem[] = [
     background: '지정학 충격의 정량 영향 분석·전후방 영향도 추적이 고객(기진회·산업부)의 핵심 니즈. 호르무즈 -> 원유 -> 석유화학 중간재 -> 소부장 부품 경로를 온톨로지로 추적해 단순 통계로는 보이지 않는 다단계 전파를 정량화한다.',
     scenarioSid: 'S2',
     customerAsk: '보신 충격 전파 경로는 공개데이터·가상 재현입니다. 귀측 GIVC 품목 전후방 매핑과 과거 정책 대응 이력을 연결하면 그대로 실값 분석이 됩니다. 지정학 리스크 시나리오 우선순위와 두 데이터의 공유 가능 범위를 확인하고 싶습니다.',
-    reportRef: '산자부 공급망 리스크 대응 보고 - 지정학 충격 영향 품목·정책 권고',
+    reportRef: '산업부 「공급망 리스크 대응방안」 - 지정학 충격 영향 품목 식별·단계별 정책 권고 근거',
     entityCount: 8,
     relationCount: 6,
     entities: [
@@ -178,7 +178,7 @@ ORDER BY impact_score DESC LIMIT 5`,
       { round: '기진회 1차 세미나', date: '2026-05-21', kind: 'registered', note: '지정학 충격 인과추적 니즈 확인 -> CQ 후보 도출' },
       { round: 'Phase 0 질의서', date: '2026-05-26', kind: 'survey', note: 'S2 우선순위·전후방 매핑 데이터 의향 질의 (회신 대기)' },
       { round: 'Phase 2 KG 검증', date: '2026-05-26', kind: 'verified', note: '42노드·67엣지 0.23초 탐색 -> 영향 품목 5종 도출' },
-      { round: '산자부 보고', date: '예정', kind: 'report', note: '공급망 리스크 대응 보고 - 정책 권고 3종 근거로 편입' },
+      { round: '산업부 보고', date: '예정', kind: 'report', note: '공급망 리스크 대응 보고 - 정책 권고 3종 근거로 편입' },
     ],
   },
   {
@@ -189,7 +189,7 @@ ORDER BY impact_score DESC LIMIT 5`,
     background: '소부장 R&D 지원 정책의 실효성 제고. GIVC 데이터(기업 재무·특허·수출)와 온톨로지 기반 가중치 스코어링으로 정량 근거 제시. 의사결정자 판단 보조.',
     scenarioSid: 'S4',
     customerAsk: 'R&D 적합 기업 추천 정확도를 현재 65%에서 88%까지 끌어올리는 핵심은 산기평 신규 공고 이력과 공작기계 부품 가치사슬입니다. MAIN 시나리오인 만큼 우선순위와 두 데이터의 제공 시점을 협의하고 싶습니다.',
-    reportRef: '산자부 소부장 자립화 R&D 지원 보고 - 적합 기업 선정 근거·반대 추천',
+    reportRef: '산업부 「소부장 자립화 R&D 지원사업 기획」 - 적합 기업 선정 근거·반대 추천',
     entityCount: 5,
     relationCount: 5,
     entities: [
@@ -226,7 +226,7 @@ ORDER BY score DESC LIMIT 5`,
       { round: '기진회 1차 세미나', date: '2026-05-21', kind: 'registered', note: 'R&D 지원 대상 선정 정량 근거 니즈 -> MAIN 시나리오 채택' },
       { round: 'Phase 0 질의서', date: '2026-05-26', kind: 'survey', note: 'S4 우선순위·산기평 공고 이력 데이터 의향 질의 (회신 대기)' },
       { round: 'Phase 2 KG 검증', date: '2026-05-26', kind: 'verified', note: '28노드·45엣지 0.17초 -> Top5 + 반대 추천 도출' },
-      { round: '산자부 보고', date: '예정', kind: 'report', note: '소부장 자립화 R&D 지원 보고 - 선정 근거 자료로 편입' },
+      { round: '산업부 보고', date: '예정', kind: 'report', note: '소부장 자립화 R&D 지원 보고 - 선정 근거 자료로 편입' },
     ],
   },
   {
@@ -237,7 +237,7 @@ ORDER BY score DESC LIMIT 5`,
     background: '소부장 소재 자립화 과제. 특정 국가(중국·일본) 의존 리스크를 정량화하고 대체 수입선 전환 비용(가격·리드타임)을 추산.',
     scenarioSid: 'S6',
     customerAsk: '초경합금·특수강 대체 수입선 분석을 실값으로 전환하려면 공작기계 부품 가치사슬과 핵심 테이블 컬럼 사전이 필요합니다. 소재 자립화 시나리오 관심도와 두 데이터의 공유 가능 여부를 확인하고 싶습니다.',
-    reportRef: '산자부 핵심소재 공급망 안정화 보고 - 수입선 다변화 전략',
+    reportRef: '산업부 「핵심소재 공급망 안정화 방안」 - 대체 수입선 다변화 전략 근거',
     entityCount: 5,
     relationCount: 4,
     entities: [
@@ -271,7 +271,7 @@ ORDER BY alt_volume DESC LIMIT 5`,
     background: '조기경보 시스템과 정책 연계성 검증. EWS 지수(무역 의존도·가격 변동성·재고 수준) 복합 산출 후 임계 초과 품목을 자동 식별.',
     scenarioSid: 'S5',
     customerAsk: 'EWS 경보가 실제 어떤 정책으로 이어지는지 보여드리려면 귀측 위험 알림 알고리즘 명세와 정책 옵션 카드가 필요합니다. 조기경보 시나리오 우선순위와 두 자료의 공유 범위를 확인하고 싶습니다.',
-    reportRef: '산자부 조기경보(EWS) 운영 보고 - 임계 초과 품목·연계 정책',
+    reportRef: '산업부 「조기경보(EWS) 운영 현황 보고」 - 임계 초과 품목·연계 정책 매핑',
     entityCount: 4,
     relationCount: 3,
     entities: [
@@ -304,7 +304,7 @@ ORDER BY w.index DESC`,
     background: '선별적 R&D 자원 배분. 국산화율이 낮으면서 기술 역량(R&D 비율·특허)이 있는 기업을 식별하여 전략적 지원 집중.',
     scenarioSid: 'S4',
     customerAsk: '국산화율 기준 선별 지원 대상을 실값으로 도출하려면 산기평 공고 이력과 품목별 국산화율 데이터가 필요합니다. R&D 자원 배분 시나리오 관심도와 두 데이터의 보유 현황을 확인하고 싶습니다.',
-    reportRef: '산자부 소부장 R&D 자원 배분 보고 - 선별 지원 대상',
+    reportRef: '산업부 「소부장 R&D 예산 배분 건의」 - 국산화율 기반 선별 지원 대상',
     entityCount: 4,
     relationCount: 3,
     entities: [
@@ -341,7 +341,7 @@ ORDER BY score DESC LIMIT 3`,
     background: '의사결정자(산업부) 대응 매뉴얼 자동화. 온톨로지 기반 영향도 분석 -> 정책 옵션 우선순위 자동 산출.',
     scenarioSid: 'S5',
     customerAsk: '공급망 충격 시 우선 정책 옵션을 자동 제시하려면 과거 정책 이력 카드와 산업부 빈출 질의 Top10이 핵심입니다. 정책 대응 시나리오 우선순위와 두 자료의 공유 가능 여부를 확인하고 싶습니다.',
-    reportRef: '산자부 공급망 충격 대응 매뉴얼 - 우선 정책 옵션 3종',
+    reportRef: '산업부 「공급망 충격 대응 매뉴얼」 - 우선 정책 옵션 Top3 근거',
     entityCount: 6,
     relationCount: 5,
     entities: [
@@ -378,7 +378,7 @@ ORDER BY urgency DESC LIMIT 3`,
     background: '단기 충격과 장기 구조 문제를 분리하는 것이 정책 실효성의 핵심. 재고 회복 속도·수입 다변화 진행·국산화 추진 현황을 복합 분석.',
     scenarioSid: 'S6',
     customerAsk: '일시 충격과 구조적 취약성을 구분해 보여드리려면 EWS 시계열 알고리즘 명세와 품목 전후방 매핑이 필요합니다. 본 진단 시나리오 관심도와 시계열 데이터의 확보 가능 시점을 확인하고 싶습니다.',
-    reportRef: '산자부 구조적 취약성 진단 보고 - 일시 vs 구조 구분',
+    reportRef: '산업부 「소부장 구조적 취약성 진단 보고」 - 일시 vs 구조 취약성 구분',
     entityCount: 5,
     relationCount: 4,
     entities: [

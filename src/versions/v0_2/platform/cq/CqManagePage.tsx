@@ -266,20 +266,20 @@ function CqDetailPanel({ cq }: { cq: CqItem }): JSX.Element {
         </section>
       )}
 
-      {/* 산자부 보고 연결 */}
+      {/* 산업부 보고 연결 */}
       {cq.reportRef && (
         <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
-          <h4 style={SUBHEAD}>산자부 보고 연결</h4>
+          <h4 style={SUBHEAD}>산업부 보고 연결</h4>
           <div style={{ fontSize: 12, color: 'var(--op-text-secondary)', lineHeight: 1.6, padding: '10px 14px', background: 'var(--op-bg-base)', borderRadius: 'var(--op-radius-sm)', borderLeft: '3px solid #111' }}>
             {cq.reportRef}
           </div>
         </section>
       )}
 
-      {/* 빌드업 이력: 일회성 아님 (기진회 PoC -> 산자부 보고로 누적) */}
+      {/* 빌드업 이력: 일회성 아님 (기진회 PoC -> 산업부 보고로 누적) */}
       {cq.provenance && cq.provenance.length > 0 && (
         <section>
-          <h4 style={SUBHEAD}>빌드업 이력 · 기진회 PoC -&gt; 산자부 보고</h4>
+          <h4 style={SUBHEAD}>빌드업 이력 · 기진회 PoC -&gt; 산업부 보고</h4>
           <Timeline items={provenanceToTimeline(cq.provenance)} />
         </section>
       )}
@@ -383,7 +383,7 @@ export function CqManagePage(): JSX.Element {
       <div style={{ padding: '20px 28px 12px', flexShrink: 0, borderBottom: '1px solid var(--op-border)' }}>
         <div className="op-section-header" style={{ marginBottom: 0 }}>
           <h2>CQ 관리</h2>
-          <p>Competency Question · 질의서 시나리오 ↔ CQ ↔ 산자부 보고 빌드업 추적</p>
+          <p>Competency Question · 질의서 시나리오 ↔ CQ ↔ 산업부 보고 빌드업 추적</p>
         </div>
         <ScenarioCoverage onSelect={setSelectedId} activeSid={selected?.scenarioSid} />
       </div>
