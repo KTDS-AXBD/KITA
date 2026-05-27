@@ -9,3 +9,5 @@ export { Toggle } from './Toggle';
 export { Modal } from './Modal';
 export { Timeline } from './Timeline';
 export type { TimelineItem } from './Timeline';
+export { StatusDot } from './StatusDot';
+export type { DotStatus } from './StatusDot';
