@@ -110,7 +110,7 @@
 | F036 | 비교 검증 페이지 (전략 핵심) ✅ — chatGIVC(LLM+RAG) vs 온톨로지+KG 2카드(채팅버블·주석 ✗/✓) + 6축 비교표. PR #6 | KOAMI-REQ-036 | P0 | S17 | ✅ |
 | F037 | 추진 계획 페이지 ✅ — Phase 0~4 타임라인(5/26~6/27, `Timeline` 컴포넌트) + CQ Tier1(시연 2)/Tier2(고객확인 5) 목록 + 푸터. PR #6 | KOAMI-REQ-037 | P0 | S17 | ✅ |
 | F038 | 데이터 레이어 / Repository ✅ — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터. **S19분**(`GraphRepository` Mock/real 토글 기반+그래프 fixtures) + **S21분**(`/api/givc/cyto-graph` worker GET·D1 graph_nodes/edges→CytoGraph·`GraphRepositoryReal.getGraph()` sobujiang fetch/Mock fallback). test 87. PR #8·#10 | KOAMI-REQ-038 | P0 | S19·S21 | ✅ |
-| F039 | 배포 ✅ — Master 수동: `pnpm install`(cytoscape 동기화)→`deploy:cf`→koami.minu.best. **버전 `1620e4c7` @100% 활성**(2026-05-27, 4 new assets=7페이지 플랫폼). "Could not find zone" exit1=양성(curl 302·deployments list로 판정). curl `/`·`/platform/graph` 302(CF Access 유지). 콘텐츠 실렌더는 인증브라우저(사용자) | KOAMI-REQ-039 | P0 | S22 | ✅ |
+| F039 | 배포 ✅ — Master 수동: `pnpm install`(cytoscape 동기화)→`deploy:cf`→koami.minu.best. 초기 `1620e4c7`→**리허설 보완(3cb483f) 재배포 `d1a78af9` @100% 활성**(2026-05-27). "Could not find zone" exit1=양성(curl 302·deployments list로 판정). curl `/`·`/platform/data`·`/platform/compare` 302(CF Access 유지). 콘텐츠 실렌더는 인증브라우저(사용자) | KOAMI-REQ-039 | P0 | S22 | ✅ |
 
 ---
 
