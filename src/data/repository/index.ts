@@ -1,3 +1,8 @@
+import type { GraphRepository } from './GraphRepository';
+import { GraphRepository as GraphRepositoryMock, GraphRepositoryReal } from './GraphRepository';
+
+const useRealGraph = import.meta.env?.VITE_DATA_SOURCE === 'real';
+export const graphRepository: GraphRepository = useRealGraph ? new GraphRepositoryReal() : new GraphRepositoryMock();
 export { rndRepository } from './RndRepository';
 export type { RndRepository } from './RndRepository';
 export type { S6Repository } from './S6Repository';
