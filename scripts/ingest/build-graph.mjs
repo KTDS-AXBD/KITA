@@ -1,22 +1,10 @@
-/** F023 — 실데이터 그래프 빌드(기계 다단계 가치사슬): 소재→부품→장비(anchor) + 수입국 + tier별 실기업.
- *  ≤50 노드, provenance real. 기업→tier 노드 부착(ATTACH)은 dart.mjs TARGETS에서 파생(단일 진실원). */
+/** 실데이터 그래프 빌드(기계 다단계 가치사슬): 소재→부품→장비(anchor) + 수입국 + tier별 실기업.
+ *  가치사슬 노드/엣지는 SSOT(lib/valuechain.mjs) — ingest-trade의 HS 목록과 단일 진실원.
+ *  ≤50 노드, provenance real. 기업→tier 노드 부착(ATTACH)은 dart.mjs TARGETS에서 파생. */
 import { run, query, upsert, esc } from './lib/d1.mjs';
 import { TARGETS } from './lib/dart.mjs';
+import { CHAIN, CHAIN_EDGES, ANCHOR_HS } from './lib/valuechain.mjs';
 
-const ANCHOR_HS = '845710';
-const ANCHOR = { id: 'MC', label: '머시닝센터', hs: ANCHOR_HS, ksic: 'C2922' };
-
-// tier 중간 노드(metric) — 핵심 부품·소재. HS 무역수지로 자립화 라벨 산출.
-const TIER_NODES = [
-  { id: 'PART_BEARING', label: '정밀 베어링', tier: '부품', hs: '848210' },
-  { id: 'PART_REDUCER', label: '정밀 감속기', tier: '부품', hs: '848340' },
-  { id: 'MAT_STEEL',    label: '특수강',      tier: '소재', hs: '722840' },
-];
-// 가치사슬 위상: 소재→부품, 부품→장비(anchor)
-const TIER_EDGES = [
-  ['MAT_STEEL', 'PART_BEARING'], ['MAT_STEEL', 'PART_REDUCER'],
-  ['PART_BEARING', 'MC'], ['PART_REDUCER', 'MC'],
-];
 // 기업 id(=corp_code) → 부착 노드 (TARGETS 단일 진실원에서 파생)
 const ATTACH = Object.fromEntries(TARGETS.map((t) => [t.corp_code, t.attach]));
 
@@ -32,29 +20,26 @@ export async function buildGraph() {
   const countries = query(`SELECT cnty_cd, cnty_nm, share FROM trade_by_country WHERE hs_code='${ANCHOR_HS}';`);
   const companies = query(`SELECT id, name, core_type, tier, role FROM companies;`);
 
-  const ab = tradeBalance(ANCHOR_HS);
-  const nodes = [
-    ['MC', 'rnd', ANCHOR.label, 32,
-      `{"HS":"${ANCHOR.hs}","KSIC":"${ANCHOR.ksic}","tier":"장비","무역수지":"${ab.deficit ? '적자' : '흑자'}(수출$${ab.expM}M/수입$${ab.impM}M)"}`, 'real'],
-    [`HS${ANCHOR_HS}`, 'hscode', `HS ${ANCHOR_HS}`, 20, `{"desc":"머시닝센터 HS코드","tier":"장비"}`, 'real'],
-  ];
-  const edges = [['MC', `HS${ANCHOR_HS}`]];
+  const nodes = [];
+  const edges = [];
 
-  // 수입국 (앵커 HS 기준 수입 상대국)
+  // 가치사슬 노드 (소재/부품/장비) — HS 무역수지로 자립화 라벨 산출 (전부 real)
+  for (const c of CHAIN) {
+    const b = tradeBalance(c.hs);
+    const bal = `${b.deficit ? '적자 — 자립화 과제' : '흑자'}(수출$${b.expM}M/수입$${b.impM}M)`;
+    const meta = `{"tier":"${c.tier}","HS":"${c.hs}","무역수지":"${bal}"}`;
+    nodes.push([c.id, 'metric', c.label, c.r, meta, 'real']);
+  }
+  // 가치사슬 위상 (소재→부품→장비)
+  for (const e of CHAIN_EDGES) edges.push(e);
+
+  // 수입국 (앵커 HS 기준 수입 상대국) — MC에 연결
   for (const c of countries) {
     const id = `C_${c.cnty_cd}`;
     const pct = Math.round((c.share || 0) * 100);
     nodes.push([id, 'country', c.cnty_nm, +(14 + (c.share || 0) * 8).toFixed(1), `{"비중":"${pct}%"}`, 'real']);
     edges.push(['MC', id]);
   }
-
-  // tier 중간 노드 — HS 무역수지로 자립화 라벨
-  for (const t of TIER_NODES) {
-    const b = tradeBalance(t.hs);
-    const bal = `${b.deficit ? '적자 — 자립화 과제' : '흑자'}(수출$${b.expM}M/수입$${b.impM}M)`;
-    nodes.push([t.id, 'metric', t.label, 18, `{"tier":"${t.tier}","HS":"${t.hs}","무역수지":"${bal}"}`, 'real']);
-  }
-  for (const e of TIER_EDGES) edges.push(e);
 
   // tier별 실기업 → 부착 노드(장비 anchor / 부품 / 소재 metric)
   for (const c of companies) {

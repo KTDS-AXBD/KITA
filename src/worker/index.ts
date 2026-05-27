@@ -81,12 +81,26 @@ app.get('/api/givc/trade', async (c) => {
 });
 
 // F038(S21) — 전체 그래프 → CytoGraph JSON (GraphRepositoryReal이 소비)
-// graph_nodes(D1 NodeType) → CytoNodeType 매핑 후 CytoGraph 형식으로 반환
+// graph_nodes(D1 NodeType) → CytoNodeType 매핑. metric은 meta.tier로 세분
+// (소재→RawMaterial, 부품→IntermediateGoods, 장비→Product) → 다단계 가치사슬 시각 구분.
 app.get('/api/givc/cyto-graph', async (c) => {
-  const CYTO_TYPE: Record<string, string> = {
-    rnd: 'RnDProject', hscode: 'Product', metric: 'Product',
-    country: 'Country', company: 'Company',
+  const TIER_TYPE: Record<string, string> = {
+    소재: 'RawMaterial', 부품: 'IntermediateGoods', 장비: 'Product',
   };
+  function cytoType(type: string, tier: string | undefined): string {
+    if (type === 'company') return 'Company';
+    if (type === 'country') return 'Country';
+    if (type === 'rnd') return 'RnDProject';
+    if (type === 'metric' && tier && TIER_TYPE[tier]) return TIER_TYPE[tier]!;
+    return 'Product';
+  }
+  // meta JSON → 사람이 읽는 detail 문자열 (raw JSON 노출 방지)
+  function detailOf(meta: Record<string, unknown>): string {
+    return Object.entries(meta)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join(' · ');
+  }
+
   const nodesRes = await c.env.DB.prepare(
     `SELECT id, type, label, meta, provenance AS source FROM graph_nodes
      ORDER BY CASE type WHEN 'rnd' THEN 0 WHEN 'hscode' THEN 1 WHEN 'metric' THEN 2
@@ -97,13 +111,18 @@ app.get('/api/givc/cyto-graph', async (c) => {
     `SELECT src, dst FROM graph_edges WHERE src < dst ORDER BY src, dst`,
   ).all<{ src: string; dst: string }>();
 
-  const nodes = nodesRes.results.map((n) => ({
-    id: n.id,
-    label: n.label,
-    type: CYTO_TYPE[n.type] ?? 'Product',
-    detail: n.meta ?? '',
-    source: n.source,
-  }));
+  const nodes = nodesRes.results.map((n) => {
+    let meta: Record<string, unknown> = {};
+    try { meta = n.meta ? (JSON.parse(n.meta) as Record<string, unknown>) : {}; } catch { /* meta 무시 */ }
+    const tier = typeof meta.tier === 'string' ? meta.tier : undefined;
+    return {
+      id: n.id,
+      label: n.label,
+      type: cytoType(n.type, tier),
+      detail: detailOf(meta),
+      source: n.source,
+    };
+  });
   const edges = edgesRes.results.map((e) => ({
     id: `e_${e.src}_${e.dst}`,
     source: e.src,

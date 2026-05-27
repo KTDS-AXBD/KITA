@@ -1,15 +1,14 @@
 /** F023 — 관세청 무역 적재(기계 가치사슬): 앵커(머시닝센터)+tier HS 총량→trade_stats(분기)
- *  + 앵커 국가별→trade_by_country. 15101609 품목총량 + 15100475 품목국가별. */
+ *  + 앵커 국가별→trade_by_country. 15101609 품목총량 + 15100475 품목국가별.
+ *  HS·국가 목록은 가치사슬 SSOT(lib/valuechain.mjs)에서 — build-graph와 단일 진실원. */
 import { upsert, validate, esc } from './lib/d1.mjs';
 import { fetchItemTrade, fetchNitemTrade, toQuarter } from './lib/datagokr.mjs';
+import { ANCHOR_HS, ALL_HS, TRADE_COUNTRIES } from './lib/valuechain.mjs';
 
 const KEY = process.env.DATA_GO_KR_KEY;
-const ANCHOR_HS = '845710';                       // 머시닝센터(장비, 앵커) — 시계열·국가 차트
-const TIER_HS = ['848210', '848340', '722840'];   // 베어링·감속기·특수강 (tier 노드 무역수지)
-const ALL_HS = [ANCHOR_HS, ...TIER_HS];
 const STRT = process.env.STRT_YYMM ?? '202401';
 const END = process.env.END_YYMM ?? '202412';
-const COUNTRIES = (process.env.CNTY_CDS ?? 'JP,DE,CN').split(',');
+const COUNTRIES = TRADE_COUNTRIES;
 
 /** HS 한 건 → 분기 집계 trade_stats 행 */
 async function quartersFor(hs) {

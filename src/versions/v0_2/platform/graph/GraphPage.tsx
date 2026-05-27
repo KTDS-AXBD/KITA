@@ -1,6 +1,6 @@
-import { lazy, Suspense, useState } from 'react';
-import type { CytoDomain, CytoNode } from '@/types';
-import { GRAPH_BY_DOMAIN } from './graphData';
+import { lazy, Suspense, useState, useEffect } from 'react';
+import type { CytoDomain, CytoNode, CytoGraph } from '@/types';
+import { graphRepository } from '@/data/repository';
 import { NodeDetailPanel } from './NodeDetailPanel';
 import { GraphLegend } from './GraphLegend';
 import { GraphToolbar } from './GraphToolbar';
@@ -9,18 +9,29 @@ const GraphCanvas = lazy(() =>
   import('./GraphCanvas').then((m) => ({ default: m.GraphCanvas }))
 );
 
+const EMPTY_GRAPH: CytoGraph = { domain: 'sobujiang', nodes: [], edges: [] };
+
 export function GraphPage(): JSX.Element {
   const [domain, setDomain] = useState<CytoDomain>('sobujiang');
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [nodeFilter, setNodeFilter] = useState<string>('all');
   const [focusActive, setFocusActive] = useState(false);
 
-  const graph = GRAPH_BY_DOMAIN[domain]!;
+  // Repository 경유 — 기본 Mock(정적), VITE_DATA_SOURCE=real 시 D1 /api/givc/cyto-graph.
+  const [graph, setGraph] = useState<CytoGraph | null>(null);
+  useEffect(() => {
+    let alive = true;
+    setGraph(null);
+    graphRepository.getGraph(domain).then((g) => { if (alive) setGraph(g); });
+    return () => { alive = false; };
+  }, [domain]);
+
+  const g = graph ?? EMPTY_GRAPH;
   const selectedNode: CytoNode | null =
-    selectedNodeId ? (graph.nodes.find((n) => n.id === selectedNodeId) ?? null) : null;
+    selectedNodeId ? (g.nodes.find((n) => n.id === selectedNodeId) ?? null) : null;
 
   const connectedCount = selectedNodeId
-    ? graph.edges.filter((e) => e.source === selectedNodeId || e.target === selectedNodeId).length
+    ? g.edges.filter((e) => e.source === selectedNodeId || e.target === selectedNodeId).length
     : 0;
 
   function handleDomainChange(d: CytoDomain): void {
@@ -49,8 +60,8 @@ export function GraphPage(): JSX.Element {
 
       <GraphToolbar
         domain={domain}
-        nodeCount={graph.nodes.length}
-        edgeCount={graph.edges.length}
+        nodeCount={g.nodes.length}
+        edgeCount={g.edges.length}
         focusActive={focusActive}
         onDomainChange={handleDomainChange}
         onFocusToggle={handleFocusToggle}
@@ -63,12 +74,16 @@ export function GraphPage(): JSX.Element {
           </div>
         }>
           <div style={{ flex: 1, display: 'flex' }}>
-            <GraphCanvas
-              graph={graph}
-              nodeFilter={nodeFilter}
-              focusActive={focusActive}
-              onNodeSelect={setSelectedNodeId}
-            />
+            {graph
+              ? <GraphCanvas
+                  graph={graph}
+                  nodeFilter={nodeFilter}
+                  focusActive={focusActive}
+                  onNodeSelect={setSelectedNodeId}
+                />
+              : <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--op-text-tertiary)', fontSize: 13 }}>
+                  그래프 로딩 중...
+                </div>}
           </div>
         </Suspense>
         <NodeDetailPanel node={selectedNode} connectedCount={connectedCount} />
