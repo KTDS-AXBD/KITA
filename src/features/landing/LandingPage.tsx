@@ -114,14 +114,24 @@ export function LandingPage(): JSX.Element {
         </p>
         <div className="hero-cta">
           <a
+            href="#/platform/data"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/platform/data');
+            }}
+            className="btn btn-primary btn-lg"
+          >
+            GIVC Ontology Platform 진입 <ArrowRight size={16} />
+          </a>
+          <a
             href="#/scenario/rnd"
             onClick={(e) => {
               e.preventDefault();
               navigate('/scenario/rnd');
             }}
-            className="btn btn-primary btn-lg"
+            className="btn btn-lg"
           >
-            S4 메인 시연 시작 <ArrowRight size={16} />
+            S4 단일 시연
           </a>
           <a
             href="#/about/ontology"
@@ -131,7 +141,7 @@ export function LandingPage(): JSX.Element {
             }}
             className="btn btn-lg"
           >
-            온톨로지 개념 보기
+            온톨로지 개념
           </a>
         </div>
       </section>

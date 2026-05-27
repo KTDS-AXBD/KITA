@@ -86,7 +86,7 @@ const COMPARE_ROWS = [
   {
     axis: <span style={{ fontWeight: 600 }}>설명가능성</span>,
     llm: '"이 문서에서 찾았습니다"',
-    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>"A→B→C, R&D 투자율 72.3%"</span>,
+    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>"대한정밀감속기 → R&D 26.0% → 특허 44건 → 적합도 94.2점"</span>,
   },
   {
     axis: <span style={{ fontWeight: 600 }}>재현성</span>,
@@ -106,7 +106,7 @@ const COMPARE_ROWS = [
   {
     axis: <span style={{ fontWeight: 600 }}>데이터 신뢰</span>,
     llm: '출처: "문서 p.23"',
-    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>출처: 산업연관표 72.3%</span>,
+    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>출처: NTIS R&D과제 · KIPRIS 특허</span>,
   },
 ];
 
@@ -168,7 +168,7 @@ export function ComparePage(): JSX.Element {
               }}
             >
               <span style={{ fontWeight: 600, color: 'var(--op-text-primary)' }}>경로: </span>
-              Company → R&D투자율(72.3%) → 특허(소재/공법) → 국산화 품목 → 의존도 감소
+              Company → R&D집약도(26.0%) → 특허 44건(소재/공법) → 국산화 적합도 → 의존도 감소
             </div>
             <div style={{ borderTop: '1px solid var(--op-border)', paddingTop: 14 }}>
               <Annot ok={true}>감속기·베어링 등 구체적 기업 + 순위 + 점수</Annot>
