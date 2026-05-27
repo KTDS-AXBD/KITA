@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useTweaksStore } from '@/store';
 import { useHashRoute, AppHeader, AppLayout, navigate } from '@/shell';
-import { LandingPage } from '@/features/landing/LandingPage';
 import { S4Page } from '@/features/rnd/S4Page';
 import { S6Page } from '@/features/s6/S6Page';
 import { AboutOntologyPage, AboutDataPage } from '@/features/about';
@@ -27,25 +26,26 @@ export default function App(): JSX.Element {
   }, [flavor, theme]);
 
   // v0.32 Platform 대시보드 라우트 (사이드바 셸)
-  if (route.startsWith('/platform/')) {
+  // 루트(/·'')도 플랫폼 데이터 현황으로 일원화 — 구 랜딩 제거(2026-05-28)
+  const platformRoute = route === '/' || route === '' ? '/platform/data' : route;
+  if (platformRoute.startsWith('/platform/')) {
     let platformPage: JSX.Element;
-    if (route === '/platform/data') platformPage = <DataStatusPage />;
-    else if (route === '/platform/cq') platformPage = <CqManagePage />;
-    else if (route === '/platform/ontology') platformPage = <OntologyPage />;
-    else if (route === '/platform/graph') platformPage = <GraphPage />;
-    else if (route === '/platform/scenario') platformPage = <ScenarioPage />;
-    else if (route === '/platform/compare') platformPage = <ComparePage />;
-    else if (route === '/platform/plan') platformPage = <PlanPage />;
+    if (platformRoute === '/platform/data') platformPage = <DataStatusPage />;
+    else if (platformRoute === '/platform/cq') platformPage = <CqManagePage />;
+    else if (platformRoute === '/platform/ontology') platformPage = <OntologyPage />;
+    else if (platformRoute === '/platform/graph') platformPage = <GraphPage />;
+    else if (platformRoute === '/platform/scenario') platformPage = <ScenarioPage />;
+    else if (platformRoute === '/platform/compare') platformPage = <ComparePage />;
+    else if (platformRoute === '/platform/plan') platformPage = <PlanPage />;
     else platformPage = <DataStatusPage />;
-    return <AppLayout route={route}>{platformPage}</AppLayout>;
+    return <AppLayout route={platformRoute}>{platformPage}</AppLayout>;
   }
 
-  // 기존 라우트 (상단 탭 셸 유지)
+  // 레거시 라우트 (상단 탭 셸 유지, 직접 URL로 보존 — 홈/네비 비노출)
   const tweaks = useTweaksStore.getState();
 
   let page: JSX.Element;
-  if (route === '/' || route === '') page = <LandingPage />;
-  else if (route === '/scenario/rnd') page = <S4Page key="s4" />;
+  if (route === '/scenario/rnd') page = <S4Page key="s4" />;
   else if (route === '/scenario/s6' || route === '/scenario/toluene') page = <S6Page key="s6" />;
   else if (route === '/about/ontology') page = <AboutOntologyPage />;
   else if (route === '/about/data') page = <AboutDataPage />;
