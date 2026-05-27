@@ -110,7 +110,7 @@
 | F036 | 비교 검증 페이지 (전략 핵심) ✅ — chatGIVC(LLM+RAG) vs 온톨로지+KG 2카드(채팅버블·주석 ✗/✓) + 6축 비교표. PR #6 | KOAMI-REQ-036 | P0 | S17 | ✅ |
 | F037 | 추진 계획 페이지 ✅ — Phase 0~4 타임라인(5/26~6/27, `Timeline` 컴포넌트) + CQ Tier1(시연 2)/Tier2(고객확인 5) 목록 + 푸터. PR #6 | KOAMI-REQ-037 | P0 | S17 | ✅ |
 | F038 | 데이터 레이어 / Repository ✅ — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터. **S19분**(`GraphRepository` Mock/real 토글 기반+그래프 fixtures) + **S21분**(`/api/givc/cyto-graph` worker GET·D1 graph_nodes/edges→CytoGraph·`GraphRepositoryReal.getGraph()` sobujiang fetch/Mock fallback). test 87. PR #8·#10 | KOAMI-REQ-038 | P0 | S19·S21 | ✅ |
-| F039 | 배포 — build + deploy:cf → koami.minu.best 교체 + 버전 활성화 검증(versions deploy) + CF Access 유지 + 회귀. **Master 수동 실행**(프로덕션 반비가역·외부노출·versions-activation/zone caveat — autopilot 비위임) | KOAMI-REQ-039 | P0 | S22 | 📋 |
+| F039 | 배포 ✅ — Master 수동: `pnpm install`(cytoscape 동기화)→`deploy:cf`→koami.minu.best. **버전 `1620e4c7` @100% 활성**(2026-05-27, 4 new assets=7페이지 플랫폼). "Could not find zone" exit1=양성(curl 302·deployments list로 판정). curl `/`·`/platform/graph` 302(CF Access 유지). 콘텐츠 실렌더는 인증브라우저(사용자) | KOAMI-REQ-039 | P0 | S22 | ✅ |
 
 ---
 
@@ -139,7 +139,7 @@
 | S19 ✅ | 지식그래프 + 데이터레이어 | F034·F038(S19분) | 실적 ~23분(autopilot) | ✅ cytoscape 그래프(소부장37/호르무즈44노드)+노드 상세패널+도메인 토글+GraphRepository Mock/real 토글. **번들 코드스플릿**(메인745→327KB·cytoscape 445KB lazy). typecheck/test76/build PASS·Match95%. Master 독립검증(청크분리 확인)·PR #8 merge `51700f9`. F038 real D1는 S21 |
 | S20 ✅ | 시나리오 분석 (하이라이트) | F035 | 실적 ~11분(autopilot) | ✅ CQ-002(소부장)/CQ-001(호르무즈) 토글+5단계 애니메이션 추론+A~E 결과 패널. typecheck/lint0·test84·build PASS·Match100%. Master 독립검증·PR #9 코드 merge `3d082cb`(SPEC 충돌 Master 해소) |
 | S21 ✅ | 데이터레이어 real D1 통합 | F038(S21분) | 실적 ~8분(autopilot, S20과 병렬) | ✅ `/api/givc/cyto-graph` worker GET + `GraphRepositoryReal.getGraph()`(sobujiang fetch/Mock fallback). test76→79(병합후 87)·build327KB. **S20과 병렬 성공**(PR #10 CLEAN·충돌0)·Master 독립검증·merge `40c7556` |
-| S22 | 배포 + 회귀 (Master) | F039 | 6월 리뷰 역산 | **Master 수동**: 전체(S16~S21) 통합 빌드 → koami.minu.best 교체 배포 → 버전 활성화 검증 → CF Access·회귀. S20+S21 merge 후 실행 |
+| S22 ✅ | 배포 (Master) | F039 | 실적 ~Master 수동 | ✅ pnpm install(cytoscape master 동기화)→deploy:cf→버전 `1620e4c7` @100% 활성·curl 302·CF Access 유지. ⚠️배포 전 master 빌드로 cytoscape 미설치 검출(WT만 설치돼 있던 함정)→install로 해소 |
 
 **Critical Path:** F001(이송 기반) → F002~F006 → F007(배포). F009(실 LLM)·F012(P2)는 여유 시.
 **실데이터 트랙(koami-givc) Critical Path:** F013(M0 PoC 게이트) → F014+F015(적재·Repository) → F016(조회·검증). F017(Phase 2)는 GIVC 접근·PII 규정 확보 의존(외부 게이트).
