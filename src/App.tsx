@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useTweaksStore } from '@/store';
 import { useHashRoute, AppHeader, AppLayout, navigate } from '@/shell';
+import { VersionSelectPage } from '@/features/select/VersionSelectPage';
+import { LandingPage } from '@/features/landing/LandingPage';
 import { S4Page } from '@/features/rnd/S4Page';
 import { S6Page } from '@/features/s6/S6Page';
 import { AboutOntologyPage, AboutDataPage } from '@/features/about';
@@ -25,27 +27,29 @@ export default function App(): JSX.Element {
     else document.documentElement.classList.remove('dark');
   }, [flavor, theme]);
 
-  // v0.32 Platform 대시보드 라우트 (사이드바 셸)
-  // 루트(/·'')도 플랫폼 데이터 현황으로 일원화 — 구 랜딩 제거(2026-05-28)
-  const platformRoute = route === '/' || route === '' ? '/platform/data' : route;
-  if (platformRoute.startsWith('/platform/')) {
+  // 초기 버전 선택 화면 (셸 없음) — 루트는 v0.1/v0.2 선택기 (2026-05-28)
+  if (route === '/' || route === '') return <VersionSelectPage />;
+
+  // v0.2 — GIVC Ontology Platform 대시보드 (사이드바 셸)
+  if (route.startsWith('/platform/')) {
     let platformPage: JSX.Element;
-    if (platformRoute === '/platform/data') platformPage = <DataStatusPage />;
-    else if (platformRoute === '/platform/cq') platformPage = <CqManagePage />;
-    else if (platformRoute === '/platform/ontology') platformPage = <OntologyPage />;
-    else if (platformRoute === '/platform/graph') platformPage = <GraphPage />;
-    else if (platformRoute === '/platform/scenario') platformPage = <ScenarioPage />;
-    else if (platformRoute === '/platform/compare') platformPage = <ComparePage />;
-    else if (platformRoute === '/platform/plan') platformPage = <PlanPage />;
+    if (route === '/platform/data') platformPage = <DataStatusPage />;
+    else if (route === '/platform/cq') platformPage = <CqManagePage />;
+    else if (route === '/platform/ontology') platformPage = <OntologyPage />;
+    else if (route === '/platform/graph') platformPage = <GraphPage />;
+    else if (route === '/platform/scenario') platformPage = <ScenarioPage />;
+    else if (route === '/platform/compare') platformPage = <ComparePage />;
+    else if (route === '/platform/plan') platformPage = <PlanPage />;
     else platformPage = <DataStatusPage />;
-    return <AppLayout route={platformRoute}>{platformPage}</AppLayout>;
+    return <AppLayout route={route}>{platformPage}</AppLayout>;
   }
 
-  // 레거시 라우트 (상단 탭 셸 유지, 직접 URL로 보존 — 홈/네비 비노출)
+  // v0.1 — 기존 PoC 데모 (상단 탭 셸). /v1 = 홈(랜딩)
   const tweaks = useTweaksStore.getState();
 
   let page: JSX.Element;
-  if (route === '/scenario/rnd') page = <S4Page key="s4" />;
+  if (route === '/v1') page = <LandingPage />;
+  else if (route === '/scenario/rnd') page = <S4Page key="s4" />;
   else if (route === '/scenario/s6' || route === '/scenario/toluene') page = <S6Page key="s6" />;
   else if (route === '/about/ontology') page = <AboutOntologyPage />;
   else if (route === '/about/data') page = <AboutDataPage />;

@@ -7,7 +7,7 @@ interface AppHeaderProps {
 }
 
 const HEADER_TABS = [
-  { id: '/', label: 'Overview' },
+  { id: '/v1', label: 'Overview' },
   { id: '/scenario/rnd', label: 'S4 · R&D 추천' },
   { id: '/scenario/s6', label: 'S6 · 공작기계' },
   { id: '/about/ontology', label: '온톨로지' },
@@ -15,7 +15,7 @@ const HEADER_TABS = [
 ] as const;
 
 export function AppHeader({ route, tweaks }: AppHeaderProps): JSX.Element {
-  const isActive = (id: string): boolean => (id === '/' ? route === '/' : route === id);
+  const isActive = (id: string): boolean => route === id;
   const labelText = 'GIVC × Ontology PoC';
   const subText = tweaks.langMode === 'en' ? 'KT DS · AX Consulting' : 'KT DS AX컨설팅팀';
 
@@ -24,6 +24,7 @@ export function AppHeader({ route, tweaks }: AppHeaderProps): JSX.Element {
       <a
         className="brand"
         href="#/"
+        title="버전 선택으로"
         onClick={(e) => {
           e.preventDefault();
           navigate('/');
@@ -32,7 +33,7 @@ export function AppHeader({ route, tweaks }: AppHeaderProps): JSX.Element {
         <span className="logo-mark">A</span>
         <span>{labelText}</span>
         <span className="brand-sub">— {subText}</span>
-        <span className="version">v1</span>
+        <span className="version">v0.1</span>
       </a>
       <nav className="tabs">
         {HEADER_TABS.map((t) => (

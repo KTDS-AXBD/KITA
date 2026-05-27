@@ -108,13 +108,19 @@ export function Sidebar({ route }: SidebarProps): JSX.Element {
 
   return (
     <nav className="op-sidebar">
-      <div className="op-sidebar-logo">
+      <button
+        type="button"
+        className="op-sidebar-logo"
+        title="버전 선택으로"
+        onClick={() => navigate('/')}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', font: 'inherit', color: 'inherit' }}
+      >
         <div className="op-sidebar-logo-fallback">G</div>
         <div>
           <div className="op-sidebar-logo-title">GIVC Ontology</div>
           <div className="op-sidebar-logo-sub">Platform</div>
         </div>
-      </div>
+      </button>
       <div className="op-sidebar-subtitle">KT DS AX컨설팅팀</div>
 
       <div className="op-sidebar-section-label">MAIN MENU</div>
