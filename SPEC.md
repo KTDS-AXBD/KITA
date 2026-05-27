@@ -95,6 +95,23 @@
 |---|------|-----|------|--------|------|
 | F029 | 의견 회신 설문 페이지 ✅ — 09번 단독 HTML을 `public/survey-static.html`로 복사 + `/survey` 라우트(`SurveyPage` iframe 임베드, 이식 설계서 B안) + S4·S6 하단 `SurveyCta` 카드(헤더 네비 비노출). 폼 로직(localStorage 임시저장·미리보기 모달·Google Form POST) 정적 HTML 격리·사이트 코드 무손상(라우트 1줄+import 2줄+CTA 2곳). Google Form 백엔드=placeholder(실 폼 생성 후 entry.* 주입 시 활성화). 검증 typecheck/lint/test 71/build·로컬 preview 실측(라우트·iframe 전체 렌더·CTA·콘솔에러0) | KOAMI-REQ-029 | P1 | 별도 | ✅ |
 
+### GIVC Ontology Platform 전환 (v0.32) — 📋 신규 (2026-05-27, /req-interview)
+> 신규 프로토타입 `docs/spec/기진회_2차세미나_프로토타입_v0.32_260527.html`(7페이지 사이드바 대시보드)를 라이브 KOAMI에 **전면 재구축**. 현 시나리오 SPA → 온톨로지 엔지니어링 방법론 쇼케이스(데이터→CQ→온톨로지→그래프→시나리오→비교→계획). 전략 메시지=고객 보유 **chatGIVC(LLM+RAG) 대비 온톨로지+KG 우월성**(인과추적·재현성·설명가능성). 6월 Prototype 리뷰 시연 대상. PRD: `docs/req/givc-ontology-platform/prd-final.md`(로컬전용).
+> **결정(req-interview 2026-05-27, AskUserQuestion 12건)**: 범위=전면 재구축(7페이지 전부 P0) / 그래프=cytoscape(force-layout 은퇴)+NL→Cypher 시연 스크립트 / 데이터=Mock 우선+koami-givc D1 real 부분(공작기계) / 출처=실·추정·**유료** 3분류(가상 제거) / 도메인=토글(시나리오·그래프만, **기본=소부장 공작기계**, 호르무즈=보조 CQ-001) / About·Survey=사이드바 REFERENCE 흡수 / 검토=외부AI 생략(F029 선례). **고객 KOAMI 불변** 확정.
+
+| F | 기능 | REQ | 우선 | Sprint | 상태 |
+|---|------|-----|------|--------|------|
+| F030 | 디자인 시스템 + 앱 셸 — 사이드바(MAIN 5+REF) + 헤더 브레드크럼 + 디자인 토큰(#E60012·Pretendard·radius12) + 공용 컴포넌트(KPI카드·데이터테이블·엔티티카드·툴팁3·Cypher블록·토글·타임라인·모달·배지) + hash 라우팅 확장 + **cytoscape 번들·성능 PoC 동반** | KOAMI-REQ-030 | P0 | S16 | 📋 |
+| F031 | 데이터 현황 페이지 — KPI 4(총27/실19/추정4/유료4) + 데이터소스 현황표(상태닷·구분배지·출처·활용영역·수집방법·갱신일). 소부장 우선 정렬 + 호르무즈 소스 통합 | KOAMI-REQ-031 | P0 | S17 | 📋 |
+| F032 | CQ 관리 페이지 — 좌 CQ 목록(필터 pills·상태배지 verified/draft/pending) + 우 상세(질문·배경·엔티티태그·Cypher·검증결과) + 신규 CQ 등록 모달 | KOAMI-REQ-032 | P0 | S18 | 📋 |
+| F033 | 온톨로지 모델 정의 페이지 — 엔티티 13종·관계 8종·속성 카드(색상블록·툴팁) + 제약(constraints) 다크블록 + 관계 속성 편집 모달 | KOAMI-REQ-033 | P0 | S18 | 📋 |
+| F034 | 지식그래프 페이지 — cytoscape + 노드 상세패널 + 범례 + 툴바(도메인 토글·노드필터·영향경로). 소부장/호르무즈 2그래프(initSobujiang/initHormuz) | KOAMI-REQ-034 | P0 | S19 | 📋 |
+| F035 | 시나리오 분석 페이지 (시연 하이라이트) — CQ 선택(토글 CQ-002 소부장/CQ-001 호르무즈) → NL질의 → Cypher 변환 → 애니메이션 추론 → 결과 A 영향경로(cytoscape mini) B Top5 C 설명가능성(인과경로·취약성·EWS·재현성) D 대응옵션 E 의사결정 리포트 | KOAMI-REQ-035 | P0 | S20 | 📋 |
+| F036 | 비교 검증 페이지 (전략 핵심) — chatGIVC(LLM+RAG) vs 온톨로지+KG 2카드(채팅버블·주석 ✗/✓) + 6축 비교표 | KOAMI-REQ-036 | P0 | S17 | 📋 |
+| F037 | 추진 계획 페이지 — Phase 0~4 타임라인(5/26~6/27) + CQ Tier1(시연 2)/Tier2(고객확인 5) 목록 + 푸터 | KOAMI-REQ-037 | P0 | S17 | 📋 |
+| F038 | 데이터 레이어 / Repository — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터(공작기계 무역/기업) 재활용 | KOAMI-REQ-038 | P0 | S19·S21 | 📋 |
+| F039 | 배포 — build + deploy:cf → koami.minu.best 교체 + 버전 활성화 검증(versions deploy) + CF Access 유지 + 회귀 | KOAMI-REQ-039 | P0 | S21 | 📋 |
+
 ---
 
 ## 6. Execution Plan (Sprint)
@@ -116,11 +133,18 @@
 | S13 ✅ | Repository 정렬 + 통합 시나리오 | F026 | 실적 ~autopilot | ✅ gvcS6Adapter + 반도체 S6 도메인 토글 + 통합뷰. 기존 S6 무손상·test45·proprietary0. STATUS=DONE(가드레일로 false-FAILED 차단)·Master 수동 merge |
 | S14 ✅ | 실 질의 데모 패널 | F027 | 실적 ~autopilot | ✅ ChatGivcQueryPane(S6 탭)+카탈로그(C하이브리드 병기)+executor·도메인토글·test71·실GVC코드0. CI-부재 오판 FAILED→Master 검토·스크럽·수동 merge |
 | S15 ✅ | 본사업화 연동 청사진 | F028 | 실적 ~병렬(S12·S14) | ✅ blueprint (a)~(f) 완성 — 실컬럼↔의미명 1:1 매핑 정식화. 잔여는 외부 게이트(mart.* DDL·보안승인) |
+| S16 | 디자인 시스템 + 앱 셸 (v0.32) | F030 | 6월 리뷰 역산 | 사이드바 대시보드 셸·라우팅·디자인 토큰·공용 컴포넌트 + cytoscape PoC(번들·렌더). 7페이지 셸 동작, typecheck/lint/build PASS |
+| S17 | 정적 콘텐츠 3종 | F031·F036·F037 | 6월 리뷰 역산 | 데이터현황·비교검증·추진계획 렌더 + 출처배지(실/추정/유료) 부착. 셸 이후 병렬 |
+| S18 | 방법론 2종 | F032·F033 | 6월 리뷰 역산 | CQ 관리(목록·상세·등록모달) + 온톨로지 정의(엔티티13·관계8·제약). 도메인 공용 |
+| S19 | 지식그래프 + 데이터레이어 | F034·F038 | 6월 리뷰 역산 | cytoscape 그래프 + 노드 상세패널 + 도메인 토글(소부장/호르무즈) + Mock/real 어댑터 |
+| S20 | 시나리오 분석 (하이라이트) | F035 | 6월 리뷰 역산 | CQ 선택→Cypher→애니메이션 추론→A~E 결과. 콘솔에러0 |
+| S21 | 통합 + 배포 + 회귀 | F038·F039 | 6월 리뷰 역산 | 데이터레이어 통합·koami.minu.best 교체 배포·버전 활성화 검증·회귀 |
 
 **Critical Path:** F001(이송 기반) → F002~F006 → F007(배포). F009(실 LLM)·F012(P2)는 여유 시.
 **실데이터 트랙(koami-givc) Critical Path:** F013(M0 PoC 게이트) → F014+F015(적재·Repository) → F016(조회·검증). F017(Phase 2)는 GIVC 접근·PII 규정 확보 의존(외부 게이트).
 **기계산업 콘텐츠 전환 Critical Path:** F019(스코프 게이트) → F020+F022(S4 재스킨·프레이밍) → F021(S6 재구축) → F023(실데이터 적재). 전부 순차(S8·S9가 `types/index.ts`·`mock/index.ts` 공유 → 병렬 불가). F019 데이터 가용성 통과가 F020~F023 선행 게이트.
 **ChatGIVC 스키마 정렬 Critical Path:** F024(M0 퓨샷 SQL 실행성 게이트) → F025(스키마 미러+멀티도메인) → F026(Repository 정렬+통합 시나리오) → F027(실 질의 패널). F028(청사진)은 병렬 가능(문서·스키마 기반·실DB 무관). **Track A(F024~F027 데모)는 실 GIVC DB 접근 없이 완결 가능**(공개+가상)·**Track B(F028 청사진)도 접근 무관** = 외부 게이트가 본 트랙을 막지 않음. F024 GO가 F025~F027 선행 게이트.
+**GIVC Ontology Platform 전환(v0.32) Critical Path:** F030(디자인 시스템·앱 셸 + cytoscape PoC) → {F031·F036·F037 정적, F032·F033 방법론} 병렬 → F034(그래프)·F038(데이터레이어) → F035(시나리오 분석) → F039(배포). F030 셸이 전 페이지 선행 게이트. 정적·방법론 페이지(S17·S18)는 셸 이후 병렬, 그래프·시나리오(S19·S20)가 시연 하이라이트 critical. cytoscape는 force-layout 은퇴(신규 의존성)·NL→Cypher는 시연 스크립트(실 엔진=본사업 외부게이트).
 **선행:** F001~F012는 외부 의존 0. 실데이터 트랙은 F013 PoC 통과가 F014~F016 선행 게이트.
 
 ## 7. 오픈 이슈 (PRD §7 참조)
