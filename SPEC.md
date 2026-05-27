@@ -105,11 +105,11 @@
 | F031 | 데이터 현황 페이지 ✅ — KPI 4(총27/실19/추정4/유료4) + `StatusDot`(신규 컴포넌트) + 데이터소스 27건 현황표(`dataSources.ts`, 소부장 우선·호르무즈 통합·구분배지 실/추정/유료). PR #6 | KOAMI-REQ-031 | P0 | S17 | ✅ |
 | F032 | CQ 관리 페이지 ✅ — 좌우 2패널(좌 CQ 목록·필터 pills 5종·상태배지) + 우 상세(질문·엔티티태그·Cypher·검증·데이터요구 5섹션) + 신규 CQ 등록 모달. `cqData.ts`(CQ 7건: Tier1×2·Tier2×5). PR #7 | KOAMI-REQ-032 | P0 | S18 | ✅ |
 | F033 | 온톨로지 모델 정의 페이지 ✅ — KPI 4(엔티티13·관계8·인스턴스161·관계331) + 엔티티 카드 13종(EntityCard 재활용·3열) + 관계 테이블 8행(호버·클릭 모달·툴팁) + 제약 다크블록 3종(Neo4j Cypher) + 관계 편집 모달. `ontologyData.ts`. PR #7 | KOAMI-REQ-033 | P0 | S18 | ✅ |
-| F034 | 지식그래프 페이지 — cytoscape + 노드 상세패널 + 범례 + 툴바(도메인 토글·노드필터·영향경로). 소부장/호르무즈 2그래프(initSobujiang/initHormuz) | KOAMI-REQ-034 | P0 | S19 | 📋 |
+| F034 | 지식그래프 페이지 — cytoscape + 노드 상세패널 + 범례 + 툴바(도메인 토글·노드필터·영향경로). 소부장/호르무즈 2그래프(initSobujiang/initHormuz) | KOAMI-REQ-034 | P0 | S19 | 🔧 |
 | F035 | 시나리오 분석 페이지 (시연 하이라이트) — CQ 선택(토글 CQ-002 소부장/CQ-001 호르무즈) → NL질의 → Cypher 변환 → 애니메이션 추론 → 결과 A 영향경로(cytoscape mini) B Top5 C 설명가능성(인과경로·취약성·EWS·재현성) D 대응옵션 E 의사결정 리포트 | KOAMI-REQ-035 | P0 | S20 | 📋 |
 | F036 | 비교 검증 페이지 (전략 핵심) ✅ — chatGIVC(LLM+RAG) vs 온톨로지+KG 2카드(채팅버블·주석 ✗/✓) + 6축 비교표. PR #6 | KOAMI-REQ-036 | P0 | S17 | ✅ |
 | F037 | 추진 계획 페이지 ✅ — Phase 0~4 타임라인(5/26~6/27, `Timeline` 컴포넌트) + CQ Tier1(시연 2)/Tier2(고객확인 5) 목록 + 푸터. PR #6 | KOAMI-REQ-037 | P0 | S17 | ✅ |
-| F038 | 데이터 레이어 / Repository — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터(공작기계 무역/기업) 재활용 | KOAMI-REQ-038 | P0 | S19·S21 | 📋 |
+| F038 | 데이터 레이어 / Repository — Mock fixtures(27소스·2그래프·CQ·온톨로지·시나리오결과) 출처메타 강제 + koami-givc D1 real 어댑터(공작기계 무역/기업) 재활용 | KOAMI-REQ-038 | P0 | S19·S21 | 🔧 |
 | F039 | 배포 — build + deploy:cf → koami.minu.best 교체 + 버전 활성화 검증(versions deploy) + CF Access 유지 + 회귀 | KOAMI-REQ-039 | P0 | S21 | 📋 |
 
 ---
