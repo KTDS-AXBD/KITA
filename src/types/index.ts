@@ -5,3 +5,4 @@ export * from './s6';
 export * from './hint-boosts';
 export * from './tweaks';
 export * from './gvc';
+export * from './cyto-graph';
