@@ -112,7 +112,7 @@ export function Sidebar({ route }: SidebarProps): JSX.Element {
         type="button"
         className="op-sidebar-logo"
         title="버전 선택으로"
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/select')}
         style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', font: 'inherit', color: 'inherit' }}
       >
         <div className="op-sidebar-logo-fallback">G</div>

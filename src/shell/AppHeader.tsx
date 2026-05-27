@@ -23,11 +23,11 @@ export function AppHeader({ route, tweaks }: AppHeaderProps): JSX.Element {
     <header className="app-header">
       <a
         className="brand"
-        href="#/"
+        href="#/select"
         title="버전 선택으로"
         onClick={(e) => {
           e.preventDefault();
-          navigate('/');
+          navigate('/select');
         }}
       >
         <span className="logo-mark">A</span>

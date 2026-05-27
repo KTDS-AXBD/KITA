@@ -27,21 +27,22 @@ export default function App(): JSX.Element {
     else document.documentElement.classList.remove('dark');
   }, [flavor, theme]);
 
-  // 초기 버전 선택 화면 (셸 없음) — 루트는 v0.1/v0.2 선택기 (2026-05-28)
-  if (route === '/' || route === '') return <VersionSelectPage />;
+  // 버전 선택기 (셸 없음) — /select 에서 수동 전환 (각 셸 브랜드 로고로 진입)
+  if (route === '/select') return <VersionSelectPage />;
 
-  // v0.2 — GIVC Ontology Platform 대시보드 (사이드바 셸)
-  if (route.startsWith('/platform/')) {
+  // v0.2 — GIVC Ontology Platform (최신). 루트(/·'')는 최신 버전 자동 표시 (2026-05-28)
+  const platformRoute = route === '/' || route === '' ? '/platform/data' : route;
+  if (platformRoute.startsWith('/platform/')) {
     let platformPage: JSX.Element;
-    if (route === '/platform/data') platformPage = <DataStatusPage />;
-    else if (route === '/platform/cq') platformPage = <CqManagePage />;
-    else if (route === '/platform/ontology') platformPage = <OntologyPage />;
-    else if (route === '/platform/graph') platformPage = <GraphPage />;
-    else if (route === '/platform/scenario') platformPage = <ScenarioPage />;
-    else if (route === '/platform/compare') platformPage = <ComparePage />;
-    else if (route === '/platform/plan') platformPage = <PlanPage />;
+    if (platformRoute === '/platform/data') platformPage = <DataStatusPage />;
+    else if (platformRoute === '/platform/cq') platformPage = <CqManagePage />;
+    else if (platformRoute === '/platform/ontology') platformPage = <OntologyPage />;
+    else if (platformRoute === '/platform/graph') platformPage = <GraphPage />;
+    else if (platformRoute === '/platform/scenario') platformPage = <ScenarioPage />;
+    else if (platformRoute === '/platform/compare') platformPage = <ComparePage />;
+    else if (platformRoute === '/platform/plan') platformPage = <PlanPage />;
     else platformPage = <DataStatusPage />;
-    return <AppLayout route={route}>{platformPage}</AppLayout>;
+    return <AppLayout route={platformRoute}>{platformPage}</AppLayout>;
   }
 
   // v0.1 — 기존 PoC 데모 (상단 탭 셸). /v1 = 홈(랜딩)
