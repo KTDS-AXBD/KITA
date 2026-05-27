@@ -1,4 +1,4 @@
-import { GRAPH_BY_DOMAIN } from '@/features/platform/graph/graphData';
+import { GRAPH_BY_DOMAIN } from '@/versions/v0_2/platform/graph/graphData';
 import type { CytoGraph, CytoDomain } from '@/types';
 
 export class GraphRepository {

@@ -1,6 +1,10 @@
-/* v0.32 GIVC Ontology Platform 디자인 토큰
-   Prefix --op- (Ontology Platform) — 기존 --axis-* 와 병존 */
-:root {
+/* ==========================================================================
+   v0.2 — GIVC Ontology Platform 디자인 테마
+   Prefix --op- (Ontology Platform). [data-version="v0.2"] 스코프로 활성화.
+   App.tsx가 활성 버전에 따라 documentElement[data-version]를 세팅 →
+   다른 버전 렌더 시 본 토큰은 cascade 비활성(스타일 누수 0).
+   ========================================================================== */
+[data-version="v0.2"] {
   --op-bg-base: #F4F6FB;
   --op-bg-card: #FFFFFF;
 

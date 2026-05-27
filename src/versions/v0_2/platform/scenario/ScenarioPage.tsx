@@ -14,7 +14,7 @@ import type { AnalysisStep } from '@/data/mock/scenarioResults';
 import type { CytoGraph } from '@/types';
 
 const GraphCanvas = lazy(() =>
-  import('@/features/platform/graph/GraphCanvas').then(m => ({ default: m.GraphCanvas }))
+  import('@/versions/v0_2/platform/graph/GraphCanvas').then(m => ({ default: m.GraphCanvas }))
 );
 
 type CqId = 'cq2' | 'cq1';

@@ -19,7 +19,7 @@ import { AnomalyPanel } from './AnomalyPanel';
 import { DomainToggle } from './DomainToggle';
 import { GvcPane } from './GvcPane';
 import { GvcIntegration } from './GvcIntegration';
-import { SurveyCta } from '@/features/survey';
+import { SurveyCta } from '@/versions/v0_1/survey';
 
 const PRODUCT_OPTIONS = ['머시닝센터', 'NC선반', '정밀 감속기', '정밀 베어링'];
 const ACTIVE_OPTION = '머시닝센터';

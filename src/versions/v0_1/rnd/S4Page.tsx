@@ -16,7 +16,7 @@ import { DataMark } from '@/components/DataMark';
 import { KGraph } from '@/components/KGraph';
 import { Eye, Database } from '@/components/icons';
 import { useRndRecommendation } from './useRndRecommendation';
-import { SurveyCta } from '@/features/survey';
+import { SurveyCta } from '@/versions/v0_1/survey';
 import type { HintId, Weights } from '@/types';
 
 const fmtPct = (v: number): string => `${(v * 100).toFixed(1)}%`;

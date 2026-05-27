@@ -1,0 +1,22 @@
+/* ==========================================================================
+   v0.1 — 기존 PoC 데모 디자인 테마 (AXIS Design System)
+
+   AXIS 토큰/플레이버 본체는 공유 레이어에 위치:
+     • styles/colors_and_type.css — 기본 --axis-* 시맨틱 토큰 · 폰트 · 다크모드
+     • styles/axis-styles.css     — foundry(기본)/classic 플레이버 + .axis-* 프리미티브
+       (data-style 로 전환, v0.1 Tweaks 패널이 제어)
+
+   본 파일은 [data-version="v0.1"] 스코프에서 AXIS 캔버스를 활성화하고,
+   v0.1 전용 디자인 오버라이드의 진입점을 제공한다.
+   App.tsx가 활성 버전에 따라 documentElement[data-version]를 세팅 →
+   다른 버전 렌더 시 v0.1 캔버스는 cascade 비활성(스타일 누수 0).
+   ========================================================================== */
+[data-version="v0.1"] {
+  color-scheme: light;
+  /* AXIS 표면을 버전 루트 캔버스에 적용 (전역 AXIS 토큰 참조) */
+  background: var(--axis-surface-default, #ffffff);
+  color: var(--axis-text-primary, #111111);
+}
+
+/* v0.1 전용 오버라이드는 이 스코프에 추가
+   예) [data-version="v0.1"] .app-header { ... } */

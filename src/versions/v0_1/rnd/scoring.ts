@@ -5,7 +5,7 @@ import type {
   ActiveHints,
   HintBoostsConfig,
 } from '@/types';
-import boostsConfig from '../../../config/hint-boosts.json';
+import boostsConfig from '../../../../config/hint-boosts.json';
 
 const CFG = boostsConfig as HintBoostsConfig;
 
