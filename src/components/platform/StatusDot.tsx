@@ -1,9 +1,9 @@
 export type DotStatus = 'connected' | 'collecting' | 'unavailable';
 
 const DOT_COLORS: Record<DotStatus, string> = {
-  connected: '#2ECC71',
-  collecting: '#F39C12',
-  unavailable: '#CCCCCC',
+  connected: 'var(--op-success)',
+  collecting: 'var(--op-warn)',
+  unavailable: 'var(--op-ink-300)',
 };
 
 const DOT_LABELS: Record<DotStatus, string> = {
@@ -18,18 +18,12 @@ interface StatusDotProps {
 
 export function StatusDot({ status }: StatusDotProps): JSX.Element {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap' }}>
+    <span className="op-statusdot">
       <span
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: '50%',
-          background: DOT_COLORS[status],
-          flexShrink: 0,
-          display: 'inline-block',
-        }}
+        className={`op-statusdot-mark${status === 'connected' ? ' is-live' : ''}`}
+        style={{ background: DOT_COLORS[status], color: DOT_COLORS[status] }}
       />
-      <span style={{ fontSize: 12, color: 'var(--op-text-secondary)' }}>{DOT_LABELS[status]}</span>
+      <span className="op-statusdot-label">{DOT_LABELS[status]}</span>
     </span>
   );
 }

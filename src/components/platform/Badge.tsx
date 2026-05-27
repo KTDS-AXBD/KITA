@@ -9,33 +9,19 @@ const BADGE_LABELS: Record<BadgeVariant, string> = {
   pending: 'pending',
 };
 
-const BADGE_STYLES: Record<BadgeVariant, React.CSSProperties> = {
-  real: { background: '#111111', color: '#FFFFFF' },
-  estimate: { background: '#777777', color: '#FFFFFF' },
-  paid: { background: '#CCCCCC', color: '#555555' },
-  verified: { background: '#2ECC71', color: '#fff' },
-  draft: { background: '#F9E2AF', color: '#8B6914' },
-  pending: { background: '#E8ECF1', color: '#666666' },
-};
-
 interface BadgeProps {
   variant: BadgeVariant;
   label?: string;
 }
 
+/**
+ * 출처/상태 배지. 색·라운드·타이포는 디자인 시스템 토큰(theme.css)에서,
+ * variant별 색 매핑은 app.css `.op-badge[data-variant=…]`에서 중앙 관리.
+ * 출처(real/estimate/paid)는 신뢰성 톤의 잉크 기반(흑백) 배지.
+ */
 export function Badge({ variant, label }: BadgeProps): JSX.Element {
   return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '2px 8px',
-        borderRadius: 4,
-        fontSize: 11,
-        fontWeight: 600,
-        whiteSpace: 'nowrap',
-        ...BADGE_STYLES[variant],
-      }}
-    >
+    <span className="op-badge" data-variant={variant}>
       {label ?? BADGE_LABELS[variant]}
     </span>
   );

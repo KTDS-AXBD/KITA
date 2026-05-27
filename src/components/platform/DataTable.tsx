@@ -9,26 +9,17 @@ interface DataTableProps {
   rows: Record<string, React.ReactNode>[];
 }
 
+/**
+ * 데이터 테이블. 헤더(mono 대문자 라벨)·hover·sticky·헤어라인은
+ * 디자인 시스템(app.css `.op-table`)에서 관리. 여기선 구조와 col width만.
+ */
 export function DataTable({ columns, rows }: DataTableProps): JSX.Element {
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <table className="op-table">
       <thead>
         <tr>
           {columns.map((col) => (
-            <th
-              key={col.key}
-              style={{
-                padding: '10px 12px',
-                textAlign: 'left',
-                fontWeight: 600,
-                fontSize: 12,
-                color: 'var(--op-text-secondary)',
-                borderBottom: '2px solid var(--op-border)',
-                background: '#FAFBFD',
-                whiteSpace: 'nowrap',
-                width: col.width,
-              }}
-            >
+            <th key={col.key} style={col.width ? { width: col.width } : undefined}>
               {col.label}
             </th>
           ))}
@@ -36,22 +27,9 @@ export function DataTable({ columns, rows }: DataTableProps): JSX.Element {
       </thead>
       <tbody>
         {rows.map((row, i) => (
-          <tr
-            key={i}
-            style={{ cursor: 'default' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = '#F8F9FC'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = ''; }}
-          >
+          <tr key={i}>
             {columns.map((col, j) => (
-              <td
-                key={col.key}
-                style={{
-                  padding: '10px 12px',
-                  borderBottom: i < rows.length - 1 ? '1px solid var(--op-border)' : 'none',
-                  verticalAlign: 'top',
-                  whiteSpace: j === 0 ? 'nowrap' : undefined,
-                }}
-              >
+              <td key={col.key} style={j === 0 ? { whiteSpace: 'nowrap' } : undefined}>
                 {row[col.key]}
               </td>
             ))}

@@ -82,11 +82,12 @@ export function CypherBlock({ code }: CypherBlockProps): JSX.Element {
         color: '#CDD6F4',
         borderRadius: 'var(--op-radius-sm)',
         padding: '20px 24px',
-        fontFamily: "'JetBrains Mono','Fira Code',monospace",
+        fontFamily: 'var(--op-font-mono)',
         fontSize: 12,
         lineHeight: 1.8,
         overflowX: 'auto',
         margin: 0,
+        border: '1px solid #313244',
       }}
     >
       {tokens.map((tok, i) => (

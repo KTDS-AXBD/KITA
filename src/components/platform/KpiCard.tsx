@@ -2,29 +2,19 @@ interface KpiCardProps {
   label: string;
   value: string | number;
   sub?: string;
+  /** 좌측 키라인 강조색 (예: 실 데이터 = 잉크 블랙). 미지정 시 중립 */
   accentColor?: string;
 }
 
 export function KpiCard({ label, value, sub, accentColor }: KpiCardProps): JSX.Element {
   return (
     <div
-      style={{
-        background: 'var(--op-bg-card)',
-        borderRadius: 'var(--op-radius)',
-        padding: 18,
-        boxShadow: 'var(--op-shadow)',
-        border: '1px solid var(--op-border)',
-      }}
+      className="op-kpi"
+      style={accentColor ? ({ '--op-kpi-keyline': accentColor } as React.CSSProperties) : undefined}
     >
-      <div style={{ fontSize: 12, color: 'var(--op-text-secondary)', fontWeight: 500, marginBottom: 6 }}>
-        {label}
-      </div>
-      <div style={{ fontSize: 26, fontWeight: 700, color: accentColor ?? 'var(--op-text-primary)' }}>
-        {value}
-      </div>
-      {sub && (
-        <div style={{ fontSize: 11, color: 'var(--op-text-tertiary)', marginTop: 2 }}>{sub}</div>
-      )}
+      <div className="op-kpi-label">{label}</div>
+      <div className="op-kpi-value">{value}</div>
+      {sub && <div className="op-kpi-sub">{sub}</div>}
     </div>
   );
 }

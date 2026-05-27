@@ -6,9 +6,9 @@ export interface TimelineItem {
 }
 
 const STATUS_COLORS = {
-  done: '#111111',
-  active: 'var(--op-accent)',
-  upcoming: '#CCCCCC',
+  done: 'var(--op-text-primary)',
+  active: 'var(--op-brand)',
+  upcoming: 'var(--op-ink-300)',
 };
 
 interface TimelineProps {
@@ -30,10 +30,11 @@ export function Timeline({ items }: TimelineProps): JSX.Element {
                 background: STATUS_COLORS[item.status],
                 marginTop: 4,
                 flexShrink: 0,
+                boxShadow: item.status === 'active' ? '0 0 0 4px var(--op-brand-tint)' : 'none',
               }}
             />
             {i < items.length - 1 && (
-              <div style={{ width: 2, flex: 1, minHeight: 24, background: '#E8ECF1', marginTop: 4 }} />
+              <div style={{ width: 2, flex: 1, minHeight: 24, background: 'var(--op-border)', marginTop: 4 }} />
             )}
           </div>
           <div style={{ paddingBottom: i < items.length - 1 ? 20 : 0, flex: 1 }}>

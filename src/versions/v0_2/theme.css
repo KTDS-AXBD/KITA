@@ -1,31 +1,127 @@
 /* ==========================================================================
-   v0.2 — GIVC Ontology Platform 디자인 테마
+   v0.2 — GIVC Ontology Platform 디자인 테마 · "Refined Intelligence Console"
+   ------------------------------------------------------------------------
    Prefix --op- (Ontology Platform). [data-version="v0.2"] 스코프로 활성화.
    App.tsx가 활성 버전에 따라 documentElement[data-version]를 세팅 →
    다른 버전 렌더 시 본 토큰은 cascade 비활성(스타일 누수 0).
+
+   디자인 시스템 SSOT. 컴포넌트(@/components/platform)와 셸(app.css .op-*)이
+   여기 토큰만 소비한다. 값 1곳 수정 → KPI·테이블·배지·셸 일괄 반영.
+
+   토큰 그룹:
+     ① 폰트   ② 잉크 램프(중립)   ③ 표면/위계   ④ 보더/그림자
+     ⑤ 브랜드/시맨틱   ⑥ 출처(provenance)   ⑦ 타이포 스케일
+     ⑧ 라운드/간격   ⑨ 모션/포커스   ⑩ 지식그래프 노드 색
    ========================================================================== */
 [data-version="v0.2"] {
-  --op-bg-base: #F4F6FB;
+  /* ① 폰트 — 본문 Pretendard, 데이터/코드/라벨 D2Coding(이미 CDN 로드, 한글 친화 mono) */
+  --op-font-sans: var(--axis-font-sans);
+  --op-font-mono: var(--axis-font-mono);
+
+  /* ② 잉크 램프 — 약간 쿨한 중립 그레이. text-* / border 가 여기서 파생 */
+  --op-ink-900: #0B0D10;
+  --op-ink-800: #1A1E24;
+  --op-ink-700: #3A4048;
+  --op-ink-600: #565D66;
+  --op-ink-500: #6B7178;
+  --op-ink-400: #9AA0A7;
+  --op-ink-300: #C3C8CE;
+  --op-ink-200: #E2E5EA;
+  --op-ink-100: #EEF0F3;
+  --op-ink-50:  #F6F7F9;
+
+  --op-text-primary: var(--op-ink-900);
+  --op-text-secondary: var(--op-ink-500);
+  --op-text-tertiary: var(--op-ink-400);
+
+  /* ③ 표면/위계 — 종이 위 종이. base(바닥) < card(패널) < subtle(헤더/인셋) */
+  --op-bg-base: #F4F5F7;
   --op-bg-card: #FFFFFF;
+  --op-bg-subtle: #FAFBFC;   /* 테이블 헤더 · 인셋 영역 */
+  --op-bg-inset: #F1F3F5;    /* 코드/패널 안쪽 */
+  --op-bg-hover: #F3F4F6;    /* 행/메뉴 hover */
 
-  --op-text-primary: #111111;
-  --op-text-secondary: #666666;
-  --op-text-tertiary: #999999;
+  /* 메인 영역 미세 그리드 배경 (atmosphere — whisper-quiet) */
+  --op-grid-line: rgba(11, 13, 16, 0.022);
+  --op-grid-size: 28px;
 
-  --op-border: #E8ECF1;
-  --op-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --op-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* ④ 보더 / 그림자 — 헤어라인 + 정제 레이어 그림자 */
+  --op-border: var(--op-ink-200);
+  --op-border-strong: var(--op-ink-300);
+  --op-hairline: rgba(11, 13, 16, 0.07);
 
-  --op-accent: #E60012;
-  --op-accent-light: rgba(230, 0, 18, 0.06);
+  --op-shadow: 0 1px 2px rgba(11, 13, 16, 0.04), 0 1px 1px rgba(11, 13, 16, 0.03);
+  --op-shadow-lg: 0 4px 18px -6px rgba(11, 13, 16, 0.12), 0 2px 6px -2px rgba(11, 13, 16, 0.05);
+  --op-shadow-hover: 0 8px 28px -10px rgba(11, 13, 16, 0.16), 0 3px 8px -3px rgba(11, 13, 16, 0.06);
 
+  /* ⑤ 브랜드 / 시맨틱 — 브랜드(KT 레드)와 의미색을 분리. accent=brand 별칭(하위호환) */
+  --op-brand: #E60012;
+  --op-brand-strong: #C4000F;
+  --op-brand-tint: rgba(230, 0, 18, 0.07);
+  --op-brand-line: rgba(230, 0, 18, 0.20);
+
+  --op-accent: var(--op-brand);            /* 하위호환 (기존 컴포넌트 참조) */
+  --op-accent-light: var(--op-brand-tint); /* 하위호환 */
+
+  --op-success: #1F9D57;
+  --op-success-tint: rgba(31, 157, 87, 0.10);
+  --op-warn: #C77700;
+  --op-warn-tint: rgba(199, 119, 0, 0.10);
+  --op-danger: #D11A2A;
+  --op-danger-tint: rgba(209, 26, 42, 0.08);
+  --op-info: #2563A8;
+
+  /* ⑥ 출처(provenance) — ⭐실/△추정/※가상·유료. 잉크 기반(신뢰성 톤, 흑백 배지 정책) */
+  --op-prov-real: var(--op-ink-900);
+  --op-prov-real-on: #FFFFFF;
+  --op-prov-est: var(--op-ink-500);
+  --op-prov-est-on: #FFFFFF;
+  --op-prov-paid-bg: var(--op-ink-100);
+  --op-prov-paid: var(--op-ink-600);
+
+  /* ⑦ 타이포 스케일 (size / weight / tracking / line-height) */
+  --op-fs-display: 40px;   /* KPI 수치 · 히어로 */
+  --op-fs-title: 22px;     /* 페이지 h2 */
+  --op-fs-heading: 15px;   /* 카드/패널 제목 */
+  --op-fs-body: 13px;
+  --op-fs-sm: 12px;
+  --op-fs-label: 11px;     /* mono 대문자 라벨 */
+  --op-fs-micro: 10.5px;
+
+  --op-fw-regular: 450;
+  --op-fw-medium: 550;
+  --op-fw-semibold: 650;
+  --op-fw-bold: 760;
+
+  --op-tracking-label: 0.07em;  /* mono 라벨 자간 */
+  --op-tracking-tight: -0.02em; /* 디스플레이/타이틀 */
+
+  /* ⑧ 라운드 / 간격 */
   --op-radius: 12px;
   --op-radius-sm: 8px;
+  --op-radius-lg: 16px;
+  --op-radius-pill: 999px;
 
-  --op-sidebar-width: 240px;
-  --op-header-height: 48px;
+  --op-space-1: 4px;
+  --op-space-2: 8px;
+  --op-space-3: 12px;
+  --op-space-4: 16px;
+  --op-space-5: 20px;
+  --op-space-6: 24px;
+  --op-space-8: 32px;
 
-  /* 지식그래프 노드 색상 */
+  --op-sidebar-width: 248px;
+  --op-header-height: 56px;
+
+  /* ⑨ 모션 / 포커스 */
+  --op-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --op-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --op-dur-fast: 0.14s;
+  --op-dur: 0.22s;
+  --op-dur-slow: 0.42s;
+  --op-focus-ring: 0 0 0 2px var(--op-bg-card), 0 0 0 4px var(--op-brand-line);
+
+  /* ⑩ 지식그래프 노드 색상 (cytoscape 카테고리 팔레트) */
   --op-color-event: #E60012;
   --op-color-region: #FF9F0A;
   --op-color-country: #4A90D9;
@@ -39,4 +135,13 @@
   --op-color-policy: #34495E;
   --op-color-trade: #1ABC9C;
   --op-color-risk: #E60012;
+}
+
+/* 모션 민감 사용자 배려 — 진입/펄스 애니메이션 정지 */
+@media (prefers-reduced-motion: reduce) {
+  [data-version="v0.2"] * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
