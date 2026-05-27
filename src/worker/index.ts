@@ -80,6 +80,39 @@ app.get('/api/givc/trade', async (c) => {
   return c.json({ series: series.results, byCountry: byCountry.results });
 });
 
+// F038(S21) — 전체 그래프 → CytoGraph JSON (GraphRepositoryReal이 소비)
+// graph_nodes(D1 NodeType) → CytoNodeType 매핑 후 CytoGraph 형식으로 반환
+app.get('/api/givc/cyto-graph', async (c) => {
+  const CYTO_TYPE: Record<string, string> = {
+    rnd: 'RnDProject', hscode: 'Product', metric: 'Product',
+    country: 'Country', company: 'Company',
+  };
+  const nodesRes = await c.env.DB.prepare(
+    `SELECT id, type, label, meta, provenance AS source FROM graph_nodes
+     ORDER BY CASE type WHEN 'rnd' THEN 0 WHEN 'hscode' THEN 1 WHEN 'metric' THEN 2
+              WHEN 'country' THEN 3 WHEN 'company' THEN 4 ELSE 5 END, id`,
+  ).all<{ id: string; type: string; label: string; meta: string | null; source: string }>();
+
+  const edgesRes = await c.env.DB.prepare(
+    `SELECT src, dst FROM graph_edges WHERE src < dst ORDER BY src, dst`,
+  ).all<{ src: string; dst: string }>();
+
+  const nodes = nodesRes.results.map((n) => ({
+    id: n.id,
+    label: n.label,
+    type: CYTO_TYPE[n.type] ?? 'Product',
+    detail: n.meta ?? '',
+    source: n.source,
+  }));
+  const edges = edgesRes.results.map((e) => ({
+    id: `e_${e.src}_${e.dst}`,
+    source: e.src,
+    target: e.dst,
+    label: '',
+  }));
+  return c.json({ domain: 'sobujiang', nodes, edges });
+});
+
 // FTS5 전문검색 — 기업·그래프 코퍼스
 app.get('/api/givc/search', async (c) => {
   const q = c.req.query('q') ?? '';
