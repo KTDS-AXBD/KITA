@@ -19,8 +19,8 @@ export const graphTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="node-detail"]',
-    title: '노드 상세 패널',
-    body: '선택 노드의 속성·연결 엣지·출처를 카드로 확인할 수 있어요. 시연 중 "이건 어디서 온 데이터?" 질문에 즉답해요.',
+    title: '데이터 출처 즉답 - 시연 중 신뢰 증거',
+    body: '노드 클릭 -> 우측 패널에 속성·연결 엣지·출처(⭐실/△추정/💰유료)가 펼쳐져요. "이 데이터 어디서 왔냐"는 질문에 클릭 한 번으로 답해요.',
     placement: 'left',
   },
   {
@@ -37,8 +37,8 @@ export const graphTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="path-highlight"]',
-    title: '영향경로 추적',
-    body: '특정 노드에서 시작해 다단계 영향을 자동 추적해요. "이 부품이 수입 차단되면 어디까지 영향?"의 KG 답이에요.',
+    title: '영향경로 추적 - KG가 직접 답해요',
+    body: '노드 선택 후 좌측 "영향경로" 버튼을 클릭하면 다단계 파급 경로가 하이라이트돼요. "이 부품 수입 차단되면 어디까지 영향?"을 KG가 자동 계산해요.',
     placement: 'bottom',
   },
 ];

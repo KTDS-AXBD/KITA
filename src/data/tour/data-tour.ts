@@ -7,8 +7,8 @@ import type { TourStep } from '@/components/platform';
 export const dataTourSteps: TourStep[] = [
   {
     target: '[data-tour-id="kpi-total"]',
-    title: '한눈에 보는 데이터 자산',
-    body: 'GIVC가 보유한 27건 데이터를 신뢰성 등급으로 분류했어요. 실데이터 19건이 핵심 자산이고, 추정·유료는 확장 후보예요.',
+    title: '데이터 신뢰성이 시연 신뢰성이에요',
+    body: '실데이터 19건·추정 4건·유료 4건 = 27건 전체가 신뢰성 등급별로 분류돼요. "이 데모, 얼마나 검증됐냐"는 질문에 숫자로 즉답하는 첫 번째 근거예요.',
     placement: 'bottom',
   },
   {
@@ -31,8 +31,8 @@ export const dataTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="survey-cta"]',
-    title: '회신 의향이 있으시다면',
-    body: '추가로 제공 가능한 데이터가 있으시면 시연 후 의향 설문에 회신해주세요. KOAMI 다음 단계 합의의 출발점이 돼요.',
+    title: '회신이 Phase 1 범위를 결정해요',
+    body: '추가 제공 가능한 데이터·우선 CQ를 회신해주시면 KT DS와 함께 Phase 1 범위를 결정해요. 시연 후 이 버튼 하나가 협업의 시작점이에요.',
     placement: 'top',
   },
 ];

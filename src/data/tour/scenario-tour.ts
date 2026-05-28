@@ -37,8 +37,8 @@ export const scenarioTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="decision-report"]',
-    title: '의사결정 리포트',
-    body: '시연 마무리. KG 추론 결과를 부처 보고용 1페이지 요약으로 정리해요. CQ -> Cypher -> 결과 -> 권고까지 추적 가능.',
+    title: '부처 결재용 1페이지 산출물',
+    body: 'KG 추론 결과를 보고용 1페이지로 정리해요. CQ -> Cypher -> 결과 -> 권고 흐름이 그대로 담겨 결재·회의 배포에 바로 쓸 수 있어요.',
     placement: 'top',
   },
 ];
