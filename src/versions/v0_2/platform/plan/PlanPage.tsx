@@ -165,7 +165,7 @@ export function PlanPage(): JSX.Element {
           marginTop: 32,
         }}
       >
-        KT DS AX컨설팅팀 &nbsp;|&nbsp; 2026
+        KT DS Enterprise사업본부 AX컨설팅팀 &nbsp;|&nbsp; 2026
       </div>
     </div>
   );

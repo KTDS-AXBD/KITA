@@ -86,7 +86,12 @@ export function GraphPage(): JSX.Element {
                 </div>}
           </div>
         </Suspense>
-        <NodeDetailPanel node={selectedNode} connectedCount={connectedCount} />
+        <NodeDetailPanel
+          node={selectedNode}
+          connectedCount={connectedCount}
+          domain={domain}
+          totalNodes={g.nodes.length}
+        />
       </div>
 
       <GraphLegend onFilterChange={handleFilterChange} activeFilter={nodeFilter} />

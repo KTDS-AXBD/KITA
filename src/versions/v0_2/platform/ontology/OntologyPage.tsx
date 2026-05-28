@@ -92,8 +92,8 @@ export function OntologyPage(): JSX.Element {
         <p>소부장·호르무즈 공통 스키마 · 엔티티 13종 · 관계 8종 · 속성 정의 · 속성에 마우스를 올리면 설명이 표시됩니다</p>
       </div>
 
-      {/* KPI row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 }}>
+      {/* KPI row - F043 G: auto-fit minmax 반응형 */}
+      <div className="op-kpi-grid" style={{ marginBottom: 28 }}>
         {KPI_DATA.map((kpi) => (
           <KpiCard key={kpi.label} label={kpi.label} value={kpi.value} sub={kpi.sub} />
         ))}

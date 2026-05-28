@@ -74,7 +74,8 @@ export function DataStatusPage(): JSX.Element {
         </span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
+      {/* F043 G: 4컬럼 하드코딩 → op-kpi-grid(auto-fit minmax) 반응형 */}
+      <div className="op-kpi-grid" style={{ marginBottom: 24 }}>
         {KPI_DATA.map((kpi) => (
           <KpiCard key={kpi.label} {...kpi} />
         ))}

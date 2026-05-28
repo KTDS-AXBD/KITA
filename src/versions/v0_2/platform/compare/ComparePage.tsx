@@ -139,8 +139,13 @@ export function ComparePage(): JSX.Element {
               종합적으로 고려해야 합니다. 감속기, 베어링, 스핀들 등 핵심 부품 분야
               전문 기업을 우선적으로 검토하시기 바랍니다.
               <br /><br />
-              <span style={{ fontSize: 11, color: 'var(--op-text-tertiary)' }}>
-                출처: GIVC 산업동향 보고서 (2025년 3월호)
+              {/* F043 D: 우측 KG 카드와 출처 시각 일관. RAG는 문서 종합이라 est(추정) 분류,
+                  '보고서 종합' 라벨로 1차 데이터 직접 조회 아님을 명시. */}
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+                <SourceBadge source="est" variant="pill" label="보고서 종합" />
+                <span style={{ color: 'var(--op-text-tertiary)' }}>
+                  · GIVC 산업동향 보고서 (2025년 3월호)
+                </span>
               </span>
             </ChatBubble>
             <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid var(--op-border)' }}>

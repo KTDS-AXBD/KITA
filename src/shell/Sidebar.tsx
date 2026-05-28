@@ -11,7 +11,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     id: '/platform/data',
     label: '데이터 현황',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <ellipse cx="9" cy="4.5" rx="6" ry="2.5" />
         <path d="M3 4.5v9c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5v-9" />
         <path d="M3 9c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5" />
@@ -22,7 +22,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     id: '/platform/cq',
     label: 'CQ 관리',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="3" y="2" width="12" height="14" rx="1.5" />
         <path d="M6.5 1.5h5v2h-5z" />
         <path d="M6.5 7.5h5M6.5 10.5h5M6.5 13.5h3" />
@@ -33,7 +33,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     id: '/platform/ontology',
     label: '온톨로지 정의',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="5" cy="4" r="1.5" />
         <circle cx="5" cy="14" r="1.5" />
         <circle cx="13" cy="8" r="1.5" />
@@ -45,7 +45,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     id: '/platform/graph',
     label: '지식그래프',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="13" cy="4" r="2" />
         <circle cx="4" cy="9" r="2" />
         <circle cx="13" cy="14" r="2" />
@@ -57,7 +57,7 @@ const MAIN_ITEMS: SidebarItem[] = [
     id: '/platform/scenario',
     label: '시나리오 분석',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="7.5" cy="7.5" r="5" />
         <path d="M16 16l-4-4" />
       </svg>
@@ -70,7 +70,7 @@ const REFERENCE_ITEMS: SidebarItem[] = [
     id: '/platform/compare',
     label: '비교 검증',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="2" y="3" width="5.5" height="12" rx="1" />
         <rect x="10.5" y="3" width="5.5" height="12" rx="1" />
       </svg>
@@ -80,7 +80,7 @@ const REFERENCE_ITEMS: SidebarItem[] = [
     id: '/platform/plan',
     label: '추진 계획',
     icon: (
-      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="2" y="3.5" width="14" height="12" rx="1.5" />
         <path d="M2 7.5h14M6 1.5v4M12 1.5v4" />
       </svg>
@@ -107,11 +107,12 @@ export function Sidebar({ route }: SidebarProps): JSX.Element {
   );
 
   return (
-    <nav className="op-sidebar">
+    <nav className="op-sidebar" aria-label="주 메뉴">
       <button
         type="button"
         className="op-sidebar-logo"
         title="버전 선택으로"
+        aria-label="버전 선택으로 돌아가기"
         onClick={() => navigate('/select')}
         style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', font: 'inherit', color: 'inherit' }}
       >

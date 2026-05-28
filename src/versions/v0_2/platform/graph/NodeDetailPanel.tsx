@@ -1,9 +1,12 @@
-import type { CytoNode, CytoNodeType } from '@/types';
+import type { CytoNode, CytoNodeType, CytoDomain } from '@/types';
 import { Badge, SourceBadge } from '@/components/platform';
 
 interface NodeDetailPanelProps {
   node: CytoNode | null;
   connectedCount: number;
+  /** F043 E: 빈 상태에서 어느 도메인 그래프인지 안내. */
+  domain?: CytoDomain;
+  totalNodes?: number;
 }
 
 const TYPE_LABEL: Record<CytoNodeType, string> = {
@@ -23,27 +26,107 @@ const TYPE_LABEL: Record<CytoNodeType, string> = {
 };
 
 
-export function NodeDetailPanel({ node, connectedCount }: NodeDetailPanelProps): JSX.Element {
+// F043 E: 도메인별 빈 상태 카피.
+const DOMAIN_LABEL: Record<CytoDomain, { title: string; subtitle: string }> = {
+  sobujiang: { title: '소부장 공작기계', subtitle: '소재 -> 부품(감속기/베어링/CNC) -> 장비 가치사슬' },
+  hormuz: { title: '호르무즈 석유화학', subtitle: '나프타/원유 -> 중간재 -> 완제품 의존 경로' },
+};
+
+export function NodeDetailPanel({ node, connectedCount, domain, totalNodes }: NodeDetailPanelProps): JSX.Element {
   if (!node) {
+    const meta = domain ? DOMAIN_LABEL[domain] : null;
     return (
-      <div style={{
-        width: 260,
-        flexShrink: 0,
-        padding: '24px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
-        color: 'var(--op-text-tertiary)',
-        fontSize: 13,
-        textAlign: 'center',
-        borderLeft: '1px solid var(--op-border)',
-      }}>
-        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <circle cx="12" cy="12" r="3" /><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-        </svg>
-        <span>노드를 클릭하면<br />상세 정보가 표시됩니다</span>
+      <div
+        role="status"
+        aria-label="노드 미선택 상태"
+        style={{
+          width: 260,
+          flexShrink: 0,
+          padding: '24px 18px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          justifyContent: 'flex-start',
+          gap: 14,
+          color: 'var(--op-text-tertiary)',
+          fontSize: 13,
+          textAlign: 'left',
+          borderLeft: '1px solid var(--op-border)',
+        }}
+      >
+        {/* 도메인 배지 + 노드 수 */}
+        {meta && (
+          <div>
+            <div
+              style={{
+                fontFamily: 'var(--op-font-mono)',
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: 'var(--op-tracking-label)',
+                textTransform: 'uppercase',
+                color: 'var(--op-text-tertiary)',
+                marginBottom: 4,
+              }}
+            >
+              현재 도메인
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--op-text-primary)' }}>
+              {meta.title}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--op-text-tertiary)', marginTop: 4, lineHeight: 1.5 }}>
+              {meta.subtitle}
+            </div>
+            {typeof totalNodes === 'number' && totalNodes > 0 && (
+              <div style={{ fontSize: 11, color: 'var(--op-text-tertiary)', marginTop: 8 }}>
+                노드 {totalNodes}개 적재 중
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 빈 상태 안내 + 사용 팁 */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 6,
+            padding: '14px 0',
+            borderTop: '1px solid var(--op-border)',
+            borderBottom: '1px solid var(--op-border)',
+            color: 'var(--op-text-tertiary)',
+          }}
+        >
+          <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+          </svg>
+          <span style={{ fontSize: 12, textAlign: 'center', lineHeight: 1.5 }}>
+            노드를 클릭하면 상세가 표시됩니다
+          </span>
+        </div>
+
+        {/* 사용 팁 */}
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--op-font-mono)',
+              fontSize: 10,
+              fontWeight: 600,
+              letterSpacing: 'var(--op-tracking-label)',
+              textTransform: 'uppercase',
+              color: 'var(--op-text-tertiary)',
+              marginBottom: 6,
+            }}
+          >
+            사용 팁
+          </div>
+          <ul style={{ margin: 0, padding: '0 0 0 16px', fontSize: 11, lineHeight: 1.6, color: 'var(--op-text-secondary)' }}>
+            <li>상단 토글로 도메인 전환</li>
+            <li>하단 범례 필터로 노드 타입 좁히기</li>
+            <li>노드 선택 후 영향 경로 토글</li>
+          </ul>
+        </div>
       </div>
     );
   }
