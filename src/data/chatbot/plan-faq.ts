@@ -29,4 +29,10 @@ export const planFaq: FaqEntry[] = [
     keywords: ['본사업화', '언제', '시작', '가능', 'production'],
     related: ['Phase 0~4 일정'],
   },
+  {
+    q: '의향 설문 회신은 어떻게 하면 돼요?',
+    a: '시연 후 화면 하단 "의견 회신" 버튼을 클릭하면 설문 페이지로 연결돼요. KOAMI 측에서 추가 제공 가능한 데이터·우선 CQ·협업 의향을 표시해주시면 KT DS와 함께 Phase 1 범위를 결정해요. 비공개 정보는 NDA 체결 후 별도 채널로 전달하셔도 돼요.',
+    keywords: ['의향', '설문', '회신', '어떻게', '방법', '버튼', '하단', '피드백', 'survey'],
+    related: ['Phase 0~4 일정', 'Tier1·Tier2 누가 결정'],
+  },
 ];

@@ -25,8 +25,8 @@ export const planTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="footer-contact"]',
-    title: '담당·문의',
-    body: 'KT DS Enterprise사업본부 AX컨설팅팀 서민원 책임. 추가 데이터 협의·차기 단계 합의는 여기로 연결돼요.',
+    title: '차기 합의의 시작점이에요',
+    body: 'KT DS Enterprise사업본부 AX컨설팅팀 서민원 책임. 추가 데이터 협의·Phase 1 범위 합의·담당자 연결은 여기서 시작해요.',
     placement: 'top',
   },
 ];

@@ -19,8 +19,8 @@ export const compareTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="comparison-table"]',
-    title: '6축 비교표',
-    body: '인과추적·재현성·설명가능성·확장성·운영성·신뢰성 6축으로 정량 비교해요. ✗/✓ 한눈에 보면 결정 쉬워져요.',
+    title: '✗/✓ 한눈에 - 6축 정량 비교',
+    body: '인과추적·재현성·설명가능성·확장성·운영성·신뢰성 6축으로 정량 비교해요. ✗/✓만 봐도 의사결정이 쉬워지는 게 이 페이지의 핵심 가치예요.',
     placement: 'top',
   },
   {

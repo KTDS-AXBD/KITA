@@ -19,20 +19,20 @@ export const cqTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="cq-detail"]',
-    title: '질문 - Cypher - 검증 - 데이터요구',
-    body: '각 CQ는 자연어 질문, KG 질의(Cypher), 검증 메트릭, 필요 데이터까지 5섹션으로 추적돼요. CQ 자체가 누적 자산이에요.',
+    title: 'CQ 한 개 = 5섹션 누적 자산',
+    body: '자연어 질문·KG 질의(Cypher)·검증 메트릭·데이터 요구·빌드업 이력 5섹션이 묶여요. 세미나 한 번으로 끝나지 않고 누적되는 KG 자산이에요.',
     placement: 'left',
   },
   {
     target: '[data-tour-id="build-history"]',
-    title: '빌드업 이력 추적',
-    body: '1차 세미나 -> 질의서 회신 -> KG 검증 -> 산업부 보고 단계를 Timeline으로 표시해요. CQ가 어디서 시작해 어디로 가는지 한눈에 봐요.',
+    title: 'KG 투명성 - 어디서 시작됐는지 추적',
+    body: '1차 세미나 -> 질의서 회신 -> KG 검증 -> 산업부 보고 흐름을 Timeline으로 추적해요. "이 CQ 어떤 근거로 만들었냐"에 즉답 가능해요.',
     placement: 'left',
   },
   {
     target: '[data-tour-id="new-cq-btn"]',
-    title: '새 CQ 등록',
-    body: '시연 중 고객이 "이런 질문도 가능한가요?" 물으면 즉석에서 CQ로 등록할 수 있어요. KG가 답할 수 있게 만드는 출발점이에요.',
+    title: '즉석 질문이 바로 KG 자산이 돼요',
+    body: '시연 중 "이런 질문도 가능해요?" 물으시면 "+ CQ 추가" 버튼으로 그 자리에서 등록해요. 다음 세미나엔 KG가 답할 수 있게 데이터·관계를 보강해드려요.',
     placement: 'left',
   },
 ];

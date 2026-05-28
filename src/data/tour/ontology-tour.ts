@@ -7,8 +7,8 @@ import type { TourStep } from '@/components/platform';
 export const ontologyTourSteps: TourStep[] = [
   {
     target: '[data-tour-id="ontology-kpi"]',
-    title: '온톨로지 규모 요약',
-    body: '엔티티 13종 · 관계 8종 · 인스턴스 161건 · 관계 331건. 이 정의가 모든 KG 추론·시나리오 분석의 골격이에요.',
+    title: '13종·8관계 - 모든 KG 추론의 뼈대',
+    body: '엔티티 13종·관계 8종·인스턴스 161건·관계 331건. 이 정의 위에서 시나리오 분석·CQ 질의·그래프 시각화가 모두 돌아가요.',
     placement: 'bottom',
   },
   {
@@ -25,8 +25,8 @@ export const ontologyTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour-id="constraint-block"]',
-    title: 'Neo4j Cypher 제약',
-    body: 'UNIQUE·INDEX 제약을 그대로 노출해 KG 운영 무결성을 보여드려요. 시연용 가상이 아닌 실제 운영 가능한 정의예요.',
+    title: '운영 가능한 실 정의 - 시연용 가상 아님',
+    body: 'UNIQUE·INDEX 제약을 그대로 노출해 운영 무결성을 보여드려요. "PoC라 실제 구현 안 됐겠지?"라는 의구심에 구체 코드로 답하는 부분이에요.',
     placement: 'top',
   },
   {
