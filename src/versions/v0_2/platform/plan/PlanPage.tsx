@@ -1,14 +1,20 @@
 import { Timeline } from '@/components/platform';
-import type { TimelineItem } from '@/components/platform';
 import { CQ_ITEMS as CQ_SSOT } from '../cq/cqData';
+import { withComputedStatus, type PhaseDef } from './phaseStatus';
 
-const PHASES: TimelineItem[] = [
-  { phase: 'Phase 0', label: '준비', date: '5/26~5/30', status: 'done' },
-  { phase: 'Phase 1', label: '시나리오 확정', date: '6/2~6/6', status: 'active' },
-  { phase: 'Phase 2', label: 'KG 구축', date: '6/9~6/13', status: 'upcoming' },
-  { phase: 'Phase 3', label: '시연 준비', date: '6/16~6/20', status: 'upcoming' },
-  { phase: 'Phase 4', label: '리뷰', date: '6/23~6/27', status: 'upcoming' },
+// F042: status는 today 기준 자동 계산(stale 차단).
+// 이전 하드코딩(Phase 0=done·Phase 1=active)이 5/28 시점에서 잘못 표시됨.
+// 일정만 PhaseDef로 정의하고 status는 phaseStatus.withComputedStatus가 산출.
+const PHASE_DEFS: PhaseDef[] = [
+  { phase: 'Phase 0', label: '준비', date: '5/26~5/30' },
+  { phase: 'Phase 1', label: '시나리오 확정', date: '6/2~6/6' },
+  { phase: 'Phase 2', label: 'KG 구축', date: '6/9~6/13' },
+  { phase: 'Phase 3', label: '시연 준비', date: '6/16~6/20' },
+  { phase: 'Phase 4', label: '리뷰', date: '6/23~6/27' },
 ];
+
+const PLAN_YEAR = 2026;
+const PHASES = withComputedStatus(PHASE_DEFS, new Date(), PLAN_YEAR);
 
 const PHASE_DESCS: Record<string, string> = {
   'Phase 0': 'CQ 질의서 발송 · 데이터 수집 착수',

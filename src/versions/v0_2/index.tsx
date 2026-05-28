@@ -6,6 +6,7 @@ import { GraphPage } from './platform/graph/GraphPage';
 import { ScenarioPage } from './platform/scenario/ScenarioPage';
 import { ComparePage } from './platform/compare/ComparePage';
 import { PlanPage } from './platform/plan/PlanPage';
+import { PageNav } from './platform/PageNav';
 import type { VersionModule } from '../types';
 
 function pageFor(route: string): JSX.Element {
@@ -48,5 +49,12 @@ export const v02: VersionModule = {
     latest: true,
   },
   ownsRoute: (route) => route.startsWith('/platform/'),
-  render: (route) => <AppLayout route={route}>{pageFor(route)}</AppLayout>,
+  // F042: PageNav를 AppLayout 안에서 페이지 본문 뒤에 일괄 부착.
+  // 7페이지 각각이 PageNav를 import할 필요 없이, 셸 레벨에서 currentRoute 기반 자동 표시.
+  render: (route) => (
+    <AppLayout route={route}>
+      {pageFor(route)}
+      <PageNav currentRoute={route} />
+    </AppLayout>
+  ),
 };
