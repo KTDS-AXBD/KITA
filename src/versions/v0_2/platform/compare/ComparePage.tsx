@@ -126,7 +126,8 @@ export function ComparePage(): JSX.Element {
         <p>기존 방식 vs 온톨로지 기반 분석 비교</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 28 }}>
+      {/* F045: 1fr 1fr -> auto-fit minmax(320, 1fr) 반응형. 좁은 폭에서 비교 카드 stack(시연 메시지 보존). */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20, marginBottom: 28 }}>
         {/* 좌: chatGIVC */}
         <div style={CARD_STYLE}>
           <div style={cardHeader('#FAFBFD')}>chatGIVC (LLM + RAG)</div>

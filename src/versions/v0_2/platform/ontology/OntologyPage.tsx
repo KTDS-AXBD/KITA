@@ -43,7 +43,8 @@ function RelationModal({ rel, onClose }: { rel: OntologyRelation; onClose: () =>
           <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--op-text-tertiary)', marginBottom: 4 }}>설명</div>
           <div style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--op-text-secondary)' }}>{rel.tooltip}</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        {/* F045: 1fr 1fr -> auto-fit minmax(180, 1fr) 반응형(Modal 480px 폭이면 2컬, 모바일 wrap). */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--op-text-tertiary)', marginBottom: 4 }}>출발 엔티티</div>
             <span style={{ padding: '3px 10px', borderRadius: 4, background: '#F5F5F5', fontSize: 13, fontWeight: 600 }}>{rel.from}</span>
@@ -105,7 +106,8 @@ export function OntologyPage(): JSX.Element {
           <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>엔티티 정의</h3>
           <span style={{ fontSize: 12, color: 'var(--op-text-tertiary)' }}>13종 · 총 인스턴스 161</span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+        {/* F045: 3컬럼 -> auto-fit minmax(220, 1fr) 반응형. 13카드 좁은 폭에서 2/1컬럼 wrap. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
           {ONTOLOGY_ENTITIES.map((e) => (
             <EntityCard
               key={e.label}

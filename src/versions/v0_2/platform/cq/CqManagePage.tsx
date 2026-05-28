@@ -191,7 +191,8 @@ function CqDetailPanel({ cq }: { cq: CqItem }): JSX.Element {
       {cq.status === 'verified' && (
         <section style={{ borderBottom: '1px solid var(--op-border)', paddingBottom: 16, marginBottom: 16 }}>
           <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--op-text-secondary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.04em' }}>검증 결과</h4>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
+          {/* F045: 1fr 1fr -> auto-fit minmax(140, 1fr) 반응형. 4 메트릭 좁은 폭에서 1컬럼 stack. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 12 }}>
             {[
               { label: '검증일', value: cq.verifiedAt ?? '' },
               { label: '탐색 노드', value: `${cq.statsNodes} / 161` },

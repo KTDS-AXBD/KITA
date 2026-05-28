@@ -128,11 +128,12 @@ export function PlanPage(): JSX.Element {
         }}
       >
         <Timeline items={PHASES} />
-        {/* 단계 설명 — Timeline 컴포넌트 확장 없이 인라인으로 */}
+        {/* 단계 설명 - Timeline 컴포넌트 확장 없이 인라인으로
+            F045: 5컬럼 -> auto-fit minmax(120, 1fr) 반응형. Phase 5 설명 좁은 폭에서 자동 wrap. */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(5, 1fr)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
             gap: 8,
             marginTop: 20,
             paddingTop: 20,
