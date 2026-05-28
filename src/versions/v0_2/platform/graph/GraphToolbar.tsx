@@ -59,6 +59,7 @@ export function GraphToolbar({ domain, nodeCount, edgeCount, focusActive, onDoma
 
       {/* 영향경로 집중 버튼 */}
       <button
+        data-tour-id="path-highlight"
         onClick={onFocusToggle}
         style={{
           padding: '6px 14px',

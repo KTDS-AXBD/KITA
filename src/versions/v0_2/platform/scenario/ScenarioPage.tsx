@@ -101,6 +101,29 @@ export function ScenarioPage(): JSX.Element {
 
   useEffect(() => () => { timerRefs.current.forEach(clearTimeout); }, []);
 
+  // 결함 2 (P0): 자동 투어 첫 진입 시 분석 결과가 보이도록 즉시 done 상태로 빌드업.
+  // localStorage 'koami:tour:scenario:seen' 부재 = 첫 진입 = 자동 분석 + showCypher ON
+  // → step 3 (Cypher) · step 4 (5단계) · step 5 (결과 A~E) · step 6 (의사결정) anchor 모두 즉시 가시.
+  // seen 이미 마킹된 사용자(시연자)는 idle 유지 → 시연 흐름에서 분석 실행 버튼 직접 누름.
+  useEffect(() => {
+    let alive = true;
+    try {
+      const seen = window.localStorage.getItem('koami:tour:scenario:seen') === '1';
+      if (seen) return;
+      // 자동 투어 시작 (500ms) 전에 모든 결과 영역 mount 보장 - completedSteps 전 step 채움
+      const t = window.setTimeout(() => {
+        if (!alive) return;
+        const steps = cfg.steps;
+        setShowCypher(true);
+        setCompletedSteps(steps.length);
+        setProgress(100);
+        setAnalysisState('done');
+      }, 100);
+      return () => { alive = false; window.clearTimeout(t); };
+    } catch { /* localStorage 비활성 환경 */ }
+    return undefined;
+  }, [cfg]);
+
   return (
     <div className="op-page">
       <div className="op-section-header">
@@ -537,7 +560,7 @@ function Cq002Results() {
       </ResultSection>
 
       {/* E. 의사결정 지원 리포트 */}
-      <div style={{ marginTop: 32 }}>
+      <div data-tour-id="decision-report" style={{ marginTop: 32 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, paddingBottom: 8, borderBottom: '2px solid #111' }}>
           의사결정 지원 리포트 - 소부장 자립화 R&D 적합 기업 분석
         </h3>

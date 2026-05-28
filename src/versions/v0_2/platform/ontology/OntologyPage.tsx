@@ -138,9 +138,10 @@ export function OntologyPage(): JSX.Element {
             </tr>
           </thead>
           <tbody>
-            {ONTOLOGY_RELATIONS.map((rel) => (
+            {ONTOLOGY_RELATIONS.map((rel, ri) => (
               <tr
                 key={rel.name}
+                data-tour-id={ri === 0 ? 'relation-edit-modal' : undefined}
                 onClick={() => setSelectedRel(rel)}
                 style={{ cursor: 'pointer', borderBottom: '1px solid var(--op-border)', transition: 'background 0.1s' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = 'var(--op-bg-base)'; }}

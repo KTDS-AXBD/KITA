@@ -45,9 +45,10 @@ export function useTour(pageKey: string): { open: boolean; onClose: () => void; 
   const [open, setOpen] = useState(false);
 
   // 마운트 시 1회 자동 시작 판정
+  // delay 500ms = SPA 라우팅 직후 DOM 안정 대기 (200ms는 race condition 가능, 결함 5)
   useEffect(() => {
     if (hasSeen(pageKey)) return;
-    const timer = window.setTimeout(() => setOpen(true), 200);
+    const timer = window.setTimeout(() => setOpen(true), 500);
     return () => window.clearTimeout(timer);
   }, [pageKey]);
 

@@ -56,33 +56,59 @@ function pickPlacement(
   return 'bottom'; // 마지막 fallback
 }
 
+// tooltip 추정 높이 (실측: 16+18(title) + 8+14*2(body 2줄) + 14+30(footer) ~= 160~220, 최대 240)
+const TOOLTIP_H_EST = 220;
+
 function getTooltipPos(
   target: { top: number; left: number; width: number; height: number },
   placement: 'top' | 'bottom' | 'left' | 'right',
 ): { top: number; left: number } {
   const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  // 모든 placement에 공통 적용: viewport 내 강제 clamp (top·bottom 둘 다)
+  const clampLeft = (x: number) => Math.min(vw - TOOLTIP_W - 8, Math.max(8, x));
+  const clampTop = (y: number) => Math.min(vh - TOOLTIP_H_EST - 8, Math.max(8, y));
   switch (placement) {
     case 'top':
       return {
-        top: Math.max(8, target.top - TOOLTIP_GAP - 10),
-        left: Math.min(vw - TOOLTIP_W - 8, Math.max(8, target.left + target.width / 2 - TOOLTIP_W / 2)),
+        top: clampTop(target.top - TOOLTIP_GAP - TOOLTIP_H_EST),
+        left: clampLeft(target.left + target.width / 2 - TOOLTIP_W / 2),
       };
     case 'bottom':
       return {
-        top: target.top + target.height + TOOLTIP_GAP,
-        left: Math.min(vw - TOOLTIP_W - 8, Math.max(8, target.left + target.width / 2 - TOOLTIP_W / 2)),
+        top: clampTop(target.top + target.height + TOOLTIP_GAP),
+        left: clampLeft(target.left + target.width / 2 - TOOLTIP_W / 2),
       };
     case 'left':
       return {
-        top: Math.max(8, target.top + target.height / 2 - 90),
+        top: clampTop(target.top + target.height / 2 - TOOLTIP_H_EST / 2),
         left: Math.max(8, target.left - TOOLTIP_W - TOOLTIP_GAP),
       };
     case 'right':
       return {
-        top: Math.max(8, target.top + target.height / 2 - 90),
-        left: Math.min(vw - TOOLTIP_W - 8, target.left + target.width + TOOLTIP_GAP),
+        top: clampTop(target.top + target.height / 2 - TOOLTIP_H_EST / 2),
+        left: clampLeft(target.left + target.width + TOOLTIP_GAP),
       };
   }
+}
+
+/**
+ * target element를 viewport 중앙으로 스크롤. body scroll lock 우회 (element.scrollIntoView는 영향 받음 →
+ * body overflow:hidden 잠시 해제 후 scroll → 복원).
+ */
+function ensureTargetVisible(selector: string): void {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight;
+  // 이미 viewport 내 (PADDING + TOOLTIP_H_EST 여유) 있으면 skip
+  if (rect.top >= 8 && rect.bottom + TOOLTIP_H_EST <= vh) return;
+  // body scroll lock 잠시 해제 → scroll → 복원 (raf 다음 tick에 복원)
+  const prevOverflow = document.body.style.overflow;
+  document.body.style.overflow = '';
+  el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' as ScrollBehavior });
+  // 다음 frame에 다시 lock (사용자가 페이지 스크롤 못 함 유지)
+  requestAnimationFrame(() => { document.body.style.overflow = prevOverflow || 'hidden'; });
 }
 
 export function SpotlightTour({ steps, open, onClose }: SpotlightTourProps): JSX.Element | null {
@@ -97,25 +123,47 @@ export function SpotlightTour({ steps, open, onClose }: SpotlightTourProps): JSX
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // target 미존재 시 다음 step으로 자동 이동 (skip)
+  // target 미존재 시 한 번 wait + retry → 그래도 없으면 다음 step 시도 (자동 skip)
+  // race condition 방어 (결함 5): SPA 라우팅 직후 DOM 렌더 안 됐을 가능성에 대비해 200ms retry 1회
   useLayoutEffect(() => {
     if (!open) return;
     const step = steps[stepIdx];
     if (!step) return;
-    let r = getRect(step.target);
-    // target 없으면 한 칸 더 시도, 그래도 없으면 패널 중앙 노출
-    let skip = 0;
-    while (!r && stepIdx + skip < steps.length - 1) {
-      skip++;
-      const next = steps[stepIdx + skip];
-      if (!next) break;
-      r = getRect(next.target);
-      if (r) {
-        setStepIdx(stepIdx + skip);
+    // 1차 즉시 시도
+    const r0 = getRect(step.target);
+    if (r0) {
+      ensureTargetVisible(step.target);
+      // scrollIntoView 후 rect 재측정 (스크롤로 변경됐을 수 있음)
+      setRect(getRect(step.target) ?? r0);
+      return;
+    }
+    // 1차 실패 → 200ms 후 재시도 (DOM 렌더 race 방어)
+    let cancelled = false;
+    const retryTimer = window.setTimeout(() => {
+      if (cancelled) return;
+      const r1 = getRect(step.target);
+      if (r1) {
+        ensureTargetVisible(step.target);
+        setRect(getRect(step.target) ?? r1);
         return;
       }
-    }
-    setRect(r);
+      // 2차도 실패 → 자동 skip 시도 (다음 step target 찾기)
+      let skip = 0;
+      let rNext: ReturnType<typeof getRect> = null;
+      while (stepIdx + skip < steps.length - 1) {
+        skip++;
+        const next = steps[stepIdx + skip];
+        if (!next) break;
+        rNext = getRect(next.target);
+        if (rNext) {
+          setStepIdx(stepIdx + skip);
+          return;
+        }
+      }
+      // 마지막 step도 target 없으면 fallback dim 만 표시
+      setRect(null);
+    }, 200);
+    return () => { cancelled = true; window.clearTimeout(retryTimer); };
   }, [open, stepIdx, steps]);
 
   // resize/scroll 시 rect 재계산

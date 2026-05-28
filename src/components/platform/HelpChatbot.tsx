@@ -97,6 +97,47 @@ function matchFaq(query: string, faqs: FaqEntry[]): { score: number; entry: FaqE
   return best;
 }
 
+/**
+ * 간단한 마크다운 렌더링 - `**bold**` + `_italic_`만 지원 (assistant 답변 강조용).
+ * dangerouslySetInnerHTML 회피 (XSS) - 텍스트 split 후 React 노드로 변환.
+ * 결함 3 (P1): 환영 메시지 `**페이지명**`이 raw 별표로 노출되던 문제 해소.
+ */
+function renderMarkdown(text: string): React.ReactNode[] {
+  // 1단계 split: **bold** 패턴
+  const boldParts: Array<{ type: 'text' | 'bold'; content: string }> = [];
+  let remaining = text;
+  const boldRegex = /\*\*([^*]+)\*\*/;
+  while (remaining.length > 0) {
+    const m = boldRegex.exec(remaining);
+    if (!m) {
+      boldParts.push({ type: 'text', content: remaining });
+      break;
+    }
+    if (m.index > 0) boldParts.push({ type: 'text', content: remaining.slice(0, m.index) });
+    boldParts.push({ type: 'bold', content: m[1]! });
+    remaining = remaining.slice(m.index + m[0].length);
+  }
+  // 2단계: 각 text 청크 안에서 _italic_ 추가 처리
+  const nodes: React.ReactNode[] = [];
+  boldParts.forEach((p, i) => {
+    if (p.type === 'bold') {
+      nodes.push(<strong key={`b${i}`}>{p.content}</strong>);
+      return;
+    }
+    const italicRegex = /_([^_]+)_/;
+    let rem = p.content;
+    let j = 0;
+    while (rem.length > 0) {
+      const m = italicRegex.exec(rem);
+      if (!m) { nodes.push(<span key={`t${i}-${j++}`}>{rem}</span>); break; }
+      if (m.index > 0) nodes.push(<span key={`t${i}-${j++}`}>{rem.slice(0, m.index)}</span>);
+      nodes.push(<em key={`i${i}-${j++}`} style={{ color: 'var(--op-text-tertiary, #9AA0A7)', fontStyle: 'normal', fontSize: '0.92em' }}>{m[1]!}</em>);
+      rem = rem.slice(m.index + m[0].length);
+    }
+  });
+  return nodes;
+}
+
 export function HelpChatbot({ pageKey, pageLabel, faqs, enabled = true }: HelpChatbotProps): JSX.Element | null {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -345,7 +386,7 @@ export function HelpChatbot({ pageKey, pageLabel, faqs, enabled = true }: HelpCh
                   whiteSpace: 'pre-wrap',
                 }}
               >
-                {m.content}
+                {renderMarkdown(m.content)}
               </div>
             ))}
             {llmLoading && (
