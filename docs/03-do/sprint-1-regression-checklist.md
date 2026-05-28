@@ -111,6 +111,72 @@ npx lighthouse http://localhost:4175/#/platform/data --preset=desktop --only-cat
 | `/platform/compare` 비교 검증 | _ | _ | _ | _ | _ | _ | 좌우 카드 + 6축 표 |
 | `/platform/plan` 추진 계획 | _ | _ | _ | _ | _ | _ | Phase 타임라인 |
 
+## F050 자동 점검 결과 (2026-05-28, Playwright Mock 빌드 실측)
+
+> Master in-session 자동 점검. preview localhost:4175 + Playwright browser_evaluate로 라우트·구조·노드수·텍스트 검증. 시각 동일성·깊은 인터랙션 연쇄(hover·click 연쇄)는 자동화 불가 → 사용자 손 잔여로 분류.
+
+### v0.2 V1~V14 (14/14 자동 PASS)
+
+| # | 자동 PASS 항목 |
+|---|----------------|
+| V1 | 라우트 진입 `/platform/data` 자동 표시 ✅ |
+| V2 | KPI 4 + 27행 테이블 + 최종 갱신 '2026-05' ✅ |
+| V3 | sticky thead (`position: sticky`) + wrapper max-height 864px + 부제 3분류(실/추정/유료) ✅ |
+| V4 | 시나리오 커버리지 S1~S7 + Tier1/2 + CQ-001/002 + 산업부 ref + 기진회 ref ✅ |
+| V5 | 신규 CQ 모달 버튼 + Modal focus trap (F046 검증 보존) ✅ |
+| V6 | 엔티티 13 카드 + 관계 8 행 + GIVC/UNIPASS/MOTIE/산업부 라벨 ✅ |
+| V7 | 관계 Modal `role="dialog"`·`aria-modal`·focus trap (F046 검증 보존) ✅ |
+| V8 | 도메인 토글(소부장+호르무즈) + 노드 38 (Mock 빌드 기준) ✅ |
+| V9 | 빈 상태 안내 + 도메인 컨텍스트 + 사용 팁 3종 + `role="status"` ✅ |
+| V10 | CQ 토글(CQ-001·CQ-002) + 분석 실행 + Cypher 토글 ✅ |
+| V11 | 분석 완료 후 Top5(대한정밀감속기/서원베어링/미래기계소재) + 결과 A~E + NTIS/KIPRIS 출처 ✅ |
+| V12 | 좌측 `보고서 종합` SourceBadge + 우측 NTIS + 6축 표 + chatGIVC/온톨로지+KG 라벨 ✅ |
+| V13 | Phase 0 dot=`rgb(230,0,18)` active + Phase 1~4=`rgb(195,200,206)` upcoming + `Enterprise사업본부 AX컨설팅팀` ✅ |
+| V14 | PageNav prev `비교 검증`/next null + 7페이지 순회 (F042 검증 보존) ✅ |
+
+### v0.1 I1~I33 (12/33 자동 PASS, 21 사용자 손)
+
+> **F050 발견 stale**: qa-checklist v0.1 라우트가 `/v1/scenario/rnd` 잘못 표기 → 실제 라우트 `/scenario/rnd` (v01 registry OWNED_ROUTES 기준). qa-checklist §4b 정정 완료.
+
+| # | 자동 PASS 항목 |
+|---|----------------|
+| I1 | hash router 5경로(`/v1`·`/scenario/rnd`·`/scenario/s6`·`/about/*`·`/survey`) 모두 정상, `/scenario/toluene` alias 유지 ✅ |
+| I5 | Landing Hero(GIVC+온톨로지) ✅ |
+| I7 | ProvenanceLegend(실/추정 표기) ✅ |
+| I8 | S4 도메인 select 1개 ✅ |
+| I9~I12 | S4 slider 6개(예산·기간·가중치 4) ✅ |
+| I15 | S4 Top5(대한정밀감속기·서원베어링) ✅ |
+| I17 | S4 KGraph(cytoscape) ✅ |
+| I19 | S4 KPI strip(가중치·적합도·정확도) ✅ |
+| I14·I23 | Hints/데이터확장 ✅ |
+| I25 | S6 공작기계/머시닝/감속기 검색 ✅ |
+| I26 | S6 TradeChart(SVG path/line) ✅ |
+| I27 | S6 KGraph 다단계(소재·부품·장비) ✅ |
+| F021 | 화학 잔존 0(톨루엔·나프타·석유화학 = 0건) ✅ |
+
+사용자 손 잔여: I2~I4(헤더 nav·theme·flavor), I6(시나리오 카드 클릭 navigate), I13(스코어 정밀 계산 9/9), I16(행 hover→그래프 하이라이트), I18(top5 동적 필터), I20~I22(유사/반대/What-If chat), I24(DataMark 전수), I28(기업표 hover→그래프), I29~I33(WordCloud·AnomalyPanel·Hint·KPI·DataExpansion 시각 동일성).
+
+### v0.1 S6 N1~N12 (5/12 자동 PASS, 7 사용자 손)
+
+| # | 자동 PASS 항목 |
+|---|----------------|
+| N1 | 도메인 토글(기계 ↔ 반도체) ✅ |
+| N3 | 탭 전환(분석 ↔ ChatGIVC 질의) ✅ |
+| N7 | 카탈로그 8개 = ⭐5(live: 매출증가율·자본투자효율·고용·전후방·도메인비교) + △3(curated: HS코드 등) ✅ |
+| N8 | 실 ChatGIVC SQL + 미러 SQL 병기(SELECT/실행/데모 키워드) ✅ |
+| N12 | 실 GVC 제품코드 `GVC\d{5}` 노출 0건 ✅(분석·질의 양 탭 검증) |
+
+사용자 손 잔여: N2(토글 전환 시 분석/질의 양 탭 재렌더), N4~N6(GvcPane KGraph·KpiStrip·통합뷰 GvcIntegration), N9(L*결과 실행), N10(C* 큐레이션 결과), N11(템플릿 도메인별 변경 시각).
+
+### 종합 자동 PASS
+
+- **V**: 14/14 (100%, F046/F042 보존 포함)
+- **I**: ~12/33 (라우트·구조·콘텐츠 전환)
+- **N**: ~5/12 (도메인 토글·카탈로그·SQL 병기·보안)
+- **총**: ~31/59 (53%)
+- **콘솔 에러**: 0건(v0.2 7페이지 + v0.1 S4/S6 전수)
+- **자동 불가 ~28건**: 시각 동일성·깊은 인터랙션 연쇄·hover 효과·What-If chat·Tweaks 패널 영속·DataMark 전수 → 사용자 손 잔여
+
 ## 통과 기준 (DoD §4.1)
 
 - [ ] 33개 기본 항목(I1~I33) 100% 통과 (v0.1, `/v1` 공존)

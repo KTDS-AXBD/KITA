@@ -39,10 +39,14 @@
 
 ## 4b. 라우트 - v0.1 기존 PoC (공존, 시연 보조)
 
+> v0.1 라우트는 `/v1` 접두 없이 직접 hash (registry OWNED_ROUTES 기준, F050 점검 시 정정).
+
 - [ ] `#/v1` 또는 `/select` → v0.1 → Landing
-- [ ] `#/v1/scenario/rnd` S4 R&D 추천 (가중치 슬라이더·What-If)
-- [ ] `#/v1/scenario/s6` S6 가치사슬 (공작기계 다단계 + ChatGIVC 질의 패널 N1~N12)
-- [ ] `#/v1/about/ontology` / `#/v1/about/data` About
+- [ ] `#/scenario/rnd` S4 R&D 추천 (가중치 슬라이더·What-If)
+- [ ] `#/scenario/s6` S6 가치사슬 (공작기계 다단계 + ChatGIVC 질의 패널 N1~N12)
+- [ ] `#/scenario/toluene` (구 alias, `/scenario/s6`로 자동 매핑)
+- [ ] `#/about/ontology` / `#/about/data` About
+- [ ] `#/survey` 의견 회신 설문
 - [ ] 각 라우트에서 새로고침 → 동일 화면 유지
 
 ## 5. 핵심 인터랙션 - v0.2 7페이지 (V1~V14 회귀 연계)
