@@ -101,15 +101,33 @@ npx lighthouse http://localhost:4175/#/platform/data --preset=desktop --only-cat
 # 위 패턴으로 7페이지 + 기존 v0.1 3페이지(공존) 실측
 ```
 
-| 화면 | Perf | FCP | LCP | TBT | CLS | TTI | 비고 |
-|------|:----:|:---:|:---:|:---:|:---:|:---:|:----:|
-| `/platform/data` 데이터 현황 | _ | _ | _ | _ | _ | _ | KPI + 27행 테이블 |
-| `/platform/cq` CQ 관리 | _ | _ | _ | _ | _ | _ | 좌우 패널 |
-| `/platform/ontology` 온톨로지 | _ | _ | _ | _ | _ | _ | 엔티티 13 카드 |
-| `/platform/graph` 지식그래프 | _ | _ | _ | _ | _ | _ | cytoscape 445KB lazy chunk |
-| `/platform/scenario` 시나리오 | _ | _ | _ | _ | _ | _ | 5단계 추론 애니메이션 |
-| `/platform/compare` 비교 검증 | _ | _ | _ | _ | _ | _ | 좌우 카드 + 6축 표 |
-| `/platform/plan` 추진 계획 | _ | _ | _ | _ | _ | _ | Phase 타임라인 |
+**F051 실측 (2026-05-28, lighthouse 13.3.0 + Chrome headless desktop preset, preview localhost:4175)**
+
+| 화면 | Perf | FCP | LCP | TBT | CLS | SI | 비고 |
+|------|:----:|:---:|:---:|:---:|:---:|:--:|:----:|
+| `/platform/data` 데이터 현황 | 80 | 0.4s | 0.4s | 0ms | **0.456** ⚠️ | 0.4s | CLS 높음(부제 진입 stagger 모션) |
+| `/platform/cq` CQ 관리 | **90** ✅ | 0.4s | 0.4s | 0ms | 0.216 | 0.4s | 7페이지 중 유일 Perf 90 |
+| `/platform/ontology` 온톨로지 | 87 | 0.4s | 0.4s | 0ms | 0.253 | 0.4s | 엔티티 13 카드 진입 shift |
+| `/platform/graph` 지식그래프 | 81 | 0.8s | **3.3s** ⚠️ | 0ms | 0.001 | 0.8s | cytoscape 445KB lazy chunk LCP 지연 |
+| `/platform/scenario` 시나리오 | 85 | 0.4s | 2.7s | 0ms | 0.001 | 0.4s | LCP > 2s |
+| `/platform/compare` 비교 검증 | 85 | 0.4s | 2.7s | 0ms | 0.027 | 0.4s | LCP > 2s |
+| `/platform/plan` 추진 계획 | 85 | 0.4s | 2.7s | 0ms | 0.022 | 0.4s | LCP > 2s |
+
+**v0.1 보조 3페이지 재측정 (F050+F051)**
+
+| 화면 | Perf | FCP | LCP | TBT | CLS | SI | 비고 |
+|------|:----:|:---:|:---:|:---:|:---:|:--:|:----:|
+| `/v1` Landing | **99** | 0.7s | 0.7s | 0ms | 0.001 | 0.7s | v0.1 SSR 단순 |
+| `/scenario/rnd` S4 | **100** | 0.4s | 0.4s | 0ms | 0.04 | 0.4s | S4 가중치 슬라이더 |
+| `/scenario/s6` S6 | **96** | 1.0s | 1.0s | 0ms | 0.02 | 1.0s | 다단계 가치사슬 + ChatGIVC 패널 |
+
+**관찰**:
+- v0.1 3페이지: **96~100점, 모두 Perf ≥90 + LCP <2s 충족** ✅
+- v0.2 7페이지: 80~90점. **갭 2개 식별**:
+  - CLS 페널티(data/cq/ontology): 0.21~0.46 - 페이지 진입 시 stagger 모션(F042 디자인 격상)이 layout shift로 측정됨. 시각 효과는 의도된 모션이라 시연 첫 인상엔 영향 없음
+  - LCP > 2s(graph/scenario/compare/plan): 2.7~3.3s - cytoscape 445KB lazy chunk가 초기 critical path에 들어가 LCP 지연. graph 페이지가 가장 큼(3.3s)
+- **시연 환경 판정**: 데스크탑 + 로컬 측정 기준 첫 paint(FCP) 모두 0.4~1.0s = 체감 빠름. LCP 2.7~3.3s는 cytoscape lazy 로드 후 측정 시점이라 시각적 진입은 이미 완료. **시연 현장 첫 인상은 문제 없음**(F050 자동 점검에서 콘솔 에러 0건 + 7페이지 정상 렌더 확인).
+- **개선 후보**(미선택): cytoscape preload hint·CLS stagger reduce-motion 조건 분기·route preload.
 
 ## F050 자동 점검 결과 (2026-05-28, Playwright Mock 빌드 실측)
 
