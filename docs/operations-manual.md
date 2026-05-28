@@ -4,7 +4,7 @@
 
 ## 1. 시연 실행 순서 (D-day)
 
-1. **사전 (D-1)**: `bash scripts/healthcheck.sh <배포URL>` → 🟢 확인. 리허설 2회.
+1. **사전 (D-1)**: `bash scripts/healthcheck.sh <배포URL>` → 🟢 확인. (F049: 별도 리허설 없음, 59 회귀 + Lighthouse v0.2 실측만 유지.)
 2. **온라인 시연**: 배포 URL 접속 (비공개 공유 경로). 캐시/탭 초기화 cold load.
 3. **오프라인 백업 대기** (필수): 별도 터미널에 `pnpm build && pnpm serve:offline` → `http://localhost:4173` 대기.
 4. 시연 진행: `demo-script.md` 흐름.

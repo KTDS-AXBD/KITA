@@ -7,21 +7,20 @@
 - [x] **1920×1080 / 1366×768** 렌더링 정상, **가로 넘침 0**, 콘솔 에러 **0**
 - [x] 라우팅(Landing/S4/S6/About) 200, 첫 로딩 FCP <2s, 출처표기 29개
 - [x] **오프라인 자기완결성**: 빌드에 CDN/외부 런타임 호출 0 (토글 OFF=완전 정적). 유일 네트워크=opt-in `/api/chat`
-- [ ] **남은 수동 (시연 노트북·D1)**: 실 Chrome/Edge 버전 확인 · 대형 디스플레이 1회 · 실제 Wi-Fi OFF 오프라인 구동 · 33 인터랙션 회귀 클릭
+- [ ] **남은 수동 (사용자 결정 2건만 유지, F049)**: V1~V14+I1~I33+N1~N12=**59 회귀 통과** + Lighthouse v0.2 7페이지 실측. (F049: 리허설·노트북 버전 고정·대형 디스플레이·Wi-Fi OFF 오프라인 구동 검증 폐기.)
 
 ## 1. 브라우저
-- [ ] Chrome 최신 (시연 노트북 버전 고정 기록: ______)
+- [ ] Chrome 최신 (시연 노트북)
 - [ ] Edge 최신
 
 ## 2. 해상도
 - [ ] 1920×1080
 - [ ] 1366×768
-- [ ] 외부 대형 디스플레이 (시연장 프로젝터/모니터)
 
-## 3. 네트워크
+## 3. 네트워크 (장애 시 백업 fallback용)
 - [ ] 온라인 - 공개 CF URL 정상 구동
-- [ ] **오프라인 - localhost 백업(`pnpm serve:offline`) 완전 구동** (네트워크 차단 후 테스트)
 - [ ] cold load (캐시/탭 초기화 후 첫 로딩 < 2s)
+- (F049: Wi-Fi OFF 오프라인 구동 검증 폐기. localhost 백업은 operations-manual §2 장애 표 fallback 옵션으로만 유지.)
 
 ## 4. 라우트 - v0.2 GIVC Ontology Platform (시연 메인)
 
@@ -70,9 +69,10 @@
 - [ ] 출처표기 ⭐/△/※ 누락 0
 
 ## 6. 접근제어
-- [ ] 공개 URL이 비추측 경로/CF Access로 보호됨
-- [ ] 시연 후 만료/비활성화 절차 확인 (`docs/deploy-guide.md`)
+- [ ] 공개 URL CF Access 보호됨 (F047/F048: 영구 운영, 시연 후 만료 폐기 항목)
+- [ ] CF Access 이메일 정책 확인(`docs/deploy-guide.md`)
 
-## 7. 시연 직전
+## 7. 시연 직전 (F049: 사용자 결정 2건만 유지)
 - [ ] `bash scripts/healthcheck.sh <URL>` 전부 ✅
-- [ ] 리허설 2회
+- [ ] V1~V14+I1~I33+N1~N12=**59 회귀** 통과
+- [ ] Lighthouse v0.2 7페이지 실측 (`docs/03-do/sprint-1-regression-checklist.md` v0.2 Lighthouse 실측 표)

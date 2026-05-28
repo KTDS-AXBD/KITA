@@ -92,7 +92,7 @@
 
 ### v0.2 Lighthouse 실측 (시연 노트북, M5 잔여)
 
-> v0.2 7페이지는 사용자 측 실측. Wi-Fi OFF 후에도 vite preview localhost:4173/4174/4175 fallback 가능.
+> v0.2 7페이지는 사용자 측 실측(F049: 사용자 결정 시연 직전 2건 중 하나). vite preview localhost:4173/4174/4175 fallback으로 헤드리스 가능.
 
 ```bash
 pnpm build && pnpm serve:offline  # 4173 점유 시 4174/4175 자동 fallback
