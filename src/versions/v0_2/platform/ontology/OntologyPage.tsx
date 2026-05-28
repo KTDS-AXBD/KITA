@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KpiCard, EntityCard, Modal } from '@/components/platform';
+import { KpiCard, EntityCard, Modal, SourceBadge } from '@/components/platform';
 import { ONTOLOGY_ENTITIES, ONTOLOGY_RELATIONS, ONTOLOGY_CONSTRAINTS, OntologyRelation } from './ontologyData';
 
 const KPI_DATA = [
@@ -63,7 +63,11 @@ function RelationModal({ rel, onClose }: { rel: OntologyRelation; onClose: () =>
         </div>
         <div>
           <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--op-text-tertiary)', marginBottom: 4 }}>데이터 출처</div>
-          <div style={{ fontSize: 13 }}>{rel.source}</div>
+          {/* F041 SourceBadge로 출처 종류(real/est/paid) 시각 분류 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+            <SourceBadge source={rel.source.kind} variant="pill" />
+            <span>{rel.source.label}</span>
+          </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: 4 }}>
           <button
@@ -150,7 +154,13 @@ export function OntologyPage(): JSX.Element {
                     ))}
                   </div>
                 </td>
-                <td style={{ padding: '10px 16px', color: 'var(--op-text-secondary)', fontSize: 12 }}>{rel.source}</td>
+                <td style={{ padding: '10px 16px', color: 'var(--op-text-secondary)', fontSize: 12 }}>
+                  {/* F041 SourceBadge inline */}
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <SourceBadge source={rel.source.kind} variant="pill" />
+                    <span>{rel.source.label}</span>
+                  </span>
+                </td>
               </tr>
             ))}
           </tbody>

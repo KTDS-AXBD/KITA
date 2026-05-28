@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useRef, useEffect } from 'react';
-import { CypherBlock, Badge } from '@/components/platform';
+import { CypherBlock, Badge, SourceBadge } from '@/components/platform';
 import {
   CQ2_TOP5_COMPANIES,
   CQ2_STEPS,
@@ -12,6 +12,7 @@ import {
 } from '@/data/mock/scenarioResults';
 import type { AnalysisStep } from '@/data/mock/scenarioResults';
 import type { CytoGraph } from '@/types';
+import { CQ_ITEMS as CQ_SSOT } from '../cq/cqData';
 
 const GraphCanvas = lazy(() =>
   import('@/versions/v0_2/platform/graph/GraphCanvas').then(m => ({ default: m.GraphCanvas }))
@@ -20,31 +21,29 @@ const GraphCanvas = lazy(() =>
 type CqId = 'cq2' | 'cq1';
 type AnalysisState = 'idle' | 'running' | 'done';
 
+// F041 SSOT 파생: query/cypher는 cqData CQ_SSOT에서 가져온다.
+// 이전엔 ScenarioPage가 자체 query/cypher 복사본을 들고 있어 cqData(F040 갱신)와
+// 어긋나면 시연 중 같은 CQ인데 페이지마다 문구가 달랐다.
+// PlanPage가 F040에서 폐기한 안티패턴을 ScenarioPage에서도 폐기.
+function findCqOrThrow(id: string) {
+  const found = CQ_SSOT.find((c) => c.id === id);
+  if (!found) throw new Error(`CQ ${id} not in CQ_SSOT (F041 derivation)`);
+  return found;
+}
+const CQ_SSOT_CQ2 = findCqOrThrow('CQ-002');
+const CQ_SSOT_CQ1 = findCqOrThrow('CQ-001');
+
 const CQ_CONFIG: Record<CqId, { label: string; query: string; cypher: string; steps: AnalysisStep[] }> = {
   cq2: {
     label: 'CQ-002: 소부장 자립화 R&D 적합 기업 추천',
-    query: '소부장 자립화 R&D 공고 시, GIVC 데이터 기반으로 적합 기업 Top 5와 선정 근거, 반대 추천을 제시할 수 있는가?',
-    cypher: `// CQ-002: 소부장 자립화 R&D 기업 추천
-MATCH (rnd:Event {type: 'RnD_Call'})-[:TARGETS]->(p:Product)
-      <-[:PRODUCES]-(c:Company)
-WHERE p.category = 'C2922'
-WITH c,
-  c.rndRate * $w_rnd + c.salesGrowth * $w_sales +
-  c.patentCount_norm * $w_patent + (1 - c.defaultRate) * $w_risk AS score
-RETURN c.name AS 기업, score
-ORDER BY score DESC LIMIT 5`,
+    query: CQ_SSOT_CQ2.question,
+    cypher: CQ_SSOT_CQ2.cypher,
     steps: CQ2_STEPS,
   },
   cq1: {
     label: 'CQ-001: 호르무즈 해협 봉쇄 시 영향 품목 분석',
-    query: '호르무즈 해협 봉쇄 시, 석유화학 밸류체인에서 가장 크게 영향받는 품목 5개와 인과 경로는?',
-    cypher: `// CQ-001: 호르무즈 해협 봉쇄 영향 분석
-MATCH path = (e:Event)-[:DISRUPTS]->(r:Region)
-  -[:CONTROLS_ROUTE]->(c:Country)-[:EXPORTS]->(rm:RawMaterial)
-  -[:REFINES_TO*1..3]->(ig)-[:INPUT_TO]->(p:Product)
-RETURN p.name,
-  reduce(s=1, r IN relationships(path) | s * r.input_coefficient) AS impact
-ORDER BY impact DESC LIMIT 5`,
+    query: CQ_SSOT_CQ1.question,
+    cypher: CQ_SSOT_CQ1.cypher,
     steps: CQ1_STEPS,
   },
 };
@@ -312,6 +311,11 @@ function Cq002Results() {
         <div style={{ fontSize: 12, color: '#777', background: '#F8F9FA', padding: '10px 14px', borderRadius: 6, lineHeight: 1.7 }}>
           공작기계 핵심 부품 10개 중 <strong style={{ color: '#111' }}>7개가 일본 의존도 60% 이상</strong>. 2019년 일본 수출규제 사례를 감안할 때, 단일국 의존 구조는 구조적 취약점입니다.
         </div>
+        {/* F041 출처 메타 */}
+        <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'var(--op-text-tertiary)' }}>
+          <SourceBadge source={DEPENDENCY_ITEMS[0]!.source} variant="pill" />
+          <span>{DEPENDENCY_ITEMS[0]!.sourceLabel}</span>
+        </div>
       </ResultSection>
 
       {/* KPI 요약 */}
@@ -365,6 +369,11 @@ function Cq002Results() {
               ))}
             </tbody>
           </table>
+        </div>
+        {/* F041 출처 메타 */}
+        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'var(--op-text-tertiary)' }}>
+          <SourceBadge source={CQ2_TOP5_COMPANIES[0]!.source} variant="pill" />
+          <span>{CQ2_TOP5_COMPANIES[0]!.sourceLabel}</span>
         </div>
       </ResultSection>
 
@@ -443,6 +452,11 @@ function Cq002Results() {
               </div>
             );
           })}
+        </div>
+        {/* F041 출처 메타 */}
+        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'var(--op-text-tertiary)' }}>
+          <SourceBadge source={RND_CASES[0]!.source} variant="pill" />
+          <span>{RND_CASES[0]!.sourceLabel}</span>
         </div>
       </ResultSection>
 
@@ -629,6 +643,11 @@ function Cq001Results() {
               ))}
             </tbody>
           </table>
+        </div>
+        {/* F041 출처 메타 */}
+        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'var(--op-text-tertiary)' }}>
+          <SourceBadge source={CQ1_TOP5_ITEMS[0]!.source} variant="pill" />
+          <span>{CQ1_TOP5_ITEMS[0]!.sourceLabel}</span>
         </div>
       </ResultSection>
 

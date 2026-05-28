@@ -1,4 +1,12 @@
-import { DataTable } from '@/components/platform';
+import { DataTable, SourceBadge } from '@/components/platform';
+import { COMPARE_TOP3_FROM_CQ2 } from '@/data/mock/scenarioResults';
+
+// F041 SSOT 파생: ComparePage Top3은 CQ2_TOP5_COMPANIES[0..2]에서 도출한다.
+// 이전엔 ComparePage가 "대한정밀감속기 94.2/서원베어링테크 87.6/에스피지 72.3"을
+// 들고 있었는데, 그건 CQ1(호르무즈) PE/PP/합성고무 점수의 잔향이고
+// 에스피지는 CQ2 명단에도 없었다. 이제 SSOT에서 회사명·점수가 자동 매핑된다.
+// CQ2_TOP5는 5건이 보장돼 slice(0,3)은 항상 3건. 첫 원소도 정의 보장(non-null).
+const KG_TOP1 = COMPARE_TOP3_FROM_CQ2[0]!; // 설명가능성 행에서 사용
 
 const CARD_STYLE: React.CSSProperties = {
   background: 'var(--op-bg-card)',
@@ -86,7 +94,7 @@ const COMPARE_ROWS = [
   {
     axis: <span style={{ fontWeight: 600 }}>설명가능성</span>,
     llm: '"이 문서에서 찾았습니다"',
-    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>"대한정밀감속기 → R&D 26.0% → 특허 44건 → 적합도 94.2점"</span>,
+    kg: <span style={{ color: '#2E7D32', fontWeight: 500 }}>{`"${KG_TOP1.name} → R&D ${KG_TOP1.rndPct} → 특허 ${KG_TOP1.patentCount} → 적합도 ${KG_TOP1.pct.toFixed(1)}점"`}</span>,
   },
   {
     axis: <span style={{ fontWeight: 600 }}>재현성</span>,
@@ -152,9 +160,18 @@ export function ComparePage(): JSX.Element {
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', marginBottom: 10 }}>
                 R&D 적합 기업 Top 3
               </div>
-              <ImpactBar label="대한정밀감속기" value="94.2" pct={94} />
-              <ImpactBar label="서원베어링테크" value="87.6" pct={88} />
-              <ImpactBar label="에스피지" value="72.3" pct={72} />
+              {COMPARE_TOP3_FROM_CQ2.map((item) => (
+                <ImpactBar
+                  key={item.name}
+                  label={item.name}
+                  value={item.pct.toFixed(1)}
+                  pct={item.pct}
+                />
+              ))}
+              <div style={{ marginTop: 6, fontSize: 10, color: 'var(--op-text-tertiary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <SourceBadge source={KG_TOP1.source} variant="pill" />
+                <span>{KG_TOP1.sourceLabel}</span>
+              </div>
             </div>
             <div
               style={{

@@ -12,13 +12,22 @@ export interface OntologyEntity {
   count: number;
 }
 
+// F041: source를 단순 문자열에서 BadgeVariant 분류 구조로 격상.
+// kind=real(GIVC/관세청/한국은행/통계청 등 실 출처) | est(시연 설계용 추론) | paid(유료 DB).
+// label은 사용자에게 보이는 출처명(SourceBadge에 함께 표시).
+import type { CytoSource } from '@/types';
+export interface OntologyRelationSource {
+  kind: CytoSource;
+  label: string;
+}
+
 export interface OntologyRelation {
   name: string;
   tooltip: string;
   from: string;
   to: string;
   attrs: OntologyAttr[];
-  source: string;
+  source: OntologyRelationSource;
 }
 
 export interface OntologyConstraint {
@@ -196,7 +205,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'Event',
     to: 'Region',
     attrs: [{ name: 'severity', tooltip: '이벤트가 해당 지역에 미치는 충격 강도. 1~4 단계' }],
-    source: '시나리오 정의',
+    source: { kind: 'est', label: '시나리오 정의 (시연 설계용)' },
   },
   {
     name: 'CONTROLS_ROUTE',
@@ -204,7 +213,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'Region',
     to: 'Country',
     attrs: [{ name: 'passage_share', tooltip: '해당 국가 수출 중 이 경로를 통과하는 비중 %' }],
-    source: '한국석유공사',
+    source: { kind: 'real', label: '한국석유공사 Petronet' },
   },
   {
     name: 'EXPORTS',
@@ -215,7 +224,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
       { name: 'volume', tooltip: '연간 수출 물량 (배럴/톤)' },
       { name: 'share', tooltip: '한국 수입 중 해당국 비중 % ' },
     ],
-    source: 'UNIPASS',
+    source: { kind: 'real', label: '관세청 UNIPASS' },
   },
   {
     name: 'REFINES_TO',
@@ -223,7 +232,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'RawMaterial',
     to: 'IntermediateGoods',
     attrs: [{ name: 'yield_ratio', tooltip: '정유·가공 수율. 원자재에서 중간재 생산 비율 %' }],
-    source: '산업연관표',
+    source: { kind: 'real', label: '한국은행 ECOS 산업연관표' },
   },
   {
     name: 'INPUT_TO',
@@ -231,7 +240,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'IntermediateGoods',
     to: 'Product',
     attrs: [{ name: 'input_coefficient', tooltip: '투입계수. 중간재가 최종재 생산에 투입되는 비중 %. Knowledge Graph 핵심 가중치' }],
-    source: '산업연관표',
+    source: { kind: 'real', label: '한국은행 ECOS 산업연관표' },
   },
   {
     name: 'PRODUCES',
@@ -242,7 +251,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
       { name: 'capacity', tooltip: '연간 생산 능력 (단위: 대/톤)' },
       { name: 'market_share', tooltip: '국내 시장점유율 %' },
     ],
-    source: 'GIVC',
+    source: { kind: 'real', label: 'GIVC enp0111y' },
   },
   {
     name: 'BELONGS_TO',
@@ -250,7 +259,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'Product',
     to: 'Industry',
     attrs: [{ name: 'ksic_code', tooltip: '산업분류코드. 품목이 속하는 KSIC 코드 4자리' }],
-    source: '통계청',
+    source: { kind: 'real', label: '통계청 KSIC' },
   },
   {
     name: 'TRIGGERS_POLICY',
@@ -258,7 +267,7 @@ export const ONTOLOGY_RELATIONS: OntologyRelation[] = [
     from: 'EWS',
     to: 'Policy',
     attrs: [{ name: 'activation_threshold', tooltip: '정책 발동 EWS 임계값. 기본 70' }],
-    source: 'MOTIE',
+    source: { kind: 'real', label: '산업부(MOTIE) 정책 DB' },
   },
 ];
 

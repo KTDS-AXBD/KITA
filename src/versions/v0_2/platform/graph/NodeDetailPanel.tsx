@@ -1,5 +1,5 @@
-import type { CytoNode, CytoNodeType, CytoSource } from '@/types';
-import { Badge } from '@/components/platform';
+import type { CytoNode, CytoNodeType } from '@/types';
+import { Badge, SourceBadge } from '@/components/platform';
 
 interface NodeDetailPanelProps {
   node: CytoNode | null;
@@ -105,19 +105,7 @@ export function NodeDetailPanel({ node, connectedCount }: NodeDetailPanelProps):
   );
 }
 
-function SourceBadge({ source }: { source: CytoSource }): JSX.Element {
-  const config: Record<CytoSource, { symbol: string; label: string; color: string }> = {
-    real: { symbol: '⭐', label: '실데이터', color: '#2ECC71' },
-    est: { symbol: '△', label: '추정', color: '#FF9F0A' },
-    paid: { symbol: '💳', label: '유료 DB', color: '#7B68EE' },
-  };
-  const c = config[source];
-  return (
-    <span style={{ fontSize: 11, fontWeight: 600, color: c.color }}>
-      {c.symbol} {c.label}
-    </span>
-  );
-}
+// F041: 기존 local SourceBadge는 @/components/platform 공유 컴포넌트로 통합.
 
 function DetailRow({ label, children }: { label: string; children: React.ReactNode }): JSX.Element {
   return (
