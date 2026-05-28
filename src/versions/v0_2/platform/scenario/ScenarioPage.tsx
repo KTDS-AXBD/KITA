@@ -297,9 +297,10 @@ function Cq002Results() {
       {/* 의존 구조 분석 */}
       <ResultSection>
         <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
-          의존 구조 분석 — 공작기계 핵심 부품 수입 의존도
+          의존 구조 분석 - 공작기계 핵심 부품 수입 의존도
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0, border: '1px solid var(--op-border)', borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
+        {/* F044: 5컬럼 -> auto-fit minmax(140, 1fr) 반응형. 좁은 폭에서 2~3컬럼 wrap. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 0, border: '1px solid var(--op-border)', borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
           {DEPENDENCY_ITEMS.map(item => (
             <div key={item.name} style={{ padding: '14px 10px', textAlign: 'center', background: item.bg, color: '#fff' }}>
               <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4 }}>{item.name}</div>
@@ -318,8 +319,8 @@ function Cq002Results() {
         </div>
       </ResultSection>
 
-      {/* KPI 요약 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
+      {/* KPI 요약 - F044: F043의 .op-kpi-grid 클래스 재사용(auto-fit minmax 180px) */}
+      <div className="op-kpi-grid" style={{ marginBottom: 16 }}>
         {[
           { label: '분석 후보군', value: '8', sub: '6 핵심 / 2 예비' },
           { label: 'TOP 5 매칭 정확도', value: '65.0%', sub: '가중치 변경 시 재계산' },
@@ -379,8 +380,9 @@ function Cq002Results() {
 
       {/* B. 선정 근거 */}
       <ResultSection>
-        <SectionHeader badge="B" title="선정 근거 — 1위 대한정밀감속기" />
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <SectionHeader badge="B" title="선정 근거 - 1위 대한정밀감속기" />
+        {/* F044: 1fr 1fr -> auto-fit minmax(280, 1fr) 반응형. 좁은 폭에서 1컬럼 wrap. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           <div>
             <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8 }}>점수 산출 근거</div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -463,11 +465,12 @@ function Cq002Results() {
       {/* D. 반대 추천 */}
       <ResultSection>
         <SectionHeader badge="D" title="반대 추천 (제외 사유)" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+        {/* F044: 3컬럼 -> auto-fit minmax(200, 1fr) 반응형. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
           {[
-            { reason: '자격', name: 'OO중공업(대기업)', desc: '신청 자격 미달 — 중소·중견기업 대상 공고' },
+            { reason: '자격', name: 'OO중공업(대기업)', desc: '신청 자격 미달 - 중소·중견기업 대상 공고' },
             { reason: '리스크', name: '대성공업기기', desc: '최근 12개월 부도율 4.6%로 청구 대비 2.1배, R&D 투자 정체' },
-            { reason: '데이터 부족', name: 'OO정밀(미상장)', desc: '재무공시 자료 부족 — 평가 불가' },
+            { reason: '데이터 부족', name: 'OO정밀(미상장)', desc: '재무공시 자료 부족 - 평가 불가' },
           ].map(item => (
             <div key={item.name} style={{ padding: 14, background: '#F8F9FA', borderRadius: 8, borderLeft: '3px solid #CCC' }}>
               <div style={{ fontSize: 11, color: '#999', marginBottom: 4 }}>{item.reason}</div>
@@ -480,10 +483,11 @@ function Cq002Results() {
 
       {/* 설명가능성 */}
       <ResultSection>
-        <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>분석 근거 — 설명가능성</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>분석 근거 - 설명가능성</div>
+        {/* F044: 1fr 1fr -> auto-fit minmax(280, 1fr) 반응형. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           <div style={{ background: '#F8F9FA', borderRadius: 8, padding: 16 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 10 }}>1위 선정 경로 — 대한정밀감속기</div>
+            <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 10 }}>1위 선정 경로 - 대한정밀감속기</div>
             <div style={{ fontSize: 12, color: '#555', lineHeight: 1.8 }}>
               {[
                 'R&D 공고(C2922) → 품목 매칭: 정밀감속기 (HS 8483)',
@@ -533,7 +537,7 @@ function Cq002Results() {
       {/* E. 의사결정 지원 리포트 */}
       <div style={{ marginTop: 32 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, paddingBottom: 8, borderBottom: '2px solid #111' }}>
-          의사결정 지원 리포트 — 소부장 자립화 R&D 적합 기업 분석
+          의사결정 지원 리포트 - 소부장 자립화 R&D 적합 기업 분석
         </h3>
         <div style={{ fontSize: 12, color: '#999', marginBottom: 20 }}>분석 기준일: 2026-05-27 | 분석 ID: RND-2026-001</div>
         <div style={{ background: '#F8F9FA', borderRadius: 8, padding: 20, marginBottom: 24, borderLeft: '3px solid #111' }}>
@@ -549,7 +553,8 @@ function Cq002Results() {
         {/* 선정 프레임워크 */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>선정 프레임워크</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, border: '1px solid var(--op-border)', borderRadius: 8, overflow: 'hidden' }}>
+          {/* F044: 4컬럼 -> auto-fit minmax(150, 1fr). 외곽 border+overflow:hidden 유지(wrap 시 2x2 자연). */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 0, border: '1px solid var(--op-border)', borderRadius: 8, overflow: 'hidden' }}>
             {[
               { step: 'STEP 1', title: '후보 필터링', desc: 'KSIC 분류 기반\n8개 기업 추출', bg: '#111' },
               { step: 'STEP 2', title: '지표 산출', desc: 'R&D·매출·특허·리스크\n4축 정량 평가', bg: '#444' },
@@ -568,7 +573,8 @@ function Cq002Results() {
         {/* 핵심 인사이트 */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>핵심 인사이트</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {/* F044: 1fr 1fr -> auto-fit minmax(280, 1fr) 반응형. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12 }}>
             {[
               { title: '1. 경남 창원 클러스터 집중', body: 'Top 5 중 3개 기업이 경남 창원 소재. 공작기계 산업의 지역 클러스터 효과가 R&D 역량과 상관관계가 높습니다.' },
               { title: '2. 하모닉 드라이브 자립화 기회', body: '1위 대한정밀감속기는 일본 하모닉드라이브 대체를 추진 중. 현재 국산화율 15% 수준이나 2023년 R&D 사례(87%)의 성과를 레버리지하면 가속 가능.' },
@@ -653,10 +659,10 @@ function Cq001Results() {
 
       {/* C. 설명가능성 */}
       <ResultSection>
-        <SectionHeader badge="C" title="분석 근거 — 설명가능성 (Explainability)" />
+        <SectionHeader badge="C" title="분석 근거 - 설명가능성 (Explainability)" />
         <div style={{ borderRadius: 8, border: '1px solid var(--op-border)', overflow: 'hidden' }}>
           <div style={{ padding: '12px 16px', fontWeight: 700, fontSize: 13, borderBottom: '1px solid var(--op-border)' }}>
-            PE (폴리에틸렌) — 영향도 1위 상세 분석 근거
+            PE (폴리에틸렌) - 영향도 1위 상세 분석 근거
           </div>
           <div style={{ padding: 16 }}>
             <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: '#555' }}>C1. 인과 경로 상세</div>
@@ -694,7 +700,8 @@ function Cq001Results() {
             </table>
 
             <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: '#555' }}>C2. 취약성 지표</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
+            {/* F044: 4컬럼 -> auto-fit minmax(140, 1fr) 반응형. */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 16 }}>
               {[
                 { label: '중동 의존도', value: '63.7%', risk: '위험', color: '#E74C3C', src: 'Petronet' },
                 { label: '대체 수입선', value: '미국, 동남아', risk: '존재', color: '#27AE60', src: 'UNIPASS' },
@@ -736,8 +743,9 @@ function Cq001Results() {
 
       {/* D. 대응 옵션 */}
       <ResultSection>
-        <SectionHeader badge="D" title="대응 옵션 비교 — PE (폴리에틸렌)" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+        <SectionHeader badge="D" title="대응 옵션 비교 - PE (폴리에틸렌)" />
+        {/* F044: 3컬럼 -> auto-fit minmax(220, 1fr) 반응형. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
           {[
             {
               title: '수입 다변화', recommended: true,
@@ -794,7 +802,7 @@ function Cq001Results() {
       {/* E. 의사결정 지원 리포트 */}
       <div style={{ marginTop: 32 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, paddingBottom: 8, borderBottom: '2px solid #111' }}>
-          의사결정 지원 리포트 — 호르무즈 해협 공급망 영향 분석
+          의사결정 지원 리포트 - 호르무즈 해협 공급망 영향 분석
         </h3>
         <div style={{ fontSize: 12, color: '#999', marginBottom: 20 }}>분석 기준일: 2026-05-27 | 데이터 버전: v1.0 | 분석 ID: HMZ-2026-001</div>
         <div style={{ background: '#F8F9FA', borderRadius: 8, padding: 20, marginBottom: 24, borderLeft: '3px solid #111' }}>
