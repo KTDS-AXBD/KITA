@@ -19,23 +19,54 @@
 - [ ] 외부 대형 디스플레이 (시연장 프로젝터/모니터)
 
 ## 3. 네트워크
-- [ ] 온라인 — 공개 CF URL 정상 구동
-- [ ] **오프라인 — localhost 백업(`pnpm serve:offline`) 완전 구동** (네트워크 차단 후 테스트)
+- [ ] 온라인 - 공개 CF URL 정상 구동
+- [ ] **오프라인 - localhost 백업(`pnpm serve:offline`) 완전 구동** (네트워크 차단 후 테스트)
 - [ ] cold load (캐시/탭 초기화 후 첫 로딩 < 2s)
 
-## 4. 라우트 (hash routing — 새로고침 유지 확인)
-- [ ] `/` Landing
-- [ ] `#/scenario/rnd` S4
-- [ ] `#/scenario/toluene` S6
-- [ ] `#/about/ontology` / `#/about/data` About
+## 4. 라우트 - v0.2 GIVC Ontology Platform (시연 메인)
+
+> hash routing, 새로고침에도 동일 화면 유지
+
+- [ ] `/` 루트 → v0.2 자동 표시(`/platform/data` 데이터 현황)
+- [ ] `/select` 버전 선택기 - v0.1 / v0.2 카드 노출, 클릭 시 해당 셸로 이동
+- [ ] `#/platform/data` 데이터 현황 (KPI 4 + 27행 테이블)
+- [ ] `#/platform/cq` CQ 관리 (좌 목록 + 우 상세)
+- [ ] `#/platform/ontology` 온톨로지 정의 (엔티티 13 + 관계 8)
+- [ ] `#/platform/graph` 지식그래프 (cytoscape + 도메인 토글)
+- [ ] `#/platform/scenario` 시나리오 분석 (CQ 토글 + 5단계 추론)
+- [ ] `#/platform/compare` 비교 검증 (좌우 카드 + 6축 표)
+- [ ] `#/platform/plan` 추진 계획 (Phase 0~4 + CQ Tier1/2)
+- [ ] 7페이지 PageNav 하단 prev/next 버튼 동작
+
+## 4b. 라우트 - v0.1 기존 PoC (공존, 시연 보조)
+
+- [ ] `#/v1` 또는 `/select` → v0.1 → Landing
+- [ ] `#/v1/scenario/rnd` S4 R&D 추천 (가중치 슬라이더·What-If)
+- [ ] `#/v1/scenario/s6` S6 가치사슬 (공작기계 다단계 + ChatGIVC 질의 패널 N1~N12)
+- [ ] `#/v1/about/ontology` / `#/v1/about/data` About
 - [ ] 각 라우트에서 새로고침 → 동일 화면 유지
 
-## 5. 핵심 인터랙션 (S1 회귀 연계)
+## 5. 핵심 인터랙션 - v0.2 7페이지 (V1~V14 회귀 연계)
+
+> 상세는 `docs/03-do/sprint-1-regression-checklist.md` V1~V14
+
+- [ ] **데이터 현황** KPI 4 카드 + 27행 테이블 sticky 헤더(스크롤 시 컬럼명 유지, F042) + 최종 갱신일 노출
+- [ ] **CQ 관리** 시나리오 커버리지 스트립 S1~S7 + 신규 CQ 모달 열기/닫기(focus trap F046)
+- [ ] **온톨로지** 엔티티 13 카드 + 관계 8행 클릭 → Modal(focus trap·Esc 닫기·focus 복귀)
+- [ ] **지식그래프** 소부장 24노드(real)/호르무즈 44노드(mock) 도메인 토글 + 노드 클릭 → 상세 패널 + 빈 상태 안내(F043)
+- [ ] **시나리오 분석** 분석 실행 → 5단계 애니메이션 추론 → A 영향경로·B Top5·C 설명가능성·D 대응옵션·E 의사결정 리포트
+- [ ] **시나리오 CQ 토글** CQ-002 소부장 ↔ CQ-001 호르무즈 (재현성 확인)
+- [ ] **비교 검증** 좌측 chatGIVC + 우측 KG 두 카드 모두 SourceBadge(F043) + 6축 표
+- [ ] **추진 계획** Phase 0~4 status 자동 계산 - 오늘 기준 active/done/upcoming(F042) + CQ Tier1/2 목록
+- [ ] **PageNav** 7페이지 prev/next 순회 (data prev=null, plan next=null)
+- [ ] **출처 메타** 실/추정/유료 SourceBadge 누락 0
+
+## 5b. 핵심 인터랙션 - v0.1 (보조, 사용 시)
+
 - [ ] S4 가중치 슬라이더 실시간 재계산
 - [ ] S4 Data Expansion Hint 토글 → 정확도 65→88% boost
-- [ ] 지식그래프 노드 hover → tooltip(출처)
-- [ ] 표 행 hover → 그래프 하이라이트
-- [ ] S6 무역추이 차트 + 워드클라우드
+- [ ] S6 무역추이 차트 + 워드클라우드 + 다단계 가치사슬 그래프(F021)
+- [ ] S6 ChatGIVC 질의 패널 도메인 토글 + L1~L5 live + C1~C3 curated(N1~N12)
 - [ ] 출처표기 ⭐/△/※ 누락 0
 
 ## 6. 접근제어

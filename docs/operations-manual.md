@@ -22,33 +22,35 @@
 | 증상 | 원인 | 대응 |
 |------|------|------|
 | 배포 URL 404/5xx | Worker 다운/미배포 | `pnpm deploy:cf` 재배포 또는 `wrangler rollback` |
-| What-If 토글 무응답/오류 | AI 호출 실패·429 | 정적 응답 자동 대체됨 — 토글 OFF로 진행 (시범 기능 안내) |
+| What-If 토글 무응답/오류 | AI 호출 실패·429 | 정적 응답 자동 대체됨 - 토글 OFF로 진행 (시범 기능 안내) |
 | 화면 깨짐 | 캐시/브라우저 | 강력 새로고침(Ctrl+Shift+R) 또는 오프라인 백업 |
 | 느린 첫 로딩 | cold start | 시연 전 미리 1회 접속해 warm-up |
 
 ## 4. 백업 영상 녹화 가이드 (서민원 수동, 시연 전)
 
 - **도구**: OBS / macOS 화면기록 / Windows 게임바 등.
-- **내용**: `demo-script.md` 핵심 흐름 5분 요약 (Landing→S4 가중치·Hint→S6 그래프→About). **What-If는 정적 응답 기준으로 촬영**(실 LLM 비결정성 회피).
+- **내용**: `demo-script.md` 핵심 흐름 5분 요약 - **v0.2 7페이지 사이드바 대시보드 흐름**(`/platform/data` 데이터 현황 → `/platform/cq` CQ 관리 → `/platform/ontology` 온톨로지 → `/platform/graph` 지식그래프 도메인 토글 → `/platform/scenario` 시나리오 5단계 추론(★ 하이라이트) → `/platform/compare` 비교 검증(★ 전략 핵심) → `/platform/plan` 추진 계획). What-If 토글은 v0.1 `/v1/scenario/rnd`에 있음(공존). **What-If는 정적 응답 기준 촬영**(실 LLM 비결정성 회피).
 - **포맷**: MP4 1080p. 시연 노트북 로컬 저장 + 클라우드 백업.
 
-## 5. 시연 후 (필수)
+## 5. 시연 후
 
-1. **공개 URL 만료**: `pnpm exec wrangler delete` (또는 CF Access off). 무기한 노출 방지(PRD §6.4).
-2. 회고 양식 작성(`demo-script.md` 회고 메모) + 영업 24h 디브리프.
+1. **공개 URL 만료 = 폐기 항목**(S3 결정): `koami.minu.best`는 CF Access 보호 + 영구 운영. `wrangler delete`로 만료 안 함. 사이트를 내릴 때만 사용. (이전 가이드는 비공개 비추측 URL 시절 절차였고, 커스텀 도메인 + CF Access 전환 후 폐기.)
+2. CF Access 이메일 회수가 필요하면 정책 PUT으로 제거 (상세 `docs/deploy-guide.md`).
+3. 회고 양식 작성(`demo-script.md` 회고 메모) + 영업 24h 디브리프.
 
 ## 6. FAQ
 
-- **Q. 데이터가 진짜인가요?** → "⭐실데이터(GIVC) 58%, △추정, ※가상을 표기로 구분합니다. 가상은 본 사업화 시 귀측 데이터로 대체됩니다."
-- **Q. LLM이 실제로 도나요?** → "What-If 토글 ON 시 CF Workers AI 실 호출(시범, 세션 3회). 기본은 정적 응답."
-- **Q. 모바일 되나요?** → "데스크톱 시연 전용입니다(1920/1366 최적)."
+- **Q. 데이터가 진짜인가요?** → "**실 19개(70%) / 추정 4 / 유료 4 = 총 27개 데이터 소스**를 ⭐실/△추정/※유료로 표기 구분합니다(F031 데이터 현황 페이지). 유료는 본 사업화 단계에서 도입 검토 중. 실데이터는 GIVC + 공개 API(관세청·DART), 추정은 합리적 추론, 유료는 S&P·Bloomberg 등."
+- **Q. LLM이 실제로 도나요?** → "v0.1 `/v1/scenario/rnd` What-If 토글 ON 시 CF Workers AI 실 호출(시범, KV 세션 3회). 기본은 정적 응답. v0.2 시나리오 분석은 시연용 결정적 스크립트(재현성 보장)."
+- **Q. 모바일 되나요?** → "데스크톱 시연 전용입니다(1920/1366 최적). 단 v0.2는 반응형 그리드(F042~F045) 적용 - 700px 태블릿/400px 모바일에서도 자동 wrap 동작(시연 흐름엔 영향 없음)."
 
 ## 7. 핵심 명령어 요약
 
 ```bash
 bash scripts/healthcheck.sh <URL>   # 가용성 점검
 pnpm deploy:cf                      # 배포 (※ pnpm deploy 아님)
-pnpm serve:offline                  # 오프라인 백업 (localhost:4173)
+pnpm serve:offline                  # 오프라인 백업 (localhost:4173, 점유 시 4174/4175 fallback)
 pnpm exec wrangler rollback         # 롤백
-pnpm exec wrangler delete           # 시연 후 만료
+pnpm exec wrangler versions list    # 활성 버전 + 100% 비율 확인
+# pnpm exec wrangler delete         # ⚠️ 사이트 영구 폐지 시만. 시연 후 자동 만료 아님(S3 결정).
 ```
