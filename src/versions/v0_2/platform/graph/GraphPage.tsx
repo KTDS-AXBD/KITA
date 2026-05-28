@@ -58,14 +58,16 @@ export function GraphPage(): JSX.Element {
         <p>소부장 공작기계 / 호르무즈 석유화학 인과 관계 네트워크 · cytoscape.js</p>
       </div>
 
-      <GraphToolbar
-        domain={domain}
-        nodeCount={g.nodes.length}
-        edgeCount={g.edges.length}
-        focusActive={focusActive}
-        onDomainChange={handleDomainChange}
-        onFocusToggle={handleFocusToggle}
-      />
+      <div data-tour-id="filter-toolbar">
+        <GraphToolbar
+          domain={domain}
+          nodeCount={g.nodes.length}
+          edgeCount={g.edges.length}
+          focusActive={focusActive}
+          onDomainChange={handleDomainChange}
+          onFocusToggle={handleFocusToggle}
+        />
+      </div>
 
       <div style={{ display: 'flex', gap: 0, minHeight: 520, border: '1px solid var(--op-border)', borderRadius: 'var(--op-radius)', overflow: 'hidden' }}>
         <Suspense fallback={
@@ -73,7 +75,7 @@ export function GraphPage(): JSX.Element {
             그래프 로딩 중...
           </div>
         }>
-          <div style={{ flex: 1, display: 'flex' }}>
+          <div data-tour-id="cyto-canvas" style={{ flex: 1, display: 'flex' }}>
             {graph
               ? <GraphCanvas
                   graph={graph}
@@ -86,15 +88,19 @@ export function GraphPage(): JSX.Element {
                 </div>}
           </div>
         </Suspense>
-        <NodeDetailPanel
-          node={selectedNode}
-          connectedCount={connectedCount}
-          domain={domain}
-          totalNodes={g.nodes.length}
-        />
+        <div data-tour-id="node-detail">
+          <NodeDetailPanel
+            node={selectedNode}
+            connectedCount={connectedCount}
+            domain={domain}
+            totalNodes={g.nodes.length}
+          />
+        </div>
       </div>
 
-      <GraphLegend onFilterChange={handleFilterChange} activeFilter={nodeFilter} />
+      <div data-tour-id="legend">
+        <GraphLegend onFilterChange={handleFilterChange} activeFilter={nodeFilter} />
+      </div>
     </div>
   );
 }

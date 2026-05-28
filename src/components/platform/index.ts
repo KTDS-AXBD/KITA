@@ -12,3 +12,8 @@ export type { TimelineItem } from './Timeline';
 export { StatusDot } from './StatusDot';
 export type { DotStatus } from './StatusDot';
 export { SourceBadge } from './SourceBadge';
+export { SpotlightTour } from './SpotlightTour';
+export type { TourStep } from './SpotlightTour';
+export { useTour, dispatchTourRestart, resetAllTourSeen } from './useTour';
+export { HelpChatbot } from './HelpChatbot';
+export type { FaqEntry } from './HelpChatbot';

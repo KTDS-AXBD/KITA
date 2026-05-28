@@ -24,7 +24,7 @@ export function GraphToolbar({ domain, nodeCount, edgeCount, focusActive, onDoma
       flexWrap: 'wrap',
     }}>
       {/* 도메인 토글 */}
-      <div style={{
+      <div data-tour-id="domain-toggle" style={{
         display: 'inline-flex',
         gap: 2,
         padding: '3px 4px',

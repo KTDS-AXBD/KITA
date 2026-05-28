@@ -1,4 +1,6 @@
 import { navigate } from './useHashRoute';
+import { dispatchTourRestart } from '@/components/platform';
+import { getPageKey } from '@/data/tour';
 
 const PAGE_LABELS: Record<string, string> = {
   '/platform/data': '데이터 현황',
@@ -16,6 +18,7 @@ interface HeaderBarProps {
 
 export function HeaderBar({ route }: HeaderBarProps): JSX.Element {
   const currentLabel = PAGE_LABELS[route] ?? route.split('/').pop() ?? '';
+  const pageKey = getPageKey(route);
 
   return (
     <header className="op-header-bar">
@@ -30,8 +33,33 @@ export function HeaderBar({ route }: HeaderBarProps): JSX.Element {
         <span className="op-bc-sep">&gt;</span>
         <span className="op-bc-current">{currentLabel}</span>
       </div>
-      <div className="op-header-right">
+      <div className="op-header-right" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span className="op-scenario-badge">소부장 · 공작기계</span>
+        {pageKey && (
+          <button
+            type="button"
+            onClick={() => dispatchTourRestart(pageKey)}
+            aria-label="현재 페이지 가이드 투어 다시 보기"
+            title="가이드 투어 다시 보기"
+            style={{
+              background: 'var(--op-bg-subtle, #FAFBFC)',
+              border: '1px solid var(--op-border, #E2E5EA)',
+              borderRadius: 'var(--op-radius-sm, 4px)',
+              padding: '4px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              color: 'var(--op-text-secondary, #565D66)',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              lineHeight: 1,
+            }}
+          >
+            <span aria-hidden="true">❓</span>
+            <span>도움말</span>
+          </button>
+        )}
       </div>
     </header>
   );

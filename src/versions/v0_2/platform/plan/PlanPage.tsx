@@ -119,6 +119,7 @@ export function PlanPage(): JSX.Element {
 
       {/* 타임라인 */}
       <div
+        data-tour-id="phase-timeline"
         style={{
           background: 'var(--op-bg-card)',
           borderRadius: 'var(--op-radius)',
@@ -131,6 +132,7 @@ export function PlanPage(): JSX.Element {
         {/* 단계 설명 - Timeline 컴포넌트 확장 없이 인라인으로
             F045: 5컬럼 -> auto-fit minmax(120, 1fr) 반응형. Phase 5 설명 좁은 폭에서 자동 wrap. */}
         <div
+          data-tour-id="plan-phases"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
@@ -149,14 +151,17 @@ export function PlanPage(): JSX.Element {
       </div>
 
       {/* CQ 목록 */}
-      <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14, color: 'var(--op-text-primary)' }}>
-        Competency Question 목록
-      </h3>
-      <CqSection tier={1} items={tier1} />
-      <CqSection tier={2} items={tier2} />
+      <div data-tour-id="cq-tier-list">
+        <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14, color: 'var(--op-text-primary)' }}>
+          Competency Question 목록
+        </h3>
+        <CqSection tier={1} items={tier1} />
+        <CqSection tier={2} items={tier2} />
+      </div>
 
       {/* 푸터 */}
       <div
+        data-tour-id="footer-contact"
         style={{
           textAlign: 'center',
           fontSize: 12,

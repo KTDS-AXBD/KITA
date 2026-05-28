@@ -94,14 +94,14 @@ export function OntologyPage(): JSX.Element {
       </div>
 
       {/* KPI row - F043 G: auto-fit minmax 반응형 */}
-      <div className="op-kpi-grid" style={{ marginBottom: 28 }}>
+      <div data-tour-id="ontology-kpi" className="op-kpi-grid" style={{ marginBottom: 28 }}>
         {KPI_DATA.map((kpi) => (
           <KpiCard key={kpi.label} label={kpi.label} value={kpi.value} sub={kpi.sub} />
         ))}
       </div>
 
       {/* 엔티티 카드 grid */}
-      <div style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', padding: '20px 24px', marginBottom: 24 }}>
+      <div data-tour-id="entity-cards" style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', padding: '20px 24px', marginBottom: 24 }}>
         <div style={{ marginBottom: 16, display: 'flex', alignItems: 'baseline', gap: 8 }}>
           <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>엔티티 정의</h3>
           <span style={{ fontSize: 12, color: 'var(--op-text-tertiary)' }}>13종 · 총 인스턴스 161</span>
@@ -122,7 +122,7 @@ export function OntologyPage(): JSX.Element {
       </div>
 
       {/* 관계 정의 테이블 */}
-      <div style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', marginBottom: 24, overflow: 'hidden' }}>
+      <div data-tour-id="relation-table" style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', marginBottom: 24, overflow: 'hidden' }}>
         <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--op-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <span style={{ fontSize: 15, fontWeight: 700 }}>관계 정의</span>
@@ -170,7 +170,7 @@ export function OntologyPage(): JSX.Element {
       </div>
 
       {/* 제약 정의 (다크 블록) */}
-      <div style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden' }}>
+      <div data-tour-id="constraint-block" style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden' }}>
         <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--op-border)' }}>
           <span style={{ fontSize: 15, fontWeight: 700 }}>온톨로지 제약 (Constraints)</span>
           <span style={{ fontSize: 12, color: 'var(--op-text-tertiary)', marginLeft: 8 }}>Neo4j 5.x+ · 데이터 정합성 보장</span>

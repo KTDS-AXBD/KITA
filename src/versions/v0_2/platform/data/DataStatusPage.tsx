@@ -75,14 +75,17 @@ export function DataStatusPage(): JSX.Element {
       </div>
 
       {/* F043 G: 4컬럼 하드코딩 → op-kpi-grid(auto-fit minmax) 반응형 */}
+      {/* F052: data-tour-id 부착 - KPI 첫번째(총)·두번째(실) 투어 anchor */}
       <div className="op-kpi-grid" style={{ marginBottom: 24 }}>
-        {KPI_DATA.map((kpi) => (
-          <KpiCard key={kpi.label} {...kpi} />
+        {KPI_DATA.map((kpi, i) => (
+          <div key={kpi.label} data-tour-id={i === 0 ? 'kpi-total' : i === 1 ? 'kpi-real' : undefined}>
+            <KpiCard {...kpi} />
+          </div>
         ))}
       </div>
 
-      <div style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden', marginBottom: 20 }}>
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--op-border)', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div data-tour-id="source-table" style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden', marginBottom: 20 }}>
+        <div data-tour-id="status-dot" style={{ padding: '16px 20px', borderBottom: '1px solid var(--op-border)', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: 12, color: 'var(--op-text-secondary)', marginRight: 4 }}>구분</span>
           <Badge variant="real" label="실" />
           <Badge variant="estimate" label="추정" />
@@ -102,6 +105,42 @@ export function DataStatusPage(): JSX.Element {
         >
           <DataTable columns={COLUMNS} rows={TABLE_ROWS} />
         </div>
+      </div>
+
+      {/* F052: 데이터 회신 의향 안내 카드 (투어 마지막 step anchor + 영업 동선) */}
+      <div
+        data-tour-id="survey-cta"
+        style={{
+          background: 'var(--op-bg-subtle, #FAFBFC)',
+          border: '1px solid var(--op-border)',
+          borderRadius: 'var(--op-radius)',
+          padding: '14px 18px',
+          fontSize: 13,
+          color: 'var(--op-text-secondary)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          flexWrap: 'wrap',
+        }}
+      >
+        <span aria-hidden="true" style={{ fontSize: 18 }}>📩</span>
+        <span style={{ flex: 1, minWidth: 240 }}>
+          추가로 제공 가능한 데이터가 있으시면 시연 후 의향 설문에 회신해주세요. KOAMI 다음 단계 합의의 출발점이 돼요.
+        </span>
+        <a
+          href="#/v1/survey"
+          style={{
+            color: 'var(--op-brand, #E60012)',
+            textDecoration: 'none',
+            fontWeight: 600,
+            fontSize: 12,
+            border: '1px solid var(--op-brand, #E60012)',
+            borderRadius: 'var(--op-radius-sm, 4px)',
+            padding: '6px 12px',
+          }}
+        >
+          의견 회신 →
+        </a>
       </div>
     </div>
   );

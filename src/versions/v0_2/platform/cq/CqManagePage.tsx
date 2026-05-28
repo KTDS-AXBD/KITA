@@ -396,6 +396,7 @@ export function CqManagePage(): JSX.Element {
           <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--op-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
             <span style={{ fontSize: 13, fontWeight: 700 }}>Competency Questions</span>
             <button
+              data-tour-id="new-cq-btn"
               onClick={() => setAddOpen(true)}
               style={{ padding: '4px 10px', border: '1px solid var(--op-border)', borderRadius: 'var(--op-radius-sm)', background: 'white', fontSize: 12, fontWeight: 600, cursor: 'pointer', color: 'var(--op-text-primary)' }}
             >
@@ -404,7 +405,7 @@ export function CqManagePage(): JSX.Element {
           </div>
 
           {/* 필터 pills */}
-          <div style={{ padding: '8px 12px', display: 'flex', gap: 4, flexWrap: 'wrap', borderBottom: '1px solid var(--op-border)', flexShrink: 0 }}>
+          <div data-tour-id="cq-filter" style={{ padding: '8px 12px', display: 'flex', gap: 4, flexWrap: 'wrap', borderBottom: '1px solid var(--op-border)', flexShrink: 0 }}>
             {(Object.keys(FILTER_LABELS) as FilterKey[]).map((key) => (
               <button
                 key={key}
@@ -423,7 +424,7 @@ export function CqManagePage(): JSX.Element {
           </div>
 
           {/* CQ 카드 목록 */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+          <div data-tour-id="cq-list" style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
             {filtered.map((cq) => (
               <div
                 key={cq.id}
@@ -455,9 +456,11 @@ export function CqManagePage(): JSX.Element {
           </div>
         </div>
 
-        {/* 우 — CQ 상세 */}
+        {/* 우 - CQ 상세 */}
         {selected ? (
-          <CqDetailPanel key={selected.id} cq={selected} />
+          <div data-tour-id="cq-detail" style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+            <CqDetailPanel key={selected.id} cq={selected} />
+          </div>
         ) : (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--op-text-tertiary)' }}>
             CQ를 선택하세요

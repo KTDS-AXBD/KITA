@@ -129,7 +129,7 @@ export function ComparePage(): JSX.Element {
       {/* F045: 1fr 1fr -> auto-fit minmax(320, 1fr) 반응형. 좁은 폭에서 비교 카드 stack(시연 메시지 보존). */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20, marginBottom: 28 }}>
         {/* 좌: chatGIVC */}
-        <div style={CARD_STYLE}>
+        <div data-tour-id="chatgivc-card" style={CARD_STYLE}>
           <div style={cardHeader('#FAFBFD')}>chatGIVC (LLM + RAG)</div>
           <div style={{ padding: 20 }}>
             <ChatBubble role="user">
@@ -159,10 +159,10 @@ export function ComparePage(): JSX.Element {
         </div>
 
         {/* 우: 온톨로지+KG */}
-        <div style={CARD_STYLE}>
+        <div data-tour-id="ontology-card" style={CARD_STYLE}>
           <div style={cardHeader('#F4F6FB')}>온톨로지 + Knowledge Graph</div>
           <div style={{ padding: 20 }}>
-            <div style={{ marginBottom: 16 }}>
+            <div data-tour-id="top3-list" style={{ marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', marginBottom: 10 }}>
                 R&D 적합 기업 Top 3
               </div>
@@ -206,7 +206,7 @@ export function ComparePage(): JSX.Element {
       </div>
 
       {/* 6축 비교표 */}
-      <div style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden' }}>
+      <div data-tour-id="comparison-table" style={{ background: 'var(--op-bg-card)', borderRadius: 'var(--op-radius)', border: '1px solid var(--op-border)', overflow: 'hidden' }}>
         <DataTable columns={COMPARE_COLUMNS} rows={COMPARE_ROWS} />
       </div>
     </div>

@@ -109,7 +109,7 @@ export function ScenarioPage(): JSX.Element {
       </div>
 
       {/* CQ 선택 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+      <div data-tour-id="cq-toggle" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
         <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--op-text-secondary)', whiteSpace: 'nowrap' }}>CQ 선택</span>
         <select
           value={selectedCq}
@@ -126,7 +126,7 @@ export function ScenarioPage(): JSX.Element {
       </div>
 
       {/* NL 질의 바 */}
-      <div style={{ display: 'flex', gap: 10, marginBottom: 12, alignItems: 'center' }}>
+      <div data-tour-id="nl-query" style={{ display: 'flex', gap: 10, marginBottom: 12, alignItems: 'center' }}>
         <div style={{
           flex: 1, padding: '10px 14px', fontSize: 13,
           border: '1px solid var(--op-border)', borderRadius: 6,
@@ -170,24 +170,26 @@ export function ScenarioPage(): JSX.Element {
         Cypher 변환 보기
       </button>
       {showCypher && (
-        <div style={{ marginBottom: 16 }}>
+        <div data-tour-id="cypher-block" style={{ marginBottom: 16 }}>
           <CypherBlock code={cfg.cypher} />
         </div>
       )}
 
       {/* 추론 단계 애니메이션 */}
       {analysisState !== 'idle' && (
-        <AnalysisStepsPanel
-          steps={cfg.steps}
-          completedSteps={completedSteps}
-          progress={progress}
-          running={analysisState === 'running'}
-        />
+        <div data-tour-id="reasoning-steps">
+          <AnalysisStepsPanel
+            steps={cfg.steps}
+            completedSteps={completedSteps}
+            progress={progress}
+            running={analysisState === 'running'}
+          />
+        </div>
       )}
 
       {/* 결과 패널 */}
       {analysisState === 'done' && (
-        <div style={{ marginTop: 24 }}>
+        <div data-tour-id="result-tabs" style={{ marginTop: 24 }}>
           {selectedCq === 'cq2' ? <Cq002Results /> : <Cq001Results />}
         </div>
       )}
